@@ -1,7 +1,4 @@
-﻿using CommunityToolkit.Mvvm;
-
-
-namespace TestMulti
+﻿namespace TestMulti
 
 {
     public partial class MainPage : ContentPage

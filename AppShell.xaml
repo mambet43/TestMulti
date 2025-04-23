@@ -11,22 +11,9 @@
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
-    <ShellContent
-        Title="Электробезопасность"
-        ContentTemplate="{DataTemplate view:QuestTheme}"
-        Route="QuestTheme_EB" />
-    <ShellContent
-        Title="Охрана труда"
-        ContentTemplate="{DataTemplate view:QuestTheme}"
-        Route="QuestTheme_OT" />
-
-    <ShellContent
-        Title="Работы на высоте"
-        ContentTemplate="{DataTemplate view:QuestTheme}"
-        Route="QuestTheme_VIS" />
-    <ShellContent
-        Title="Избранные вопросы"
-        ContentTemplate="{DataTemplate view:QuestTheme}"
-        Route="QuestTheme" />
+        Route="MainPage" />   
+    <MenuItem Text="Электробезопасность" Clicked="OnMenuItemClickedEb"/>
+    <MenuItem Text="Охрана труда" Clicked="OnMenuItemClickedOt"/>
+    <MenuItem Text="Работы на высоте" Clicked="OnMenuItemClickedVis"/>
+    <MenuItem Text="Избранные вопросы" Clicked="OnMenuItemClickedVaworites"/>
 </Shell>

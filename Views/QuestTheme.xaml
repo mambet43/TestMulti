@@ -5,7 +5,7 @@
              Title="QuestTheme">
     <VerticalStackLayout>
         <Label 
-            Text="тут будет текст"
+            Text="{Binding Theme}"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
     </VerticalStackLayout>

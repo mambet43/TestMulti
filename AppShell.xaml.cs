@@ -8,9 +8,7 @@ namespace TestMulti
         {
             InitializeComponent();
         }
-
-
-        
+             
 
     }
 }

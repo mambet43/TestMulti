@@ -31,8 +31,7 @@ public partial class QuestTheme : ContentPage
     }
     public QuestTheme()
 	{
-		InitializeComponent();
-        
+		InitializeComponent();        
     }
    
 }

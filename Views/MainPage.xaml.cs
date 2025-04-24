@@ -11,7 +11,11 @@
             BindingContext = new ViewModels.MainPage();
         }
 
-       
+        private void clearbtn_Clicked(object sender, EventArgs e)
+        {
+            Preferences.Clear();
+
+        }
     }
 
 }

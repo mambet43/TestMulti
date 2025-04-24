@@ -18,6 +18,8 @@ public partial class QuestThemeViewModel : ObservableObject
 
     public string Theme { get; set; }
 
+    public string FileName { get; set; }
+
     
 
     public QuestThemeViewModel(string theme)
@@ -27,12 +29,14 @@ public partial class QuestThemeViewModel : ObservableObject
             case "eb":          Theme = "Электробезопасность";  break;
             case "ot":          Theme = "Охрана труда";         break;
             case "vis":         Theme = "Работы на высоте";     break;
-            case "vaworites":   Theme = "Избранные вопросы";    break;
+            case "vaworites":   
+                Theme = "Избранные вопросы";
+                JsonManager.VaworitesCreate();
+                break;
             default:            Theme = "Error";                break ;
-        }        
-          
-        
-        Quest = JsonManager.DeserializeFromJson(theme + ".json");
+        }
+        FileName = theme + ".json";
+        Quest = JsonManager.DeserializeFromJson(FileName);
         ViewQuestTheme();
     }
 
@@ -43,6 +47,7 @@ public partial class QuestThemeViewModel : ObservableObject
         {
             quest.Vaworites = !quest.Vaworites;
         }
+        JsonManager.UserQuestSave(Quest, FileName);
     }
 
 

@@ -3,8 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TestMulti.MainPage">
 
-    <ScrollView>        
-            
+    <ScrollView>
+        <StackLayout>
+            <Button Text="Clear Preferences" x:Name="clearbtn" Clicked="clearbtn_Clicked"/>            
+        </StackLayout>
+        
+
     </ScrollView>
 
 </ContentPage>

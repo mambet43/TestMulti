@@ -6,6 +6,7 @@
     xmlns:local="clr-namespace:TestMulti"
     xmlns:view="clr-namespace:TestMulti.Views"
     Shell.FlyoutBehavior="Flyout"
+    Shell.FlyoutWidth="230"
     Title="TestMulti">
 
     <ShellContent

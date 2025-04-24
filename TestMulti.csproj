@@ -62,12 +62,14 @@
 	<ItemGroup>
 	  <MauiAsset Remove="Resources\Raw\eb.json" />
 	  <MauiAsset Remove="Resources\Raw\ot.json" />
+	  <MauiAsset Remove="Resources\Raw\vaworites.json" />
 	  <MauiAsset Remove="Resources\Raw\vis.json" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <EmbeddedResource Include="Resources\Raw\eb.json" />
 	  <EmbeddedResource Include="Resources\Raw\ot.json" />
+	  <EmbeddedResource Include="Resources\Raw\vaworites.json" />
 	  <EmbeddedResource Include="Resources\Raw\vis.json" />
 	</ItemGroup>
 

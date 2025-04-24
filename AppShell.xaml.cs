@@ -13,21 +13,25 @@ namespace TestMulti
         {
             // Передаем параметр "value1" при навигации
             await Shell.Current.GoToAsync("QuestTheme?param=eb");
+            Shell.Current.FlyoutIsPresented = false;
         }
         private async void OnMenuItemClickedOt(object sender, EventArgs e)
         {
             // Передаем параметр "value1" при навигации
             await Shell.Current.GoToAsync("QuestTheme?param=ot");
+            Shell.Current.FlyoutIsPresented = false;
         }
         private async void OnMenuItemClickedVis(object sender, EventArgs e)
         {
             // Передаем параметр "value1" при навигации
             await Shell.Current.GoToAsync("QuestTheme?param=vis");
+            Shell.Current.FlyoutIsPresented = false;
         }
         private async void OnMenuItemClickedVaworites(object sender, EventArgs e)
         {
             // Передаем параметр "value1" при навигации
             await Shell.Current.GoToAsync("QuestTheme?param=vaworites");
+            Shell.Current.FlyoutIsPresented = false;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace TestMulti.Services
         {
             var assembly = Assembly.GetExecutingAssembly();
 
-            var resourcePath = $"MauiApp1.Resources.Raw.{fileName}";
+            var resourcePath = $"TestMulti.Resources.Raw.{fileName}";
 
             using Stream stream = assembly.GetManifestResourceStream(resourcePath);
             if (stream == null)

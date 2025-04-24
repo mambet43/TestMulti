@@ -2,11 +2,49 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TestMulti.Views.QuestTheme"
-             Title="QuestTheme">
-    <VerticalStackLayout>
-        <Label 
-            Text="{Binding Theme}"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="{Binding Theme}">
+ 
+        <CollectionView ItemsSource="{Binding QuestCollection}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <VerticalStackLayout>
+                            <!-- Заголовок вопроса -->
+                        <Grid Padding="10,0,10,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="110" />
+                            </Grid.ColumnDefinitions>
+                            <Label LineBreakMode="WordWrap"  Padding="10" Text="{Binding DisplayTitle}" Style="{StaticResource TitleQuest}" Grid.Column="0"/>
+                            <ImageButton Source="nonvaworites.png" HeightRequest="50" WidthRequest="50" Grid.Column="1"
+                                 Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SetVaworitesCommand}"
+                                 CommandParameter="{Binding}">  
+                                <ImageButton.Triggers>
+                                    <DataTrigger TargetType="ImageButton" Binding="{Binding Vaworites}" Value="true">
+                                        <Setter Property="Source" Value="vaworites.png" />
+                                    </DataTrigger>
+                                </ImageButton.Triggers>
+                            </ImageButton>
+
+                    </Grid>
+
+                    <!-- Список ответов -->
+                            <CollectionView ItemsSource="{Binding answers}">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                    <Label Padding="20,3,10,3" LineBreakMode="WordWrap" Text="{Binding title}">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding correct}" Value="True">
+                                                <Setter Property="Style" Value="{StaticResource CorrectAnswerStyle}" />
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                            </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+ 
+
 </ContentPage>

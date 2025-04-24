@@ -14,8 +14,7 @@ public partial class QuestTheme : ContentPage
         get => _pageParam;
         set
         {
-            _pageParam = value;
-            OnPropertyChanged();
+            _pageParam = value;            
         }
     }
 

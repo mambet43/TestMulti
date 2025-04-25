@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Maui.Controls;
 
 namespace TestMulti.ViewModels;
 
@@ -30,14 +31,15 @@ public partial class QuestThemeViewModel : ObservableObject
             case "ot":          Theme = "Охрана труда";         break;
             case "vis":         Theme = "Работы на высоте";     break;
             case "vaworites":   
-                Theme = "Избранные вопросы";
-                JsonManager.VaworitesCreate();
-                break;
+                                Theme = "Избранные вопросы";
+                                JsonManager.VaworitesCreate();
+                                break;
             default:            Theme = "Error";                break ;
         }
         FileName = theme + ".json";
         Quest = JsonManager.DeserializeFromJson(FileName);
         ViewQuestTheme();
+
     }
 
     [RelayCommand]
@@ -45,9 +47,12 @@ public partial class QuestThemeViewModel : ObservableObject
     {
         if (quest != null)
         {
+            if (Theme != "Избранные вопросы") quest.Theme = Theme;
             quest.Vaworites = !quest.Vaworites;
         }
-        JsonManager.UserQuestSave(Quest, FileName);
+        if (Theme == "Избранные вопросы") JsonManager.EditPreferences(quest);
+        else JsonManager.UserQuestSave(Quest, FileName);
+
     }
 
 

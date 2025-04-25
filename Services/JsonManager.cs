@@ -28,7 +28,7 @@ namespace TestMulti.Services
             }
             else
             {
-                return JsonSerializer.Deserialize<Quest[]>(Preferences.Get(filename, null)) ?? Array.Empty<Quest>(); // Добавляем защиту от null
+                return JsonSerializer.Deserialize<Quest[]>(Preferences.Get(filename, null)) ?? Array.Empty<Quest>(); // Добавляем защиту от null 
             }
         }
 

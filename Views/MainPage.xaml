@@ -2,20 +2,41 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
              x:Class="TestMulti.MainPage">
-
-    <Grid>
-        <!-- Кнопка в верхней части -->
-        <Button Text="Clear Preferences" x:Name="clearbtn" Clicked="clearbtn_Clicked" 
-                VerticalOptions="Start" HorizontalOptions="Center" />
-
-        <!-- Диаграмма занимает оставшееся пространство -->
-        <lvc:PieChart   Series="{Binding Series}"
-                        InitialRotation="45"
-                        MaxAngle="270"
-                        MinValue="0"
-                        MaxValue="100">
-                    </lvc:PieChart>
-
-    </Grid>
-
+    <FlexLayout HorizontalOptions="Center">
+        
+        <Grid BackgroundColor="LightBlue"  Padding="10" RowDefinitions="Auto,Auto,Auto,Auto" >
+            <Label Text="Электробезопасность" Grid.Row="0"></Label>
+            <BoxView Color="LightBlue" WidthRequest="420" BackgroundColor="LightBlue"  HeightRequest="420" CornerRadius="8"
+                 HorizontalOptions="Center" VerticalOptions="Center" Grid.Row="1"/>      
+            <lvc:PieChart   Series="{Binding Series}"
+                            InitialRotation="90"  
+                            HeightRequest="400"
+                            WidthRequest="400"
+                            MaxAngle="270"
+                            MinValue="0"
+                            MaxValue="100"
+                            Grid.Row="1"
+                            AnimationsSpeed="00:00:05.500"                      
+                            PressedCommand="{Binding PressedCommand}">
+            </lvc:PieChart>
+            <BoxView Color="LightBlue" WidthRequest="450" BackgroundColor="LightBlue"  HeightRequest="240" CornerRadius="8"
+             HorizontalOptions="Center" VerticalOptions="Center" Grid.Row="2"/>
+            <StackLayout Orientation="Vertical"  HorizontalOptions="Start" VerticalOptions="End"  Grid.Row="2" Margin="5">
+                <StackLayout Orientation="Horizontal">
+                    <ImageButton HeightRequest="70" WidthRequest="70" BackgroundColor="LightBlue" Source="retryall.png" Margin="5" VerticalOptions="Start" HorizontalOptions="Center" />
+                    <Button Text="Повторить"  WidthRequest="130" TextColor="Black" FontSize="18" HorizontalOptions="End" BackgroundColor="Transparent" />
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <ImageButton HeightRequest="70" WidthRequest="70" BackgroundColor="LightBlue" Source="retryerr.png" Margin="5" VerticalOptions="Start" HorizontalOptions="Center" />
+                    <Button Text="Мои ошибки"  WidthRequest="150" TextColor="Black" FontSize="18" HorizontalOptions="End" BackgroundColor="Transparent" />
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <ImageButton HeightRequest="70" WidthRequest="70" BackgroundColor="LightBlue" Source="retrylong.png" Margin="5" VerticalOptions="Start" HorizontalOptions="Center" />
+                    <Button Text="Долгие ответы"  WidthRequest="160" TextColor="Black" FontSize="18" HorizontalOptions="End" BackgroundColor="Transparent" />
+                </StackLayout>
+            </StackLayout>
+            <Button Text="Clear Preferences" x:Name="clearbtn" Clicked="clearbtn_Clicked" 
+                    VerticalOptions="Start" HorizontalOptions="Center" Grid.Row="3"/>                         
+        </Grid>
+    </FlexLayout>
 </ContentPage>

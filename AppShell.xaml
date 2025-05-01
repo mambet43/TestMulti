@@ -7,13 +7,15 @@
     xmlns:view="clr-namespace:TestMulti.Views"
     Shell.FlyoutBehavior="Flyout"
     Shell.FlyoutWidth="230"
-    Title="TestMulti">
-
+    Title="TestMulti"
+    FlyoutBackgroundColor="#353D45"  
+    Shell.BackgroundColor="#353D45">
     <ShellContent
-        Title="Home"
+        Title="Home"  
         ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />   
-    <MenuItem Text="Электробезопасность" Clicked="OnMenuItemClickedEb"/>
+        Route="MainPage"  
+        Shell.ForegroundColor="White" />
+    <MenuItem Text="Электробезопасность"  Clicked="OnMenuItemClickedEb" Shell.ForegroundColor="White"/>
     <MenuItem Text="Охрана труда" Clicked="OnMenuItemClickedOt"/>
     <MenuItem Text="Работы на высоте" Clicked="OnMenuItemClickedVis"/>
     <MenuItem Text="Избранные вопросы" Clicked="OnMenuItemClickedVaworites"/>

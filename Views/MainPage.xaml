@@ -1,42 +1,54 @@
 ﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
-             x:Class="TestMulti.MainPage" BackgroundColor="#757D85">
-    <FlexLayout HorizontalOptions="Center" >
+             x:Class="TestMulti.MainPage">
+    <ScrollView>
+        <StackLayout Orientation="Vertical">
 
-        <Grid   Padding="10" RowDefinitions="Auto,Auto,Auto,Auto" >
-            <Label Text="Электробезопасность" Grid.Row="0"></Label>
-            <BoxView Color="#353D45" WidthRequest="420" BackgroundColor="#353D45"  HeightRequest="420" CornerRadius="18"
-                 HorizontalOptions="Center" VerticalOptions="Center" Grid.Row="1"/>      
-            <lvc:PieChart   Series="{Binding Series}"
+
+            <FlexLayout HorizontalOptions="Center" >
+
+                <Grid Padding="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <BoxView CornerRadius="18" Grid.Row="0" BackgroundColor="{StaticResource BackColorA}" Margin="0,0,0,10" />
+                    <Label Text="Электробезопасность" FontSize="18"  Grid.Row="0" HorizontalOptions="Center" Margin="0,0,0,10" />
+                    <BoxView CornerRadius="18" Grid.Row="1" BackgroundColor="{StaticResource BackColorA}" />
+                    <lvc:PieChart   Series="{Binding Series}"
+                            MinimumHeightRequest="250"
+                            MinimumWidthRequest="250"
                             InitialRotation="90"  
-                            HeightRequest="400"
-                            WidthRequest="400"
                             MaxAngle="270"
                             MinValue="0"
                             MaxValue="100"
                             Grid.Row="1"
                             AnimationsSpeed="00:00:05.500"                      
                             PressedCommand="{Binding PressedCommand}">
-            </lvc:PieChart>
-            <BoxView Color="#353D45" WidthRequest="420" BackgroundColor="LightBlue"  HeightRequest="240" CornerRadius="18"
-             HorizontalOptions="Center" VerticalOptions="Center" Grid.Row="2"/>
-            <StackLayout Orientation="Vertical"  HorizontalOptions="Start" VerticalOptions="End"  Grid.Row="2" Margin="5">
-                <StackLayout Orientation="Horizontal">
-                    <ImageButton HeightRequest="70" WidthRequest="70" BackgroundColor="#353D45" Source="retryall.png" Margin="5" VerticalOptions="Start" HorizontalOptions="Center" />
-                    <Button Text="Повторить"  WidthRequest="130" TextColor="Black" FontSize="18" HorizontalOptions="End" BackgroundColor="Transparent" />
-                </StackLayout>
-                <StackLayout Orientation="Horizontal">
-                    <ImageButton HeightRequest="70" WidthRequest="70" BackgroundColor="#353D45" Source="retryerr.png" Margin="5" VerticalOptions="Start" HorizontalOptions="Center" />
-                    <Button Text="Мои ошибки"  WidthRequest="150" TextColor="Black" FontSize="18" HorizontalOptions="End" BackgroundColor="Transparent" />
-                </StackLayout>
-                <StackLayout Orientation="Horizontal">
-                    <ImageButton HeightRequest="70" WidthRequest="70" BackgroundColor="#353D45" Source="retrylong.png" Margin="5" VerticalOptions="Start" HorizontalOptions="Center" />
-                    <Button Text="Долгие ответы"  WidthRequest="160" TextColor="Black" FontSize="18" HorizontalOptions="End" BackgroundColor="Transparent" />
-                </StackLayout>
-            </StackLayout>
-            <Button Text="Clear Preferences" x:Name="clearbtn" Clicked="clearbtn_Clicked" 
-                    VerticalOptions="Start" HorizontalOptions="Center" Grid.Row="3"/>                         
-        </Grid>
-    </FlexLayout>
+                    </lvc:PieChart>
+                    <BoxView CornerRadius="18" Margin="0,10,0,0" Grid.Row="2"  BackgroundColor="{StaticResource BackColorA}" />
+                    <StackLayout Orientation="Vertical"   Grid.Row="2">
+                        <StackLayout Orientation="Horizontal">
+                            <ImageButton BackgroundColor="Transparent" Source="retryall.png" Margin="5" VerticalOptions="Start" HorizontalOptions="Center" HeightRequest="28"/>
+                            <Button Text="Повторить"  WidthRequest="130" FontSize="18" BackgroundColor="Transparent" />
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <ImageButton BackgroundColor="Transparent" Source="retryerr.png" Margin="5" VerticalOptions="Start" HorizontalOptions="Center" HeightRequest="28" />
+                            <Button Text="Мои ошибки"  WidthRequest="150" HorizontalOptions="Start" FontSize="18" BackgroundColor="Transparent" />
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <ImageButton BackgroundColor="Transparent" Source="retrylong.png" Margin="5" VerticalOptions="Start" HorizontalOptions="Center" HeightRequest="28" />
+                            <Button Text="Долгие ответы"  WidthRequest="160" FontSize="18" BackgroundColor="Transparent" />
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <ImageButton BackgroundColor="Transparent" Source="del.png" Margin="5" VerticalOptions="Start" HorizontalOptions="Center" HeightRequest="28"  Clicked="clearbtn_Clicked" />
+                            <Button Text="Удалить результаты"   FontSize="18"  BackgroundColor="Transparent"  Clicked="clearbtn_Clicked" />
+                        </StackLayout>
+                    </StackLayout>
+                </Grid>
+            </FlexLayout>
+        </StackLayout>
+    </ScrollView>
 </ContentPage>

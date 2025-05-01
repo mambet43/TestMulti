@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+
 <Shell
+    
     x:Class="TestMulti.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -7,15 +9,12 @@
     xmlns:view="clr-namespace:TestMulti.Views"
     Shell.FlyoutBehavior="Flyout"
     Shell.FlyoutWidth="230"
-    Title="TestMulti"
-    FlyoutBackgroundColor="#353D45"  
-    Shell.BackgroundColor="#353D45">
+    Title="TestMulti"> 
     <ShellContent
         Title="Home"  
         ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage"  
-        Shell.ForegroundColor="White" />
-    <MenuItem Text="Электробезопасность"  Clicked="OnMenuItemClickedEb" Shell.ForegroundColor="White"/>
+        Route="MainPage"/>
+    <MenuItem Text="Электробезопасность"  Clicked="OnMenuItemClickedEb"/>
     <MenuItem Text="Охрана труда" Clicked="OnMenuItemClickedOt"/>
     <MenuItem Text="Работы на высоте" Clicked="OnMenuItemClickedVis"/>
     <MenuItem Text="Избранные вопросы" Clicked="OnMenuItemClickedVaworites"/>

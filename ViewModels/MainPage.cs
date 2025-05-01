@@ -37,11 +37,11 @@ public partial class MainPage : ContentView
 
 
     public IEnumerable<ISeries> Series { get; set; } =
-        GaugeGenerator.BuildSolidGauge(
-            new GaugeItem(100, series => SetStyle("Вопросов в теме", series, SKColors.Blue)),
+        GaugeGenerator.BuildSolidGauge(            
             new GaugeItem(30, series => SetStyle("Ошибок", series, SKColors.Red)),
+            new GaugeItem(10, series => SetStyle("Медленных", series, SKColors.Yellow)),
             new GaugeItem(70, series => SetStyle("Верных", series, SKColors.Green)),
-            new GaugeItem(10, series => SetStyle("Медленных", series, SKColors.Yellow)),            
+            new GaugeItem(100, series => SetStyle("Вопросов в теме", series, SKColors.Blue)),
             new GaugeItem(GaugeItem.Background, series =>
             {
                 series.InnerRadius = 10;
@@ -50,8 +50,9 @@ public partial class MainPage : ContentView
     public static void SetStyle(string name, PieSeries<ObservableValue> series, SKColor color)
     {
         series.Name = name;
-        series.DataLabelsPosition = PolarLabelsPosition.Start;
+        series.DataLabelsPosition = PolarLabelsPosition.Start;        
         series.DataLabelsFormatter = point => $"{point.Coordinate.PrimaryValue} {point.Context.Series.Name}";
+        series.DataLabelsPaint = new SolidColorPaint(SKColors.White);
         series.InnerRadius = 5;
         series.RelativeOuterRadius = 2;
         series.RelativeInnerRadius = 2;

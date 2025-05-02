@@ -6,14 +6,12 @@
     <Style x:Key="CorrectAnswerStyle" TargetType="Label">
         <Setter Property="TextColor" Value="Green" />
         <Setter Property="FontAttributes" Value="Bold" />
-    </Style>
-    
-    
+    </Style>       
     <Style x:Key="TitleQuestBackground" TargetType="Grid">
-        <Setter Property="BackgroundColor" Value="LightSkyBlue"/>
+        <Setter Property="BackgroundColor" Value="{StaticResource BackColorA}"/>
     </Style>
     <Style x:Key="FaworiteBackground" TargetType="ImageButton">
-        <Setter Property="BackgroundColor" Value="LightSkyBlue"/>
+        <Setter Property="BackgroundColor"  Value="{StaticResource BackColorA}"/>
     </Style>
     <Style TargetType="ActivityIndicator">
         <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
@@ -212,7 +210,7 @@
     <Style TargetType="Label" x:Key="TitleQuest">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource MidnightBlue}, Dark={StaticResource White}}" />
         <Setter Property="FontSize" Value="18"/>
-        <Setter Property="BackgroundColor" Value="LightSkyBlue"/>
+        <Setter Property="BackgroundColor"  Value="{StaticResource BackColorA}"/>
     </Style>
 
     

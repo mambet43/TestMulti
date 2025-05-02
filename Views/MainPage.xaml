@@ -32,15 +32,15 @@
                     <StackLayout Orientation="Vertical"   Grid.Row="2">
                         <StackLayout Orientation="Horizontal">
                             <ImageButton BackgroundColor="Transparent" Source="retryall.png" Margin="5" VerticalOptions="Start" HorizontalOptions="Center" HeightRequest="28"/>
-                            <Button Text="Повторить"  WidthRequest="130" FontSize="18" BackgroundColor="Transparent" />
+                            <Button Text="Повторить"  FontSize="18" BackgroundColor="Transparent" />
                         </StackLayout>
                         <StackLayout Orientation="Horizontal">
                             <ImageButton BackgroundColor="Transparent" Source="retryerr.png" Margin="5" VerticalOptions="Start" HorizontalOptions="Center" HeightRequest="28" />
-                            <Button Text="Мои ошибки"  WidthRequest="150" HorizontalOptions="Start" FontSize="18" BackgroundColor="Transparent" />
+                            <Button Text="Мои ошибки"   HorizontalOptions="Start" FontSize="18" BackgroundColor="Transparent" />
                         </StackLayout>
                         <StackLayout Orientation="Horizontal">
                             <ImageButton BackgroundColor="Transparent" Source="retrylong.png" Margin="5" VerticalOptions="Start" HorizontalOptions="Center" HeightRequest="28" />
-                            <Button Text="Долгие ответы"  WidthRequest="160" FontSize="18" BackgroundColor="Transparent" />
+                            <Button Text="Долгие ответы" FontSize="18" BackgroundColor="Transparent" />
                         </StackLayout>
                         <StackLayout Orientation="Horizontal">
                             <ImageButton BackgroundColor="Transparent" Source="del.png" Margin="5" VerticalOptions="Start" HorizontalOptions="Center" HeightRequest="28"  Clicked="clearbtn_Clicked" />

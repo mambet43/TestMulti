@@ -10,12 +10,11 @@
         </CollectionView.ItemsLayout>
         <CollectionView.ItemTemplate>
             <DataTemplate >
-                <VerticalStackLayout>
-                    <!-- Заголовок вопроса -->
+                <VerticalStackLayout>                
                     <Grid Padding="10,0,10,0" Style="{StaticResource TitleQuestBackground}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="110"/>
+                            <ColumnDefinition Width="60"/>
                         </Grid.ColumnDefinitions>
                         <Label LineBreakMode="WordWrap"  Padding="10" Text="{Binding DisplayTitle}" Style="{StaticResource TitleQuest}" Grid.Column="0"/>
                         <ImageButton Source="nonvaworites.png" HeightRequest="50" WidthRequest="50" Grid.Column="1" Style="{StaticResource FaworiteBackground}"

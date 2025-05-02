@@ -8,38 +8,42 @@
                    Wrap="Wrap" 
                    JustifyContent="SpaceEvenly" 
                    AlignItems="Stretch"
-                   Padding="10">
+                   Padding="0">
 
             <!-- Электробезопасность -->
             <Frame CornerRadius="18" 
                    BackgroundColor="{StaticResource BackColorA}"
                    Margin="5"
-                   Padding="5"
                    HorizontalOptions="FillAndExpand"
                    FlexLayout.Basis="350"
                    FlexLayout.Grow="1">
-                <StackLayout Spacing="10">
+                <StackLayout Spacing="0">
                     <Label Text="Электробезопасность" 
-                           FontSize="18" 
+                           FontSize="20" 
                            HorizontalOptions="Center" 
                            Margin="0,0,0,10" />
 
-                    <lvc:PieChart Series="{Binding Series}"
+                    <lvc:PieChart Series="{Binding SeriesEb}"
                                  HeightRequest="250"
                                  InitialRotation="90"  
                                  MaxAngle="270"
                                  MinValue="0"
-                                 MaxValue="100"
                                  AnimationsSpeed="00:00:05.500"                      
                                  PressedCommand="{Binding PressedCommand}">
                     </lvc:PieChart>
 
-                    <StackLayout Spacing="5" HorizontalOptions="Start">
-                        <Button Text="Повторить" 
-                               FontSize="18" 
+                    <StackLayout Spacing="0" HorizontalOptions="Start">
+                        <Button Text="{Binding LengthEb, StringFormat='[{0}] Все вопросы'}" 
                                BackgroundColor="Transparent"
+                               FontSize="18"                                
                                HorizontalOptions="Start"
-                               ImageSource="retryall.png">
+                               ImageSource="all.png">
+                        </Button>
+                        <Button Text="{Binding LengthEbReplay, StringFormat='[{0}] Продолжить'}" 
+                               BackgroundColor="Transparent"
+                               FontSize="18"                                
+                               HorizontalOptions="Start"
+                               ImageSource="play.png">
                         </Button>
 
                         <Button Text="Мои ошибки" 
@@ -83,28 +87,32 @@
        FlexLayout.Grow="1">
                 <StackLayout Spacing="10">
                     <Label Text="Охрана труда" 
-               FontSize="18" 
+               FontSize="20" 
                HorizontalOptions="Center" 
-               Margin="0,0,0,10" />
+               Margin="0,0,0,0" />
 
-                    <lvc:PieChart Series="{Binding Series}"
+                    <lvc:PieChart Series="{Binding SeriesOt}"
                      HeightRequest="250"
                      InitialRotation="90"  
                      MaxAngle="270"
                      MinValue="0"
-                     MaxValue="100"
                      AnimationsSpeed="00:00:05.500"                      
                      PressedCommand="{Binding PressedCommand}">
                     </lvc:PieChart>
 
                     <StackLayout Spacing="5" HorizontalOptions="Start">
-                        <Button Text="Повторить" 
-                   FontSize="18" 
-                   BackgroundColor="Transparent"
-                   HorizontalOptions="Start"
-                   ImageSource="retryall.png">
+                        <Button Text="{Binding LengthOt, StringFormat='[{0}] Все вопросы'}" 
+                           FontSize="18" 
+                           BackgroundColor="Transparent"
+                           HorizontalOptions="Start"
+                           ImageSource="all.png">
                         </Button>
-
+                        <Button Text="{Binding LengthOtReplay, StringFormat='[{0}] Продолжить'}" 
+                               BackgroundColor="Transparent"
+                               FontSize="18"                                
+                               HorizontalOptions="Start"
+                               ImageSource="play.png">
+                        </Button>
                         <Button Text="Мои ошибки" 
                     ImageSource="retryerr.png"
                    FontSize="18" 
@@ -145,26 +153,31 @@
        FlexLayout.Grow="1">
                 <StackLayout Spacing="10">
                     <Label Text="Работы на высоте" 
-               FontSize="18" 
+               FontSize="20" 
                HorizontalOptions="Center" 
                Margin="0,0,0,10" />
 
-                    <lvc:PieChart Series="{Binding Series}"
+                    <lvc:PieChart Series="{Binding SeriesVis}"
                      HeightRequest="250"
                      InitialRotation="90"  
                      MaxAngle="270"
                      MinValue="0"
-                     MaxValue="100"
                      AnimationsSpeed="00:00:05.500"                      
                      PressedCommand="{Binding PressedCommand}">
                     </lvc:PieChart>
 
                     <StackLayout Spacing="5" HorizontalOptions="Start">
-                        <Button Text="Повторить" 
+                        <Button Text="{Binding LengthVis, StringFormat='[{0}] Все вопросы'}" 
                    FontSize="18" 
                    BackgroundColor="Transparent"
                    HorizontalOptions="Start"
-                   ImageSource="retryall.png">
+                   ImageSource="all.png">
+                        </Button>
+                        <Button Text="{Binding LengthVisReplay, StringFormat='[{0}] Продолжить'}" 
+                               BackgroundColor="Transparent"
+                               FontSize="18"                                
+                               HorizontalOptions="Start"
+                               ImageSource="play.png">
                         </Button>
 
                         <Button Text="Мои ошибки" 

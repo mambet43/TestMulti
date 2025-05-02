@@ -10,12 +10,43 @@ using LiveChartsCore.Drawing;
 using LiveChartsCore.Kernel.Events;
 using System.Diagnostics;
 using LiveChartsCore.Kernel;
+using TestMulti.Models;
+using TestMulti.Services;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace TestMulti.ViewModels;
 
-public partial class MainPage : ContentView
+public partial class MainPage : ObservableObject
 {
-    private readonly HashSet<ChartPoint> _activePoints = [];
+    [ObservableProperty]
+    public string LengthEb { get; set; }
+
+    [ObservableProperty]
+    public string LengthOt { get; set; }
+
+    [ObservableProperty]
+    public string LengthVis { get; set; }
+
+    [ObservableProperty]
+    public string LengthEbReplay { get; set; }
+
+    [ObservableProperty]
+    public string LengthOtReplay { get; set; }
+
+    [ObservableProperty]
+    public string LengthVisReplay { get; set; }
+
+    private Quest[] QuestsEb { get; set; }
+    private Quest[] QuestsOt { get; set; }
+    private Quest[] QuestsVis { get; set; }
+
+    public IEnumerable<ISeries> SeriesEb { get; set; }
+    public IEnumerable<ISeries> SeriesOt { get; set; } 
+    public IEnumerable<ISeries> SeriesVis { get; set; }
+
+
+
+
     [RelayCommand]
     public void OnPressed(PointerCommandArgs args)
     {
@@ -25,7 +56,6 @@ public partial class MainPage : ContentView
         if (foundPoints.Count() >= 2)
         {
             var secondToLastPoint = foundPoints.ElementAt(foundPoints.Count() - 2);
-
             Debug.WriteLine($"Second to last point: {secondToLastPoint.Context.Series.Name}");
         }
 
@@ -34,18 +64,6 @@ public partial class MainPage : ContentView
             Debug.WriteLine("Not enough points to get the second to last element.");
         }
     }
-
-
-    public IEnumerable<ISeries> Series { get; set; } =
-        GaugeGenerator.BuildSolidGauge(            
-            new GaugeItem(30, series => SetStyle("Ошибок", series, SKColors.Red)),
-            new GaugeItem(10, series => SetStyle("Медленных", series, SKColors.Yellow)),
-            new GaugeItem(70, series => SetStyle("Верных", series, SKColors.Green)),
-            new GaugeItem(100, series => SetStyle("Вопросов в теме", series, SKColors.Blue)),
-            new GaugeItem(GaugeItem.Background, series =>
-            {
-                series.InnerRadius = 10;
-            }));
 
     public static void SetStyle(string name, PieSeries<ObservableValue> series, SKColor color)
     {
@@ -59,14 +77,62 @@ public partial class MainPage : ContentView
         series.Fill = new SolidColorPaint(color);
     }
 
+    private void LoadQuest()
+    {
+        QuestsEb = JsonManager.DeserializeFromJson("eb.json");
+        QuestsOt = JsonManager.DeserializeFromJson("ot.json");
+        QuestsVis = JsonManager.DeserializeFromJson("vis.json");
+
+        LengthEb = QuestsEb.Length.ToString();
+        LengthOt = QuestsOt.Length.ToString();
+        LengthVis = QuestsVis.Length.ToString(); 
+
+        LengthEbReplay = Quest.GetForLearn(QuestsEb).Length.ToString();
+        LengthOtReplay = Quest.GetForLearn(QuestsOt).Length.ToString();
+        LengthVisReplay = Quest.GetForLearn(QuestsVis).Length.ToString();
+
+        SeriesEb = GaugeGenerator.BuildSolidGauge(
+            new GaugeItem(Quest.GetErrorsCount(QuestsEb), seriesEb => SetStyle("Ошибок", seriesEb, SKColors.Red)),
+            new GaugeItem(Quest.GetLongCount(QuestsEb), seriesEb => SetStyle("Долгих ответов", seriesEb, SKColors.Yellow)),
+            new GaugeItem(Quest.GetCorrectCount(QuestsEb), seriesEb => SetStyle("Верных", seriesEb, SKColors.Green)),
+            new GaugeItem(Quest.GetLearnCount(QuestsEb), seriesEb => SetStyle("Пройдено", seriesEb, SKColors.Blue)),
+            new GaugeItem(QuestsEb.Length, seriesEb => SetStyle("Вопросов в теме", seriesEb, SKColors.Blue)),
+            new GaugeItem(GaugeItem.Background, seriesEb =>
+            {
+                seriesEb.InnerRadius = 10;
+            }));
+
+        SeriesOt = GaugeGenerator.BuildSolidGauge(
+            new GaugeItem(Quest.GetErrorsCount(QuestsOt), seriesOt => SetStyle("Ошибок", seriesOt, SKColors.Red)),
+            new GaugeItem(Quest.GetLongCount(QuestsOt), seriesOt => SetStyle("Долгих ответов", seriesOt, SKColors.Yellow)),
+            new GaugeItem(Quest.GetCorrectCount(QuestsOt), seriesOt => SetStyle("Верных", seriesOt, SKColors.Green)),
+            new GaugeItem(Quest.GetLearnCount(QuestsOt), seriesOt => SetStyle("Пройдено", seriesOt, SKColors.Blue)),
+            new GaugeItem(QuestsOt.Length, seriesOt => SetStyle("Вопросов в теме", seriesOt, SKColors.Blue)),
+            new GaugeItem(GaugeItem.Background, seriesOt =>
+            {
+                seriesOt.InnerRadius = 10;
+            }));
+
+        SeriesVis = GaugeGenerator.BuildSolidGauge(
+            new GaugeItem(Quest.GetErrorsCount(QuestsVis), seriesVis => SetStyle("Ошибок", seriesVis, SKColors.Red)),
+            new GaugeItem(Quest.GetLongCount(QuestsVis), seriesVis => SetStyle("Долгих ответов", seriesVis, SKColors.Yellow)),
+            new GaugeItem(Quest.GetCorrectCount(QuestsVis), seriesVis => SetStyle("Верных", seriesVis, SKColors.Green)),
+            new GaugeItem(Quest.GetLearnCount(QuestsVis), seriesVis => SetStyle("Пройдено", seriesVis, SKColors.Blue)),
+            new GaugeItem(QuestsVis.Length, seriesVis => SetStyle("Вопросов в теме", seriesVis, SKColors.Blue)),
+            new GaugeItem(GaugeItem.Background, seriesVis =>
+            {
+                seriesVis.InnerRadius = 10;
+            }));
+
+    }
+
+
     
 
     public MainPage()
 	{
-        Shell.Current.Navigating += OnNavigating;
+       
+        LoadQuest();
     }
-    private void OnNavigating(object sender, ShellNavigatingEventArgs e)
-    {
-        
-    }
+   
 }

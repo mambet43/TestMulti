@@ -6,13 +6,28 @@ using System.Linq;
 using TestMulti.Models;
 using Microsoft.Maui.Controls;
 using System;
+using TestMulti.Services;
 
 namespace TestMulti.Services
 {
     internal static class JsonManager
     {
+       
+
         public static Quest[] DeserializeFromJson(string filename)
         {
+            //var assembly = Assembly.GetExecutingAssembly();
+            //var resourcePath = $"TestMulti.Resources.Raw.{filename}";
+            //using Stream stream = assembly.GetManifestResourceStream(resourcePath);
+            //if (stream == null)
+            //{
+            //    throw new FileNotFoundException($"Файл {filename} не найден в ресурсах.");
+            //}
+            //using StreamReader reader = new StreamReader(stream);
+            //var jsonContent = reader.ReadToEnd(); // Используем синхронное чтение
+            //return JsonSerializer.Deserialize<Quest[]>(jsonContent) ?? Array.Empty<Quest>(); // Добавляем защиту от null
+
+
             if (Preferences.Get(filename, null) == null)
             {
                 var assembly = Assembly.GetExecutingAssembly();
@@ -31,6 +46,9 @@ namespace TestMulti.Services
                 return JsonSerializer.Deserialize<Quest[]>(Preferences.Get(filename, null)) ?? Array.Empty<Quest>(); // Добавляем защиту от null 
             }
         }
+       
+
+
         public static void EditPreferences(Quest quest)
         {
             string fileName = "";
@@ -71,7 +89,8 @@ namespace TestMulti.Services
         
 
         public static void UserQuestSave(Quest[] data, string filename)
-        {           
+        {
+            
             Preferences.Set(filename, JsonSerializer.Serialize(data));
         }
 

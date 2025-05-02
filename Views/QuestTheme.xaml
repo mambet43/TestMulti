@@ -16,7 +16,7 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="60"/>
                         </Grid.ColumnDefinitions>
-                        <Label LineBreakMode="WordWrap"  Padding="10" Text="{Binding DisplayTitle}" Style="{StaticResource TitleQuest}" Grid.Column="0"/>
+                        <Label LineBreakMode="WordWrap"  Padding="10" Text="{Binding DisplayTitle}" FontAttributes="Bold" Style="{StaticResource TitleQuest}"  Grid.Column="0"/>
                         <ImageButton Source="nonvaworites.png" HeightRequest="50" WidthRequest="50" Grid.Column="1" Style="{StaticResource FaworiteBackground}"
                                  Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SetVaworitesCommand}"
                                  CommandParameter="{Binding}">
@@ -31,8 +31,9 @@
                     <StackLayout BindableLayout.ItemsSource="{Binding answers}">
                         <BindableLayout.ItemTemplate>
                             <DataTemplate>
-                                <Label Padding="20,3,10,3"
+                                <Label Padding="30,3,10,3"
                                        LineBreakMode="WordWrap"
+                                       FontAttributes="Italic"
                                        Text="{Binding title}">
                                         <Label.Triggers>
                                             <DataTrigger TargetType="Label"

@@ -5,23 +5,94 @@ namespace TestMulti.Models
     
     public partial class Quest : ObservableObject
     {
+        private const byte MAX_TIME_FOR_ANSWER = 15;
         public string Theme { get; set; }
         public string number { get; set; }
         public string title { get; set; }
         public string DisplayTitle => $"{number}. {title}";
+
         [ObservableProperty]
         public bool vaworites = false; // Избранный вопрос
         public Answer[] answers { get; set; }
-        public Color QwestColor { get; set; } = Colors.Gray; // Серый цвет по умолчанию
-        public Color AnswerColor { get; set; } = Colors.Gray; // Серый цвет по умолчанию
+        public string QuestColor { get; set; } = "Gray"; // Серый цвет по умолчанию
+        public string AnswerColor { get; set; } = "Gray";  // Серый цвет по умолчанию
         public int Ellapsed { get; set; } = 0; // Время, прошедшее с момента начала вопроса
+
+        public static Quest [] GetForLearn(Quest[] quests)
+        {
+            int length = 0;
+            foreach (var quest in quests)
+            {
+                if ((quest.QuestColor == "Red" || quest.QuestColor == "Gray"  ) || quest.Ellapsed >= MAX_TIME_FOR_ANSWER) length++;                
+            }
+            Quest[] questsRet = new Quest[length];
+            for (int i = 0; i < questsRet.Length; i++)
+            {
+                for (int j = 0; j < quests.Length; j++)
+                {
+                    questsRet[i] = quests[j];
+                }
+            }
+            return questsRet;
+        }
+
+        public static int GetLearnCount(Quest[] quests)
+        {
+            int learnCount = 0;
+            foreach (var quest in quests)
+            {
+                if (quest.QuestColor != "Gray")
+                {
+                    learnCount++;
+                }
+            }
+            return learnCount;
+        }
+
+        public static int GetErrorsCount(Quest[] quests)
+        {
+            int errorsCount = 0;
+            foreach (var quest in quests)
+            {
+                if (quest.QuestColor == "Red")
+                {
+                    errorsCount++;
+                }
+            }
+            return errorsCount;
+        }
+        public static int GetCorrectCount(Quest[] quests)
+        {
+            int correctCount = 0;
+            foreach (var quest in quests)
+            {
+                if (quest.QuestColor == "Green")
+                {
+                    correctCount++;
+                }
+            }
+            return correctCount;
+        }
+        public static int GetLongCount(Quest[] quests)
+        {
+            int longCount = 0;
+            foreach (var quest in quests)
+            {
+                if (quest.Ellapsed > 10)
+                {
+                    longCount++;
+                }
+            }
+            return longCount;
+        }
 
     }
     public class Answer
     {
         public string title { get; set; }
         public bool correct { get; set; }
-    }
+    }    
+
 
 }
    

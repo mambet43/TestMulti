@@ -13,38 +13,67 @@ using LiveChartsCore.Kernel;
 using TestMulti.Models;
 using TestMulti.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System.Globalization;
 
 namespace TestMulti.ViewModels;
 
 public partial class MainPage : ObservableObject
 {
     [ObservableProperty]
-    public string LengthEb { get; set; }
+    private string lengthEb;
+    [ObservableProperty]
+    private string lengthOt;
 
     [ObservableProperty]
-    public string LengthOt { get; set; }
+    private string lengthVis;
 
     [ObservableProperty]
-    public string LengthVis { get; set; }
+    private string lengthEbReplay;
 
     [ObservableProperty]
-    public string LengthEbReplay { get; set; }
+    private string lengthOtReplay;
 
     [ObservableProperty]
-    public string LengthOtReplay { get; set; }
+    private string lengthVisReplay;
 
     [ObservableProperty]
-    public string LengthVisReplay { get; set; }
+    private string errEbCount;
 
-    private Quest[] QuestsEb { get; set; }
-    private Quest[] QuestsOt { get; set; }
-    private Quest[] QuestsVis { get; set; }
+    [ObservableProperty]
+    private string errOtCount;
+
+    [ObservableProperty]
+    private string errVisCount;
+
+    [ObservableProperty]
+    private string vaworiteEbCount;
+
+    [ObservableProperty]
+    private string vaworiteOtCount;
+
+    [ObservableProperty]
+    private string vaworiteVisCount;
+
+    [ObservableProperty]
+    private string longEbCount;
+
+    [ObservableProperty]
+    private string longOtCount;
+
+    [ObservableProperty]
+    private string longVisCount;
+
+    private Quest[] QuestsEb;
+    private Quest[] QuestsOt;
+    private Quest[] QuestsVis;
 
     public IEnumerable<ISeries> SeriesEb { get; set; }
     public IEnumerable<ISeries> SeriesOt { get; set; } 
     public IEnumerable<ISeries> SeriesVis { get; set; }
 
+    public static MainPage Instance { get; private set; }
 
+    private readonly ContentPage mainPage;
 
 
     [RelayCommand]
@@ -58,11 +87,26 @@ public partial class MainPage : ObservableObject
             var secondToLastPoint = foundPoints.ElementAt(foundPoints.Count() - 2);
             Debug.WriteLine($"Second to last point: {secondToLastPoint.Context.Series.Name}");
         }
-
         else
         {
             Debug.WriteLine("Not enough points to get the second to last element.");
         }
+    }
+
+    [RelayCommand]
+    public async Task DelPreferences(string file)
+    {
+        bool result = await mainPage.DisplayAlert(
+                        "Подтверждение",
+                        "Вы точно хотите удалить все данные, чтобы начать заново?",
+                        "Да",
+                        "Отмена");
+        if (result)
+        {
+            Preferences.Remove(file);
+            LoadQuest();
+        }
+        
     }
 
     public static void SetStyle(string name, PieSeries<ObservableValue> series, SKColor color)
@@ -77,7 +121,7 @@ public partial class MainPage : ObservableObject
         series.Fill = new SolidColorPaint(color);
     }
 
-    private void LoadQuest()
+    public void LoadQuest()
     {
         QuestsEb = JsonManager.DeserializeFromJson("eb.json");
         QuestsOt = JsonManager.DeserializeFromJson("ot.json");
@@ -91,6 +135,19 @@ public partial class MainPage : ObservableObject
         LengthOtReplay = Quest.GetForLearn(QuestsOt).Length.ToString();
         LengthVisReplay = Quest.GetForLearn(QuestsVis).Length.ToString();
 
+        ErrEbCount = Quest.GetErrorsCount(QuestsEb).ToString();
+        ErrOtCount = Quest.GetErrorsCount(QuestsOt).ToString();
+        ErrVisCount = Quest.GetErrorsCount(QuestsVis).ToString();
+
+        VaworiteEbCount = Quest.GetVaworiteCount(QuestsEb).ToString();
+        VaworiteOtCount = Quest.GetVaworiteCount(QuestsOt).ToString();
+        VaworiteVisCount = Quest.GetVaworiteCount(QuestsVis).ToString();
+       
+
+        LongEbCount = Quest.GetLongCount(QuestsEb).ToString();
+        LongOtCount = Quest.GetLongCount(QuestsOt).ToString();
+        LongVisCount = Quest.GetLongCount(QuestsVis).ToString();
+        
         SeriesEb = GaugeGenerator.BuildSolidGauge(
             new GaugeItem(Quest.GetErrorsCount(QuestsEb), seriesEb => SetStyle("Ошибок", seriesEb, SKColors.Red)),
             new GaugeItem(Quest.GetLongCount(QuestsEb), seriesEb => SetStyle("Долгих ответов", seriesEb, SKColors.Yellow)),
@@ -129,10 +186,11 @@ public partial class MainPage : ObservableObject
 
     
 
-    public MainPage()
-	{
-       
+    public MainPage(ContentPage page)
+	{       
         LoadQuest();
+        Instance = this;
+        mainPage = page;
     }
    
 }

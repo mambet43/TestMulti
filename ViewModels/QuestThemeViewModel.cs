@@ -16,12 +16,9 @@ public partial class QuestThemeViewModel : ObservableObject
     public Quest [] Quest { get; set; }
 
     [ObservableProperty]
-
     public string Theme { get; set; }
 
-    public string FileName { get; set; }
-
-    
+    public string FileName { get; set; }    
 
     public QuestThemeViewModel(string theme)
 	{
@@ -49,11 +46,10 @@ public partial class QuestThemeViewModel : ObservableObject
             quest.Vaworites = !quest.Vaworites;
         }
         if (Theme == "Избранные вопросы") JsonManager.EditPreferences(quest);
-        else JsonManager.UserQuestSave(Quest, FileName);
-
+        else JsonManager.UserQuestSave(Quest, FileName);        
+        var mainPage = MainPage.Instance;
+        mainPage.LoadQuest();
     }
-
-
 
     private void ViewQuestTheme()
     {
@@ -62,8 +58,5 @@ public partial class QuestThemeViewModel : ObservableObject
             QuestCollection.Add(quest);            
         }
 
-    }
-
-
-    
+    }    
 }

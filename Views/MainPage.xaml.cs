@@ -15,29 +15,13 @@ namespace TestMulti
 
 {
     public partial class MainPage : ContentPage
-    {
-
-
-    
+    {    
         public MainPage()
         {            
             InitializeComponent();
-            BindingContext = new ViewModels.MainPage();
+            BindingContext = new ViewModels.MainPage(this);
         }
-
        
-
-
-        private void clearbtn_Clicked(object sender, EventArgs e)
-        {
-            Preferences.Clear();
-
-        }
-
-        private void PieChart_DataPointerDown(IChartView chart, IEnumerable<ChartPoint> points)
-        {
-
-        }
     }
 
 }

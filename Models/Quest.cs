@@ -73,6 +73,20 @@ namespace TestMulti.Models
             }
             return correctCount;
         }
+
+        public static int GetVaworiteCount(Quest[] quests)
+        {
+            int count = 0;
+            foreach (var quest in quests)
+            {
+                if (quest.Vaworites)
+                {
+                    count++;
+                }
+            }
+            return count;
+        }
+
         public static int GetLongCount(Quest[] quests)
         {
             int longCount = 0;

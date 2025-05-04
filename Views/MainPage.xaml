@@ -22,7 +22,7 @@
                     <Label Text="Электробезопасность" 
                            FontSize="20" 
                            HorizontalOptions="Center" 
-                           Margin="0,0,0,0" />
+                           Margin="0,0,0,10" />
 
                     <lvc:PieChart Series="{Binding SeriesEb}"
                                  HeightRequest="250"

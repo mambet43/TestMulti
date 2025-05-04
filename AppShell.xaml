@@ -10,11 +10,15 @@
     Shell.FlyoutWidth="230"
     FlyoutBackgroundColor="{StaticResource BackColorC}"
     BackgroundColor="{StaticResource BackColorB}"   
-    Title="TestMulti"> 
+    Title="TestMulti">
     <ShellContent
         Title="Главная"  
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage"/>
+    <ShellContent
+        Title="123"
+        ContentTemplate="{DataTemplate view:QuestionPage}"
+        Route="QuestionPage"/>
     <MenuItem Text="Электробезопасность"  Clicked="OnMenuItemClickedEb"/>
     <MenuItem Text="Охрана труда" Clicked="OnMenuItemClickedOt"/>
     <MenuItem Text="Работы на высоте" Clicked="OnMenuItemClickedVis"/>

@@ -14,6 +14,7 @@ using TestMulti.Models;
 using TestMulti.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Globalization;
+using TestMulti.Views;
 
 namespace TestMulti.ViewModels;
 
@@ -76,6 +77,14 @@ public partial class MainPage : ObservableObject
     private readonly ContentPage mainPage;
 
 
+    public MainPage(ContentPage page)
+    {
+        LoadQuest();
+        Instance = this;
+        mainPage = page;
+        Routing.RegisterRoute("QuestionPage", typeof(QuestionPage));
+    }
+
     [RelayCommand]
     public void OnPressed(PointerCommandArgs args)
     {
@@ -109,6 +118,21 @@ public partial class MainPage : ObservableObject
         
     }
 
+    [RelayCommand]
+    private async void StartClickedEb()
+    {
+        await Shell.Current.GoToAsync("QuestionPage?theme=eb");
+    }
+    [RelayCommand]
+    private async void StartClickedOt()
+    {
+        await Shell.Current.GoToAsync("QuestionPage?theme=Ot");
+    }
+    [RelayCommand]
+    private async void StartClickedVis()
+    {
+        await Shell.Current.GoToAsync("QuestionPage?theme=Vis");
+    }
     public static void SetStyle(string name, PieSeries<ObservableValue> series, SKColor color)
     {
         series.Name = name;
@@ -186,11 +210,5 @@ public partial class MainPage : ObservableObject
 
     
 
-    public MainPage(ContentPage page)
-	{       
-        LoadQuest();
-        Instance = this;
-        mainPage = page;
-    }
    
 }

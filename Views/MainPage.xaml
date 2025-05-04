@@ -16,7 +16,7 @@
                    BackgroundColor="{StaticResource BackColorA}"
                    Margin="5"
                    HorizontalOptions="FillAndExpand"
-                   FlexLayout.Basis="Auto"
+                   FlexLayout.Basis="300"
                    FlexLayout.Grow="1">
                 <StackLayout Spacing="0">
                     <Label Text="Электробезопасность" 
@@ -25,7 +25,7 @@
                            Margin="0,0,0,0" />
 
                     <lvc:PieChart Series="{Binding SeriesEb}"
-                                 HeightRequest="350"
+                                 HeightRequest="250"
                                  InitialRotation="90"  
                                  MaxAngle="270"
                                  MinValue="0"
@@ -37,7 +37,8 @@
                                BackgroundColor="Transparent"
                                FontSize="18"                                
                                HorizontalOptions="Start"
-                               ImageSource="all.png" />
+                               ImageSource="all.png"
+                               Command="{Binding StartClickedEbCommand}"/>
 
                         <Button Text="{Binding LengthEbReplay, StringFormat='[{0}] Продолжить'}" 
                                BackgroundColor="Transparent"
@@ -79,7 +80,7 @@
                    BackgroundColor="{StaticResource BackColorA}"
                    Margin="5"
                    HorizontalOptions="FillAndExpand"
-                   FlexLayout.Basis="Auto"
+                   FlexLayout.Basis="300"
                    FlexLayout.Grow="1">
                 <StackLayout Spacing="0">
                     <Label Text="Охрана труда" 
@@ -88,7 +89,7 @@
                            Margin="0,0,0,0" />
 
                     <lvc:PieChart Series="{Binding SeriesOt}"
-                                 HeightRequest="350"
+                                 HeightRequest="250"
                                  InitialRotation="90"  
                                  MaxAngle="270"
                                  MinValue="0"
@@ -100,7 +101,8 @@
                                FontSize="18" 
                                BackgroundColor="Transparent"
                                HorizontalOptions="Start"
-                               ImageSource="all.png" />
+                               ImageSource="all.png"
+                               Command="{Binding StartClickedOtCommand}"/>
 
                         <Button Text="{Binding LengthOtReplay, StringFormat='[{0}] Продолжить'}" 
                                BackgroundColor="Transparent"
@@ -142,7 +144,7 @@
                    BackgroundColor="{StaticResource BackColorA}"
                    Margin="5"
                    HorizontalOptions="FillAndExpand"
-                   FlexLayout.Basis="Auto"
+                   FlexLayout.Basis="300"
                    FlexLayout.Grow="1">
                 <StackLayout Spacing="0">
                     <Label Text="Работы на высоте" 
@@ -151,7 +153,7 @@
                            Margin="0,0,0,0" />
 
                     <lvc:PieChart Series="{Binding SeriesVis}"
-                                 HeightRequest="350"
+                                 HeightRequest="250"
                                  InitialRotation="90"  
                                  MaxAngle="270"
                                  MinValue="0"
@@ -163,7 +165,8 @@
                                FontSize="18" 
                                BackgroundColor="Transparent"
                                HorizontalOptions="Start"
-                               ImageSource="all.png" />
+                               ImageSource="all.png"
+                               Command="{Binding StartClickedVisCommand}"/>
 
                         <Button Text="{Binding LengthVisReplay, StringFormat='[{0}] Продолжить'}" 
                                BackgroundColor="Transparent"

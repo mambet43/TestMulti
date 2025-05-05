@@ -1,9 +1,61 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:TestMulti.Models"
              x:Class="TestMulti.Views.QuestionPage"
-             Title="qPage">
+             Title="{Binding Title}">
     <VerticalStackLayout>
-  
+        <CarouselView ItemsSource="{Binding QuestCollection}"  IndicatorView="{x:Reference indicatorView}">
+            <CarouselView.ItemTemplate>
+                <DataTemplate x:DataType="models:Quest">
+                    <StackLayout>
+                        <Border Stroke="DarkGray" StrokeShape="RoundRectangle 5" Margin="20" Padding="20" HeightRequest="360">
+                            <StackLayout>
+                                <Grid Padding="10,0,10,0" Style="{StaticResource TitleQuestBackground}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="60"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label LineBreakMode="WordWrap"  Padding="10" Text="{Binding DisplayTitle}" FontAttributes="Bold" Style="{StaticResource TitleQuest}"  Grid.Column="0"/>
+                                    <ImageButton Source="nonvaworites.png" HeightRequest="50" WidthRequest="50" Grid.Column="1" Style="{StaticResource FaworiteBackground}"
+                                 Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SetVaworitesCommand}"
+                                 CommandParameter="{Binding}">
+                                        <ImageButton.Triggers>
+                                            <DataTrigger TargetType="ImageButton" Binding="{Binding Vaworites}" Value="true">
+                                                <Setter Property="Source" Value="vaworites.png" />
+                                            </DataTrigger>
+                                        </ImageButton.Triggers>
+                                    </ImageButton>
+                                </Grid>
+                                <StackLayout BindableLayout.ItemsSource="{Binding answers}">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate  x:DataType="models:Answer">
+                                            <Label Padding="30,3,10,3"
+                                            LineBreakMode="WordWrap"
+                                            FontAttributes="Italic"
+                                            Text="{Binding title}">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label"
+                                                         Binding="{Binding correct}"
+                                                         Value="True">
+                                                        <Setter Property="Style" Value="{StaticResource CorrectAnswerStyle}" />
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </StackLayout>
+                                <Label Text="{Binding QuestColor}" FontAttributes="Italic" HorizontalOptions="Center" MaxLines="5" LineBreakMode="TailTruncation"/>
+                            </StackLayout>
+                        </Border>
+                    </StackLayout>
+                </DataTemplate>
+            </CarouselView.ItemTemplate>
+        </CarouselView>
+        <FlexLayout WidthRequest="600" Wrap="Wrap">
+        <IndicatorView x:Name="indicatorView" IndicatorsShape="Square" IndicatorSize="26" IndicatorColor="LightGray" SelectedIndicatorColor="Green" HorizontalOptions="Center"/>
+        </FlexLayout>
+
+
     </VerticalStackLayout>
 </ContentPage>

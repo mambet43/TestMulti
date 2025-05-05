@@ -14,9 +14,22 @@ public partial class QuestionPage : ContentPage
         }
     }
 
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        UpdatePageAppearance();
+    }
+
+
+    private void UpdatePageAppearance()
+    {
+        BindingContext = new ViewModels.QuestViewModel(PageTheme);
+    }
+
+
     public QuestionPage()
 	{
 		InitializeComponent();
-		BindingContext = new ViewModels.QuestViewModel(PageTheme);
+
     }
 }

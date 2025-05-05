@@ -126,12 +126,12 @@ public partial class MainPage : ObservableObject
     [RelayCommand]
     private async void StartClickedOt()
     {
-        await Shell.Current.GoToAsync("QuestionPage?theme=Ot");
+        await Shell.Current.GoToAsync("QuestionPage?theme=ot");
     }
     [RelayCommand]
     private async void StartClickedVis()
     {
-        await Shell.Current.GoToAsync("QuestionPage?theme=Vis");
+        await Shell.Current.GoToAsync("QuestionPage?theme=vis");
     }
     public static void SetStyle(string name, PieSeries<ObservableValue> series, SKColor color)
     {

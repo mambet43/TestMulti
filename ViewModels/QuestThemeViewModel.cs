@@ -22,41 +22,32 @@ public partial class QuestThemeViewModel : ObservableObject
 
     public QuestThemeViewModel(string theme)
 	{
-        switch (theme)
+        switch (theme)  
         {
             case "eb":          Theme = "Электробезопасность";  break;
             case "ot":          Theme = "Охрана труда";         break;
             case "vis":         Theme = "Работы на высоте";     break;
-            case "vaworites":   Theme = "Избранные вопросы";
-                                JsonManager.VaworitesCreate();
-                                break;
-            default:            Theme = "Error";                break ;
+            case "vaworites":   Theme = "Избранные вопросы";    break;
         }
         FileName = theme + ".json";
         Quest = JsonManager.DeserializeFromJson(FileName);
-        ViewQuestTheme();
+        foreach (var quest in Quest)
+        {
+            QuestCollection.Add(quest);
+        }
     }
 
     [RelayCommand]
     private void SetVaworites(Quest quest)
-    {
+    {       
         if (quest != null)
-        {
-            if (Theme != "Избранные вопросы") quest.Theme = Theme;
+        {           
             quest.Vaworites = !quest.Vaworites;
         }
-        if (Theme == "Избранные вопросы") JsonManager.EditPreferences(quest);
-        else JsonManager.UserQuestSave(Quest, FileName);        
+        JsonManager.EditPreferences(quest);            
         var mainPage = MainPage.Instance;
         mainPage.LoadQuest();
     }
 
-    private void ViewQuestTheme()
-    {
-        foreach (var quest in Quest)
-        {
-            QuestCollection.Add(quest);            
-        }
-
-    }    
+ 
 }

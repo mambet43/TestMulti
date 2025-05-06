@@ -3,8 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:models="clr-namespace:TestMulti.Models"
              x:Class="TestMulti.Views.QuestionPage"
-             Title="{Binding Title}">
+             Title="{Binding Theme}">
     <VerticalStackLayout>
+        <ScrollView>
         <CarouselView ItemsSource="{Binding QuestCollection}"  IndicatorView="{x:Reference indicatorView}">
             <CarouselView.ItemTemplate>
                 <DataTemplate x:DataType="models:Quest">
@@ -52,9 +53,10 @@
                 </DataTemplate>
             </CarouselView.ItemTemplate>
         </CarouselView>
-        <FlexLayout WidthRequest="600" Wrap="Wrap">
-        <IndicatorView x:Name="indicatorView" IndicatorsShape="Square" IndicatorSize="26" IndicatorColor="LightGray" SelectedIndicatorColor="Green" HorizontalOptions="Center"/>
-        </FlexLayout>
+        </ScrollView>
+        <ScrollView WidthRequest="600" HeightRequest="100" Orientation="Horizontal"  >
+        <IndicatorView x:Name="indicatorView" IndicatorsShape="Square" IndicatorSize="26" IndicatorColor="LightGray" SelectedIndicatorColor="Green"  HorizontalOptions="Center"/>
+        </ScrollView>
 
 
     </VerticalStackLayout>

@@ -12,9 +12,8 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace TestMulti.Services
 {
     internal static class JsonManager
-    {       
-
-        public static Quest[] DeserializeFromJson(string filename)
+    {
+        public static async Task<Quest[]> DeserializeFromJson(string filename)     
         {
             //Проверяем, существует ли файл в Preferences
             if (Preferences.Get(filename, null) == null)

@@ -18,7 +18,12 @@ public partial class QuestThemeViewModel : ObservableObject
     [ObservableProperty]
     public string Theme { get; set; }
 
-    public string FileName { get; set; }    
+    public string FileName { get; set; }
+
+    private async void LoadQuest(string theme)
+    {
+        Quest = await JsonManager.DeserializeFromJson(FileName);
+    }
 
     public QuestThemeViewModel(string theme)
 	{
@@ -30,7 +35,7 @@ public partial class QuestThemeViewModel : ObservableObject
             case "vaworites":   Theme = "Избранные вопросы";    break;
         }
         FileName = theme + ".json";
-        Quest = JsonManager.DeserializeFromJson(FileName);
+        LoadQuest(FileName);
         foreach (var quest in Quest)
         {
             QuestCollection.Add(quest);

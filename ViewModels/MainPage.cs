@@ -152,11 +152,11 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
         series.Fill = new SolidColorPaint(color);
     }
 
-    public void LoadQuest()
+    public async void LoadQuest()
     {
-        QuestsEb = JsonManager.DeserializeFromJson("eb.json");
-        QuestsOt = JsonManager.DeserializeFromJson("ot.json");
-        QuestsVis = JsonManager.DeserializeFromJson("vis.json");
+        QuestsEb = await  JsonManager.DeserializeFromJson("eb.json");
+        QuestsOt = await JsonManager.DeserializeFromJson("ot.json");
+        QuestsVis = await JsonManager.DeserializeFromJson("vis.json");
 
         LengthEb = QuestsEb.Length.ToString();
         LengthOt = QuestsOt.Length.ToString();

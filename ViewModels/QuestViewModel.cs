@@ -12,11 +12,13 @@ public partial class QuestViewModel : QuestThemeViewModel
 {
     [ObservableProperty]
     private int currentPosition;
-
+    private MainPage mainPage;
 
     public QuestViewModel(string theme):base(theme)
     {
-        
+        mainPage = MainPage.Instance;
+  
+
     }
 
     [RelayCommand]
@@ -41,35 +43,35 @@ public partial class QuestViewModel : QuestThemeViewModel
     [RelayCommand]
     private void AnswerSelected(Answer selectedAnswer)
     {
-        var mainPage = MainPage.Instance;
         if (selectedAnswer == null) return;
-       
-        foreach (Answer answer in base.Quest[currentPosition].answers)
+
+        var currentQuest = base.Quest[currentPosition];
+        bool isQuestUpdated = false;
+
+        foreach (Answer answer in currentQuest.answers)
         {
             if (answer == selectedAnswer)
             {
-                if (selectedAnswer.correct)
-                {
-                    answer.BackgroundColorHex = "#5F9EA0";  // почти Зеленый 
-                    if (base.Quest[currentPosition].QuestColor != "Red") base.Quest[currentPosition].QuestColor = "Green";
-                    JsonManager.EditPreferences(base.Quest[currentPosition]);
-                    CurrentPosition++;
-
-                }
-                else
-                {
-                    answer.BackgroundColorHex = "#D69D82"; // почти красный
-                    JsonManager.EditPreferences(base.Quest[currentPosition]);
-                    base.Quest[currentPosition].QuestColor = "Red";
-                }
+                answer.BackgroundColorHex = selectedAnswer.correct ? "#5F9EA0" : "#D69D82";
+                currentQuest.QuestColor = selectedAnswer.correct && currentQuest.QuestColor != "Red" ? "Green" : "Red";
+                isQuestUpdated = true;
             }
             else
             {
-                answer.BackgroundColorHex = "#00FFFFFF"; // Сбрасываем фон для остальных (прозрачный)
+                answer.BackgroundColorHex = "#00FFFFFF"; // Прозрачный
             }
         }
-        JsonManager.EditPreferences(base.Quest[currentPosition]);        
+
+        if (isQuestUpdated)
+        {
+            JsonManager.EditPreferences(currentQuest); // Обновляем только один раз
+            if (selectedAnswer.correct && CurrentPosition < QuestCollection.Count - 1)
+            {
+                CurrentPosition++; // Переход к следующему вопросу
+            }
+        }
         mainPage.LoadQuest();
+
 
     }
 

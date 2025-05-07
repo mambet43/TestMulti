@@ -15,10 +15,12 @@ using TestMulti.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Globalization;
 using TestMulti.Views;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace TestMulti.ViewModels;
 
-public partial class MainPage : ObservableObject
+public partial class MainPage : ObservableObject, INotifyPropertyChanged
 {
     [ObservableProperty]
     private string lengthEb;
@@ -68,9 +70,14 @@ public partial class MainPage : ObservableObject
     private Quest[] QuestsOt;
     private Quest[] QuestsVis;
 
-    public IEnumerable<ISeries> SeriesEb { get; set; }
-    public IEnumerable<ISeries> SeriesOt { get; set; } 
-    public IEnumerable<ISeries> SeriesVis { get; set; }
+    [ObservableProperty]
+    private ObservableCollection<ISeries> seriesEb;
+
+    [ObservableProperty]
+    private ObservableCollection<ISeries> seriesOt; 
+
+    [ObservableProperty]
+    private ObservableCollection<ISeries> seriesVis;
 
     public static MainPage Instance { get; private set; }
 
@@ -171,19 +178,21 @@ public partial class MainPage : ObservableObject
         LongEbCount = Quest.GetLongCount(QuestsEb).ToString();
         LongOtCount = Quest.GetLongCount(QuestsOt).ToString();
         LongVisCount = Quest.GetLongCount(QuestsVis).ToString();
-        
-        SeriesEb = GaugeGenerator.BuildSolidGauge(
-            new GaugeItem(Quest.GetErrorsCount(QuestsEb), seriesEb => SetStyle("Ошибок", seriesEb, SKColors.Red)),
-            new GaugeItem(Quest.GetLongCount(QuestsEb), seriesEb => SetStyle("Долгих ответов", seriesEb, SKColors.Yellow)),
-            new GaugeItem(Quest.GetCorrectCount(QuestsEb), seriesEb => SetStyle("Верных", seriesEb, SKColors.Green)),
-            new GaugeItem(Quest.GetLearnCount(QuestsEb), seriesEb => SetStyle("Пройдено", seriesEb, SKColors.Blue)),
-            new GaugeItem(QuestsEb.Length, seriesEb => SetStyle("Вопросов в теме", seriesEb, SKColors.Blue)),
-            new GaugeItem(GaugeItem.Background, seriesEb =>
-            {
-                seriesEb.InnerRadius = 10;
-            }));
 
-        SeriesOt = GaugeGenerator.BuildSolidGauge(
+        SeriesEb = new ObservableCollection<ISeries>(
+            GaugeGenerator.BuildSolidGauge(
+                new GaugeItem(Quest.GetErrorsCount(QuestsEb), seriesEb => SetStyle("Ошибок", seriesEb, SKColors.Red)),
+                new GaugeItem(Quest.GetLongCount(QuestsEb), seriesEb => SetStyle("Долгих ответов", seriesEb, SKColors.Yellow)),
+                new GaugeItem(Quest.GetCorrectCount(QuestsEb), seriesEb => SetStyle("Верных", seriesEb, SKColors.Green)),
+                new GaugeItem(Quest.GetLearnCount(QuestsEb), seriesEb => SetStyle("Пройдено", seriesEb, SKColors.Blue)),
+                new GaugeItem(QuestsEb.Length, seriesEb => SetStyle("Вопросов в теме", seriesEb, SKColors.Blue)),
+                new GaugeItem(GaugeItem.Background, seriesEb =>
+                {
+                    seriesEb.InnerRadius = 10;
+                })));
+
+        SeriesOt = new ObservableCollection<ISeries>(
+            GaugeGenerator.BuildSolidGauge(
             new GaugeItem(Quest.GetErrorsCount(QuestsOt), seriesOt => SetStyle("Ошибок", seriesOt, SKColors.Red)),
             new GaugeItem(Quest.GetLongCount(QuestsOt), seriesOt => SetStyle("Долгих ответов", seriesOt, SKColors.Yellow)),
             new GaugeItem(Quest.GetCorrectCount(QuestsOt), seriesOt => SetStyle("Верных", seriesOt, SKColors.Green)),
@@ -192,9 +201,10 @@ public partial class MainPage : ObservableObject
             new GaugeItem(GaugeItem.Background, seriesOt =>
             {
                 seriesOt.InnerRadius = 10;
-            }));
+            })));
 
-        SeriesVis = GaugeGenerator.BuildSolidGauge(
+        SeriesVis = new ObservableCollection<ISeries>(
+            GaugeGenerator.BuildSolidGauge(
             new GaugeItem(Quest.GetErrorsCount(QuestsVis), seriesVis => SetStyle("Ошибок", seriesVis, SKColors.Red)),
             new GaugeItem(Quest.GetLongCount(QuestsVis), seriesVis => SetStyle("Долгих ответов", seriesVis, SKColors.Yellow)),
             new GaugeItem(Quest.GetCorrectCount(QuestsVis), seriesVis => SetStyle("Верных", seriesVis, SKColors.Green)),
@@ -203,7 +213,7 @@ public partial class MainPage : ObservableObject
             new GaugeItem(GaugeItem.Background, seriesVis =>
             {
                 seriesVis.InnerRadius = 10;
-            }));
+            })));
 
     }
 

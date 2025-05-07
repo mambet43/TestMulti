@@ -16,7 +16,7 @@ public partial class QuestViewModel : QuestThemeViewModel
 
     public QuestViewModel(string theme):base(theme)
     {
-        CurrentPosition = 0;
+        
     }
 
     [RelayCommand]
@@ -44,23 +44,23 @@ public partial class QuestViewModel : QuestThemeViewModel
         var mainPage = MainPage.Instance;
         if (selectedAnswer == null) return;
        
-        foreach (Answer answer in base.Quest[currentPosition-1].answers)
+        foreach (Answer answer in base.Quest[currentPosition].answers)
         {
             if (answer == selectedAnswer)
             {
                 if (selectedAnswer.correct)
                 {
                     answer.BackgroundColorHex = "#5F9EA0";  // почти «еленый 
-                    if (base.Quest[currentPosition - 1].QuestColor != "Red") base.Quest[currentPosition - 1].QuestColor = "Green";
-                    JsonManager.EditPreferences(base.Quest[currentPosition - 1]);
+                    if (base.Quest[currentPosition].QuestColor != "Red") base.Quest[currentPosition].QuestColor = "Green";
+                    JsonManager.EditPreferences(base.Quest[currentPosition]);
                     CurrentPosition++;
 
                 }
                 else
                 {
                     answer.BackgroundColorHex = "#D69D82"; // почти красный
-                    JsonManager.EditPreferences(base.Quest[currentPosition - 1]);
-                    base.Quest[currentPosition - 1].QuestColor = "Red";
+                    JsonManager.EditPreferences(base.Quest[currentPosition]);
+                    base.Quest[currentPosition].QuestColor = "Red";
                 }
             }
             else
@@ -68,7 +68,7 @@ public partial class QuestViewModel : QuestThemeViewModel
                 answer.BackgroundColorHex = "#00FFFFFF"; // —брасываем фон дл€ остальных (прозрачный)
             }
         }
-        JsonManager.EditPreferences(base.Quest[currentPosition - 1]);        
+        JsonManager.EditPreferences(base.Quest[currentPosition]);        
         mainPage.LoadQuest();
 
     }

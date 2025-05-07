@@ -29,6 +29,7 @@
                                  InitialRotation="90"  
                                  MaxAngle="270"
                                  MinValue="0"
+                                 MaxValue="{Binding LengthEb}"
                                  AnimationsSpeed="00:00:05.500"                      
                                  PressedCommand="{Binding PressedCommand}" />
 
@@ -93,6 +94,7 @@
                                  InitialRotation="90"  
                                  MaxAngle="270"
                                  MinValue="0"
+                                 MaxValue="{Binding LengthOt}"
                                  AnimationsSpeed="00:00:05.500"                      
                                  PressedCommand="{Binding PressedCommand}" />
 
@@ -157,6 +159,7 @@
                                  InitialRotation="90"  
                                  MaxAngle="270"
                                  MinValue="0"
+                                 MaxValue="{Binding LengthVis}"
                                  AnimationsSpeed="00:00:05.500"                      
                                  PressedCommand="{Binding PressedCommand}" />
 

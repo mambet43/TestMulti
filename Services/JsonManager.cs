@@ -16,10 +16,10 @@ namespace TestMulti.Services
 
         public static Quest[] DeserializeFromJson(string filename)
         {
-
-            // Проверяем, существует ли файл в Preferences
+            //Проверяем, существует ли файл в Preferences
             if (Preferences.Get(filename, null) == null)
             {
+
                 var assembly = Assembly.GetExecutingAssembly();
                 var resourcePath = $"TestMulti.Resources.Raw.{filename}";
                 using Stream stream = assembly.GetManifestResourceStream(resourcePath);
@@ -28,14 +28,14 @@ namespace TestMulti.Services
                     throw new FileNotFoundException($"Файл {filename} не найден в ресурсах.");
                 }
                 using StreamReader reader = new StreamReader(stream);
-                var jsonContent = reader.ReadToEnd();                
+                var jsonContent = reader.ReadToEnd();
                 Quest[] quests = JsonSerializer.Deserialize<Quest[]>(jsonContent) ?? Array.Empty<Quest>(); // считали из файла ресурсов
-                string theme = ""; 
+                string theme = "";
                 switch (filename) // тему  опредлеяем
                 {
                     case "eb.json": theme = "Электробезопасность"; break;
                     case "ot.json": theme = "Охрана труда"; break;
-                    case "vis.json": theme = "Работы на высоте"; break;                    
+                    case "vis.json": theme = "Работы на высоте"; break;
                 }
                 foreach (var quest in quests)
                 {
@@ -48,10 +48,10 @@ namespace TestMulti.Services
             else
             {
                 if (filename == "vaworites.json") return VaworitesCreate();
-                return JsonSerializer.Deserialize<Quest[]>(Preferences.Get(filename, null)) ?? Array.Empty<Quest>();  
+                return JsonSerializer.Deserialize<Quest[]>(Preferences.Get(filename, null)) ?? Array.Empty<Quest>();
             }
         }
-                
+
 
 
 

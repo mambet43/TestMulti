@@ -78,7 +78,7 @@ public partial class MainPage : ObservableObject
 
 
     public MainPage(ContentPage page)
-    {
+    {       
         LoadQuest();
         Instance = this;
         mainPage = page;

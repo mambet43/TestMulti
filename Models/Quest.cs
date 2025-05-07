@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.ComponentModel;
 
 namespace TestMulti.Models
 {
@@ -9,11 +10,16 @@ namespace TestMulti.Models
         public string Theme { get; set; }
         public string number { get; set; }
         public string title { get; set; }
+
+        public Answer[] answers { get; set; }
         public string DisplayTitle => $"{number}. {title}";
 
         [ObservableProperty]
-        public bool vaworites = false; // Избранный вопрос
-        public Answer[] answers { get; set; }
+        public bool vaworites = false; // Избранный вопрос       
+
+        
+       
+
         public string QuestColor { get; set; } = "Gray"; // Серый цвет по умолчанию
         public string AnswerColor { get; set; } = "Gray";  // Серый цвет по умолчанию
         public int Ellapsed { get; set; } = 0; // Время, прошедшее с момента начала вопроса
@@ -101,13 +107,35 @@ namespace TestMulti.Models
         }
 
     }
-    public class Answer
+    public class Answer : INotifyPropertyChanged
     {
         public string title { get; set; }
         public bool correct { get; set; }
-    }    
 
+       
 
+        private string _backgroundColorHex;
+        public string BackgroundColorHex
+        {
+            get => _backgroundColorHex;
+            set
+            {
+                if (_backgroundColorHex != value)
+                {
+                    _backgroundColorHex = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BackgroundColorHex)));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BackgroundColor)));
+                }
+            }
+        }
+
+        // Вспомогательное свойство для привязки в XAML
+        public Color BackgroundColor => Color.FromArgb(BackgroundColorHex);
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+    }
 }
-   
+
+
 

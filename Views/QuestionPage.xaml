@@ -5,12 +5,14 @@
              x:Class="TestMulti.Views.QuestionPage"
              Title="{Binding Theme}">
     <VerticalStackLayout>
-        <ScrollView>
-        <CarouselView ItemsSource="{Binding QuestCollection}"  IndicatorView="{x:Reference indicatorView}">
+
+        <CarouselView ItemsSource="{Binding QuestCollection}" Position="{Binding CurrentPosition}"  >
             <CarouselView.ItemTemplate>
                 <DataTemplate x:DataType="models:Quest">
-                    <StackLayout>
-                        <Border Stroke="DarkGray" StrokeShape="RoundRectangle 5" Margin="20" Padding="20" HeightRequest="360">
+                    
+                        <StackLayout>
+                        <Border Stroke="DarkGray" StrokeShape="RoundRectangle 5" Margin="20" Padding="20" HeightRequest="460">
+                            <ScrollView>
                             <StackLayout>
                                 <Grid Padding="10,0,10,0" Style="{StaticResource TitleQuestBackground}">
                                     <Grid.ColumnDefinitions>
@@ -19,8 +21,8 @@
                                     </Grid.ColumnDefinitions>
                                     <Label LineBreakMode="WordWrap"  Padding="10" Text="{Binding DisplayTitle}" FontAttributes="Bold" Style="{StaticResource TitleQuest}"  Grid.Column="0"/>
                                     <ImageButton Source="nonvaworites.png" HeightRequest="50" WidthRequest="50" Grid.Column="1" Style="{StaticResource FaworiteBackground}"
-                                 Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SetVaworitesCommand}"
-                                 CommandParameter="{Binding}">
+                                         Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SetVaworitesCommand}"
+                                         CommandParameter="{Binding}">
                                         <ImageButton.Triggers>
                                             <DataTrigger TargetType="ImageButton" Binding="{Binding Vaworites}" Value="true">
                                                 <Setter Property="Source" Value="vaworites.png" />
@@ -28,36 +30,34 @@
                                         </ImageButton.Triggers>
                                     </ImageButton>
                                 </Grid>
-                                <StackLayout BindableLayout.ItemsSource="{Binding answers}">
-                                    <BindableLayout.ItemTemplate>
-                                        <DataTemplate  x:DataType="models:Answer">
-                                            <Label Padding="30,3,10,3"
-                                            LineBreakMode="WordWrap"
-                                            FontAttributes="Italic"
-                                            Text="{Binding title}">
-                                                <Label.Triggers>
-                                                    <DataTrigger TargetType="Label"
-                                                         Binding="{Binding correct}"
-                                                         Value="True">
-                                                        <Setter Property="Style" Value="{StaticResource CorrectAnswerStyle}" />
-                                                    </DataTrigger>
-                                                </Label.Triggers>
-                                            </Label>
-                                        </DataTemplate>
-                                    </BindableLayout.ItemTemplate>
+                                    <StackLayout BindableLayout.ItemsSource="{Binding answers}">
+                                        <BindableLayout.ItemTemplate>
+                                            <DataTemplate x:DataType="models:Answer">
+                                                <StackLayout Padding="10"  BackgroundColor="{Binding BackgroundColor}">
+                                                    <StackLayout.GestureRecognizers>
+                                                        <TapGestureRecognizer
+                                                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.AnswerSelectedCommand}"
+                                                            CommandParameter="{Binding}" />         
+                                                    </StackLayout.GestureRecognizers>                                          
+                                                    <Label Text="{Binding title}"
+                                                           FontAttributes="Italic"
+                                                           Padding="10,0,0,0" />                
+                                                </StackLayout>
+                                            </DataTemplate>
+                                        </BindableLayout.ItemTemplate>
+                                    </StackLayout>
                                 </StackLayout>
-                                <Label Text="{Binding QuestColor}" FontAttributes="Italic" HorizontalOptions="Center" MaxLines="5" LineBreakMode="TailTruncation"/>
-                            </StackLayout>
-                        </Border>
+                    </ScrollView>
+                    </Border>
+                            
                     </StackLayout>
                 </DataTemplate>
             </CarouselView.ItemTemplate>
         </CarouselView>
-        </ScrollView>
-        <ScrollView WidthRequest="600" HeightRequest="100" Orientation="Horizontal"  >
-        <IndicatorView x:Name="indicatorView" IndicatorsShape="Square" IndicatorSize="26" IndicatorColor="LightGray" SelectedIndicatorColor="Green"  HorizontalOptions="Center"/>
-        </ScrollView>
+  
 
+        <!--<IndicatorView x:Name="indicatorView" IndicatorsShape="Square" IndicatorSize="26" MaximumVisible="10" IndicatorColor="LightGray" SelectedIndicatorColor="Green"  HorizontalOptions="Center"/>-->
+       
 
     </VerticalStackLayout>
 </ContentPage>

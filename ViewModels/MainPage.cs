@@ -66,6 +66,8 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
     [ObservableProperty]
     private string longVisCount;
 
+    private Theme[] Themes { get; set }
+
     public Quest[] QuestsEb;
     public Quest[] QuestsOt;
     public Quest[] QuestsVis;

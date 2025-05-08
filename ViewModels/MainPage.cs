@@ -66,9 +66,9 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
     [ObservableProperty]
     private string longVisCount;
 
-    private Quest[] QuestsEb;
-    private Quest[] QuestsOt;
-    private Quest[] QuestsVis;
+    public Quest[] QuestsEb;
+    public Quest[] QuestsOt;
+    public Quest[] QuestsVis;
 
     [ObservableProperty]
     private ObservableCollection<ISeries> seriesEb;
@@ -140,17 +140,15 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
     {
         await Shell.Current.GoToAsync("QuestionPage?theme=vis");
     }
-    public static void SetStyle(string name, PieSeries<ObservableValue> series, SKColor color)
+
+
+
+    [RelayCommand]
+    private async void RetryClickedEb()
     {
-        series.Name = name;
-        series.DataLabelsPosition = PolarLabelsPosition.Start;        
-        series.DataLabelsFormatter = point => $"{point.Coordinate.PrimaryValue} {point.Context.Series.Name}";
-        series.DataLabelsPaint = new SolidColorPaint(SKColors.White);
-        series.InnerRadius = 5;
-        series.RelativeOuterRadius = 2;
-        series.RelativeInnerRadius = 2;
-        series.Fill = new SolidColorPaint(color);
+        await Shell.Current.GoToAsync("QuestionPage?theme=eb");
     }
+
 
     public async void LoadQuest()
     {
@@ -216,9 +214,19 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
             })));
 
     }
+    public static void SetStyle(string name, PieSeries<ObservableValue> series, SKColor color)
+    {
+        series.Name = name;
+        series.DataLabelsPosition = PolarLabelsPosition.Start;
+        series.DataLabelsFormatter = point => $"{point.Coordinate.PrimaryValue} {point.Context.Series.Name}";
+        series.DataLabelsPaint = new SolidColorPaint(SKColors.White);
+        series.InnerRadius = 5;
+        series.RelativeOuterRadius = 2;
+        series.RelativeInnerRadius = 2;
+        series.Fill = new SolidColorPaint(color);
+    }
 
 
-    
 
-   
+
 }

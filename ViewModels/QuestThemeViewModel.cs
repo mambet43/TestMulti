@@ -12,28 +12,32 @@ namespace TestMulti.ViewModels;
 public partial class QuestThemeViewModel : ObservableObject
 {
     public ObservableCollection<Quest> QuestCollection { get; } = new ObservableCollection<Quest>();
-    
-    public Quest [] Quest { get; set; }
+      
 
     [ObservableProperty]
     public string Theme { get; set; }
 
     public string FileName { get; set; }
 
+    private MainPage mainPage = MainPage.Instance;
+    public static QuestThemeViewModel Instance { get; private set; }
+    public Quest[] Quest { get; set; } 
+
     private async void LoadQuest(string theme)
     {
-        Quest = await JsonManager.DeserializeFromJson(FileName);
+
     }
 
     public QuestThemeViewModel(string theme)
 	{
         switch (theme)  
         {
-            case "eb":          Theme = "Электробезопасность";  break;
-            case "ot":          Theme = "Охрана труда";         break;
-            case "vis":         Theme = "Работы на высоте";     break;
-            case "vaworites":   Theme = "Избранные вопросы";    break;
+            case "eb":          Theme = "Электробезопасность"; Quest = mainPage.QuestsEb;  break;
+            case "ot":          Theme = "Охрана труда"; Quest = mainPage.QuestsOt; break;
+            case "vis":         Theme = "Работы на высоте"; Quest = mainPage.QuestsVis; break;
+            case "vaworites":   Theme = "Избранные вопросы"; Quest = JsonManager.VaworitesCreate();  break;
         }
+        Instance = this;
         FileName = theme + ".json";
         LoadQuest(FileName);
         foreach (var quest in Quest)

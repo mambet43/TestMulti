@@ -4,8 +4,8 @@
              xmlns:models="clr-namespace:TestMulti.Models"
              x:Class="TestMulti.Views.QuestionPage"
              Title="{Binding Theme}">
-    <VerticalStackLayout>
 
+    <VerticalStackLayout>
         <CarouselView ItemsSource="{Binding QuestCollection}" Position="{Binding CurrentPosition}"  >
             <CarouselView.ItemTemplate>
                 <DataTemplate x:DataType="models:Quest">

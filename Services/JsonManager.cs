@@ -68,6 +68,19 @@ namespace TestMulti.Services
             Preferences.Set(fileName, JsonSerializer.Serialize(quests));
         }
 
+
+        public static void EditPreferences(Quest[] quests)
+        {
+            string fileName = "";
+            switch (quests[0].Theme)
+            {
+                case "Электробезопасность": fileName = "eb.json"; break;
+                case "Охрана труда": fileName = "ot.json"; break;
+                case "Работы на высоте": fileName = "vis.json"; break;
+            }
+            Preferences.Set(fileName, JsonSerializer.Serialize(quests));
+        }
+
         public static Quest [] VaworitesCreate()
         {
             Quest[] questsEb = Array.Empty<Quest>();

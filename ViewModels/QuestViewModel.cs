@@ -40,7 +40,8 @@ public partial class QuestViewModel : QuestThemeViewModel
     }
 
 
-    [RelayCommand]
+
+        [RelayCommand]
     private void AnswerSelected(Answer selectedAnswer)
     {
         if (selectedAnswer == null) return;
@@ -64,13 +65,13 @@ public partial class QuestViewModel : QuestThemeViewModel
 
         if (isQuestUpdated)
         {
-            JsonManager.EditPreferences(currentQuest); // Обновляем только один раз
+            //JsonManager.EditPreferences(currentQuest); // Обновляем только один раз
             if (selectedAnswer.correct && CurrentPosition < QuestCollection.Count - 1)
             {
                 CurrentPosition++; // Переход к следующему вопросу
             }
         }
-        mainPage.LoadQuest();
+        //mainPage.LoadQuest();
 
 
     }

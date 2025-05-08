@@ -1,4 +1,6 @@
-﻿using TestMulti.Views;
+﻿using TestMulti.Services;
+using TestMulti.Views;
+using TestMulti.ViewModels;
 
 namespace TestMulti
 {
@@ -12,26 +14,37 @@ namespace TestMulti
         private async void OnMenuItemClickedEb(object sender, EventArgs e)
         {
             // Передаем параметр "value1" при навигации
-            await Shell.Current.GoToAsync("QuestTheme?param=eb");
+            await Shell.Current.GoToAsync("QuestTheme?param=eb", false);
             Shell.Current.FlyoutIsPresented = false;
         }
         private async void OnMenuItemClickedOt(object sender, EventArgs e)
         {
             // Передаем параметр "value1" при навигации
-            await Shell.Current.GoToAsync("QuestTheme?param=ot");
+            await Shell.Current.GoToAsync("QuestTheme?param=ot", false);
             Shell.Current.FlyoutIsPresented = false;
         }
         private async void OnMenuItemClickedVis(object sender, EventArgs e)
         {
             // Передаем параметр "value1" при навигации
-            await Shell.Current.GoToAsync("QuestTheme?param=vis");
+            await Shell.Current.GoToAsync("QuestTheme?param=vis", false);
             Shell.Current.FlyoutIsPresented = false;
         }
         private async void OnMenuItemClickedVaworites(object sender, EventArgs e)
         {
             // Передаем параметр "value1" при навигации
-            await Shell.Current.GoToAsync("QuestTheme?param=vaworites");
+            await Shell.Current.GoToAsync("QuestTheme?param=vaworites", false);
             Shell.Current.FlyoutIsPresented = false;
+        }
+        protected override void OnNavigating(ShellNavigatingEventArgs args)
+        {
+            base.OnNavigating(args);
+
+            if (args.Source == ShellNavigationSource.PopToRoot)
+            {
+                if(QuestThemeViewModel.Instance.Theme != "Избранные вопросы")
+                    JsonManager.EditPreferences(QuestThemeViewModel.Instance.Quest);
+                ViewModels.MainPage.Instance.LoadQuest();
+            }
         }
     }
 }

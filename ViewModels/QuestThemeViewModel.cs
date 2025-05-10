@@ -30,20 +30,20 @@ public partial class QuestThemeViewModel : ObservableObject
 
     public QuestThemeViewModel(string theme)
 	{
-        switch (theme)  
-        {
-            case "eb":          Theme = "Электробезопасность"; Quest = mainPage.QuestsEb;  break;
-            case "ot":          Theme = "Охрана труда"; Quest = mainPage.QuestsOt; break;
-            case "vis":         Theme = "Работы на высоте"; Quest = mainPage.QuestsVis; break;
-            case "vaworites":   Theme = "Избранные вопросы"; Quest = JsonManager.VaworitesCreate();  break;
-        }
-        Instance = this;
-        FileName = theme + ".json";
-        LoadQuest(FileName);
-        foreach (var quest in Quest)
-        {
-            QuestCollection.Add(quest);
-        }
+        //switch (theme)  
+        //{
+        //    case "eb":          Theme = "Электробезопасность"; Quest = mainPage.QuestsEb;  break;
+        //    case "ot":          Theme = "Охрана труда"; Quest = mainPage.QuestsOt; break;
+        //    case "vis":         Theme = "Работы на высоте"; Quest = mainPage.QuestsVis; break;
+        //    case "vaworites":   Theme = "Избранные вопросы"; Quest = JsonManager.VaworitesCreate();  break;
+        //}
+        //Instance = this;
+        //FileName = theme + ".json";
+        //LoadQuest(FileName);
+        //foreach (var quest in Quest)
+        //{
+        //    QuestCollection.Add(quest);
+        //}
     }
 
     [RelayCommand]

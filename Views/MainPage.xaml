@@ -1,5 +1,6 @@
 ﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:TestMulti.Models"
              xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
              x:Class="TestMulti.MainPage"
              BackgroundColor="{StaticResource BackColorB}">
@@ -10,202 +11,77 @@
                     JustifyContent="SpaceEvenly" 
                     AlignItems="Stretch"
                     Padding="0">
+            <CarouselView ItemsSource="{Binding ThemesCollection}"  >
+                <CarouselView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Theme">
+                        <StackLayout Padding="10"  BackgroundColor="{Binding BackgroundColor}">
+                            <Frame CornerRadius="18" 
+                               BackgroundColor="{StaticResource BackColorA}"
+                               Margin="5"
+                               HorizontalOptions="FillAndExpand"
+                               FlexLayout.Basis="300"
+                               FlexLayout.Grow="1">
+                                <StackLayout Spacing="0">
+                                    <Label Text="{Binding Title}" 
+                                       FontSize="20" 
+                                       HorizontalOptions="Center" 
+                                       Margin="0,0,0,10" />
 
-            <!-- Электробезопасность -->
-            <Frame CornerRadius="18" 
-                   BackgroundColor="{StaticResource BackColorA}"
-                   Margin="5"
-                   HorizontalOptions="FillAndExpand"
-                   FlexLayout.Basis="300"
-                   FlexLayout.Grow="1">
-                <StackLayout Spacing="0">
-                    <Label Text="Электробезопасность" 
-                           FontSize="20" 
-                           HorizontalOptions="Center" 
-                           Margin="0,0,0,10" />
+                                    <lvc:PieChart Series="{Binding Series}"
+                                             HeightRequest="250"
+                                             InitialRotation="90"  
+                                             MaxAngle="270"
+                                             MinValue="0"
+                                             MaxValue="{Binding LengthQ}"
+                                             AnimationsSpeed="00:00:05.500"                      
+                                             PressedCommand="{Binding PressedCommand}" />
 
-                    <lvc:PieChart Series="{Binding SeriesEb}"
-                                 HeightRequest="250"
-                                 InitialRotation="90"  
-                                 MaxAngle="270"
-                                 MinValue="0"
-                                 MaxValue="{Binding LengthEb}"
-                                 AnimationsSpeed="00:00:05.500"                      
-                                 PressedCommand="{Binding PressedCommand}" />
+                                    <StackLayout Spacing="0" HorizontalOptions="Start">
+                                        <Button Text="{Binding LengthQ, StringFormat='[{0}] Все вопросы'}" 
+                                           BackgroundColor="Transparent"
+                                           FontSize="18"                                
+                                           HorizontalOptions="Start"
+                                           ImageSource="all.png"
+                                           Command="{Binding StartClickedEbCommand}"/>
 
-                    <StackLayout Spacing="0" HorizontalOptions="Start">
-                        <Button Text="{Binding LengthEb, StringFormat='[{0}] Все вопросы'}" 
-                               BackgroundColor="Transparent"
-                               FontSize="18"                                
-                               HorizontalOptions="Start"
-                               ImageSource="all.png"
-                               Command="{Binding StartClickedEbCommand}"/>
+                                        <Button Text="{Binding LengthReplay, StringFormat='[{0}] Продолжить'}" 
+                                           BackgroundColor="Transparent"
+                                           FontSize="18"                                
+                                           HorizontalOptions="Start"
+                                           ImageSource="play.png" />
 
-                        <Button Text="{Binding LengthEbReplay, StringFormat='[{0}] Продолжить'}" 
-                               BackgroundColor="Transparent"
-                               FontSize="18"                                
-                               HorizontalOptions="Start"
-                               ImageSource="play.png" />
+                                        <Button Text="{Binding LengthErr, StringFormat='[{0}] Мои ошибки'}" 
+                                           ImageSource="retryerr.png"
+                                           FontSize="18" 
+                                           BackgroundColor="Transparent"
+                                           HorizontalOptions="Start" />
 
-                        <Button Text="{Binding ErrEbCount, StringFormat='[{0}] Мои ошибки'}" 
-                               ImageSource="retryerr.png"
-                               FontSize="18" 
-                               BackgroundColor="Transparent"
-                               HorizontalOptions="Start" />
+                                        <Button Text="{Binding LengthVaworite, StringFormat='[{0}] Избранные вопросы'}" 
+                                           ImageSource="vaworites.png"
+                                           FontSize="18" 
+                                           BackgroundColor="Transparent"
+                                           HorizontalOptions="Start" />
 
-                        <Button Text="{Binding VaworiteEbCount, StringFormat='[{0}] Избранные вопросы'}" 
-                               ImageSource="vaworites.png"
-                               FontSize="18" 
-                               BackgroundColor="Transparent"
-                               HorizontalOptions="Start" />
+                                        <Button Text="{Binding LengthLong, StringFormat='[{0}] Долгие ответы'}" 
+                                           ImageSource="retrylong.png"
+                                           FontSize="18" 
+                                           BackgroundColor="Transparent"
+                                           HorizontalOptions="Start" />
 
-                        <Button Text="{Binding LongEbCount, StringFormat='[{0}] Долгие ответы'}" 
-                               ImageSource="retrylong.png"
-                               FontSize="18" 
-                               BackgroundColor="Transparent"
-                               HorizontalOptions="Start" />
-
-                        <Button Text="Удалить результаты" 
-                               ImageSource="del.png"
-                               FontSize="18" 
-                               BackgroundColor="Transparent"
-                               Command="{Binding DelPreferencesCommand}"
-                               CommandParameter="eb.json"
-                               HorizontalOptions="Start" />
-                    </StackLayout>
-                </StackLayout>
-            </Frame>
-
-            <!-- Охрана труда -->
-            <Frame CornerRadius="18" 
-                   BackgroundColor="{StaticResource BackColorA}"
-                   Margin="5"
-                   HorizontalOptions="FillAndExpand"
-                   FlexLayout.Basis="300"
-                   FlexLayout.Grow="1">
-                <StackLayout Spacing="0">
-                    <Label Text="Охрана труда" 
-                           FontSize="20" 
-                           HorizontalOptions="Center" 
-                           Margin="0,0,0,0" />
-
-                    <lvc:PieChart Series="{Binding SeriesOt}"
-                                 HeightRequest="250"
-                                 InitialRotation="90"  
-                                 MaxAngle="270"
-                                 MinValue="0"
-                                 MaxValue="{Binding LengthOt}"
-                                 AnimationsSpeed="00:00:05.500"                      
-                                 PressedCommand="{Binding PressedCommand}" />
-
-                    <StackLayout Spacing="0" HorizontalOptions="Start">
-                        <Button Text="{Binding LengthOt, StringFormat='[{0}] Все вопросы'}" 
-                               FontSize="18" 
-                               BackgroundColor="Transparent"
-                               HorizontalOptions="Start"
-                               ImageSource="all.png"
-                               Command="{Binding StartClickedOtCommand}"/>
-
-                        <Button Text="{Binding LengthOtReplay, StringFormat='[{0}] Продолжить'}" 
-                               BackgroundColor="Transparent"
-                               FontSize="18"                                
-                               HorizontalOptions="Start"
-                               ImageSource="play.png" />
-
-                        <Button Text="{Binding ErrOtCount, StringFormat='[{0}] Мои ошибки'}" 
-                               ImageSource="retryerr.png"
-                               FontSize="18" 
-                               BackgroundColor="Transparent"
-                               HorizontalOptions="Start" />
-
-                        <Button Text="{Binding VaworiteOtCount, StringFormat='[{0}] Избранные вопросы'}" 
-                               ImageSource="vaworites.png"
-                               FontSize="18" 
-                               BackgroundColor="Transparent"
-                               HorizontalOptions="Start" />
-
-                        <Button Text="{Binding LongOtCount, StringFormat='[{0}] Долгие ответы'}" 
-                               ImageSource="retrylong.png"
-                               FontSize="18" 
-                               BackgroundColor="Transparent"
-                               HorizontalOptions="Start" />
-
-                        <Button Text="Удалить результаты" 
-                               ImageSource="del.png"
-                               FontSize="18" 
-                               BackgroundColor="Transparent"
-                               Command="{Binding DelPreferencesCommand}"
-                               CommandParameter="ot.json"                
-                               HorizontalOptions="Start" />
-                    </StackLayout>
-                </StackLayout>
-            </Frame>
-
-            <!-- Работы на высоте -->
-            <Frame CornerRadius="18" 
-                   BackgroundColor="{StaticResource BackColorA}"
-                   Margin="5"
-                   HorizontalOptions="FillAndExpand"
-                   FlexLayout.Basis="300"
-                   FlexLayout.Grow="1">
-                <StackLayout Spacing="0">
-                    <Label Text="Работы на высоте" 
-                           FontSize="20" 
-                           HorizontalOptions="Center" 
-                           Margin="0,0,0,0" />
-
-                    <lvc:PieChart Series="{Binding SeriesVis}"
-                                 HeightRequest="250"
-                                 InitialRotation="90"  
-                                 MaxAngle="270"
-                                 MinValue="0"
-                                 MaxValue="{Binding LengthVis}"
-                                 AnimationsSpeed="00:00:05.500"                      
-                                 PressedCommand="{Binding PressedCommand}" />
-
-                    <StackLayout Spacing="0" HorizontalOptions="Start">
-                        <Button Text="{Binding LengthVis, StringFormat='[{0}] Все вопросы'}" 
-                               FontSize="18" 
-                               BackgroundColor="Transparent"
-                               HorizontalOptions="Start"
-                               ImageSource="all.png"
-                               Command="{Binding StartClickedVisCommand}"/>
-
-                        <Button Text="{Binding LengthVisReplay, StringFormat='[{0}] Продолжить'}" 
-                               BackgroundColor="Transparent"
-                               FontSize="18"                                
-                               HorizontalOptions="Start"
-                               ImageSource="play.png" />
-
-                        <Button Text="{Binding ErrVisCount, StringFormat='[{0}] Мои ошибки'}" 
-                               ImageSource="retryerr.png"
-                               FontSize="18" 
-                               BackgroundColor="Transparent"
-                               HorizontalOptions="Start" />
-
-                        <Button Text="{Binding VaworiteVisCount, StringFormat='[{0}] Избранные вопросы'}" 
-                               ImageSource="vaworites.png"
-                               FontSize="18" 
-                               BackgroundColor="Transparent"
-                               HorizontalOptions="Start" />
-
-                        <Button Text="{Binding LongVisCount, StringFormat='[{0}] Долгие ответы'}" 
-                               ImageSource="retrylong.png"
-                               FontSize="18" 
-                               BackgroundColor="Transparent"
-                               HorizontalOptions="Start" />
-
-                        <Button Text="Удалить результаты" 
-                               ImageSource="del.png"
-                               FontSize="18" 
-                               BackgroundColor="Transparent"
-                               Command="{Binding DelPreferencesCommand}"
-                               CommandParameter="vis.json"
-                               HorizontalOptions="Start" />
-                    </StackLayout>
-                </StackLayout>
-            </Frame>
-
+                                        <Button Text="Удалить результаты" 
+                                           ImageSource="del.png"
+                                           FontSize="18" 
+                                           BackgroundColor="Transparent"
+                                           Command="{Binding DelPreferencesCommand}"
+                                           CommandParameter="eb.json"
+                                           HorizontalOptions="Start" />
+                                    </StackLayout>
+                                </StackLayout>
+                            </Frame>
+                        </StackLayout>
+                    </DataTemplate>
+                </CarouselView.ItemTemplate>
+            </CarouselView>
         </FlexLayout>
     </ScrollView>
 </ContentPage>

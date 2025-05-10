@@ -23,65 +23,10 @@ namespace TestMulti.ViewModels;
 
 public partial class MainPage : ObservableObject, INotifyPropertyChanged
 {
-    [ObservableProperty]
-    private string lengthEb;
-    [ObservableProperty]
-    private string lengthOt;
+    public ObservableCollection<Theme> ThemesCollection { get; } = new ObservableCollection<Theme>();
 
-    [ObservableProperty]
-    private string lengthVis;
-
-    [ObservableProperty]
-    private string lengthEbReplay;
-
-    [ObservableProperty]
-    private string lengthOtReplay;
-
-    [ObservableProperty]
-    private string lengthVisReplay;
-
-    [ObservableProperty]
-    private string errEbCount;
-
-    [ObservableProperty]
-    private string errOtCount;
-
-    [ObservableProperty]
-    private string errVisCount;
-
-    [ObservableProperty]
-    private string vaworiteEbCount;
-
-    [ObservableProperty]
-    private string vaworiteOtCount;
-
-    [ObservableProperty]
-    private string vaworiteVisCount;
-
-    [ObservableProperty]
-    private string longEbCount;
-
-    [ObservableProperty]
-    private string longOtCount;
-
-    [ObservableProperty]
-    private string longVisCount;
-
-    List<Theme> Themes  { get; set; } = new List<Theme>();
-
-    public Quest[] QuestsEb;
-    public Quest[] QuestsOt;
-    public Quest[] QuestsVis;
-
-    [ObservableProperty]
-    private ObservableCollection<ISeries> seriesEb;
-
-    [ObservableProperty]
-    private ObservableCollection<ISeries> seriesOt; 
-
-    [ObservableProperty]
-    private ObservableCollection<ISeries> seriesVis;
-
+    
+    public List<Theme> Themes { get; set; } = new List<Theme>();
     public static MainPage Instance { get; private set; }
 
     private readonly ContentPage mainPage;
@@ -152,7 +97,7 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
         await Shell.Current.GoToAsync("QuestionPage?theme=eb");
     }
 
-    private async Task <List<Theme>> GetThemeList()
+    private async Task <List<Theme>> LoadThemeList()
     {       
         foreach (KeyValuePair<string, string> kvp in AppConstants.THEMES)
         {
@@ -168,73 +113,30 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
             theme.QuestsErr = theme.Quests.Where(q => (q.QuestColor == "Red")).ToList();
             theme.QuestsVaworite = theme.Quests.Where(q => (q.vaworites)).ToList();
             theme.QuestsLong = theme.Quests.Where(q => (q.Ellapsed >= AppConstants.MAX_TIME_FOR_ANSWER)).ToList();
+            theme.QuestsCorrect = theme.Quests.Where(q => (q.QuestColor == "Green")).ToList();
+            theme.QuestsLearn = theme.Quests.Where(q => (q.QuestColor != "Gray")).ToList();
+            theme.LengthQ = theme.Quests.Count;
+            theme.Series = new ObservableCollection<ISeries>(
+            GaugeGenerator.BuildSolidGauge(
+                new GaugeItem(theme.LengthErr, series => SetStyle("Ошибок", series, SKColors.Red)),
+                new GaugeItem(theme.LengthLong, series => SetStyle("Долгих ответов", series, SKColors.Yellow)),
+                new GaugeItem(theme.LengthCorrect, series => SetStyle("Верных", series, SKColors.Green)),
+                new GaugeItem(theme.LengthLearn, series => SetStyle("Пройдено", series, SKColors.Blue)),
+                new GaugeItem(theme.LengthQ, series => SetStyle("Вопросов в теме", series, SKColors.Blue)),
+                new GaugeItem(GaugeItem.Background, series =>
+                {
+                    series.InnerRadius = 10;
+                })));
             Themes.Add(theme);
-        }        
+            ThemesCollection.Add(theme);
+        }
         return Themes;
     }
     public async void LoadQuest()
     {
-        Themes = await GetThemeList();
-        QuestsEb = await  JsonManager.DeserializeFromJson("eb.json");
-        QuestsOt = await JsonManager.DeserializeFromJson("ot.json");
-        QuestsVis = await JsonManager.DeserializeFromJson("vis.json");
+        Themes = await LoadThemeList();        
 
-        LengthEb = QuestsEb.Length.ToString();
-        LengthOt = QuestsOt.Length.ToString();
-        LengthVis = QuestsVis.Length.ToString(); 
-
-        LengthEbReplay = Quest.GetForLearn(QuestsEb).Length.ToString();
-        LengthOtReplay = Quest.GetForLearn(QuestsOt).Length.ToString();
-        LengthVisReplay = Quest.GetForLearn(QuestsVis).Length.ToString();
-
-        ErrEbCount = Quest.GetErrorsCount(QuestsEb).ToString();
-        ErrOtCount = Quest.GetErrorsCount(QuestsOt).ToString();
-        ErrVisCount = Quest.GetErrorsCount(QuestsVis).ToString();
-
-        VaworiteEbCount = Quest.GetVaworiteCount(QuestsEb).ToString();
-        VaworiteOtCount = Quest.GetVaworiteCount(QuestsOt).ToString();
-        VaworiteVisCount = Quest.GetVaworiteCount(QuestsVis).ToString();
-       
-
-        LongEbCount = Quest.GetLongCount(QuestsEb).ToString();
-        LongOtCount = Quest.GetLongCount(QuestsOt).ToString();
-        LongVisCount = Quest.GetLongCount(QuestsVis).ToString();
-
-        SeriesEb = new ObservableCollection<ISeries>(
-            GaugeGenerator.BuildSolidGauge(
-                new GaugeItem(Quest.GetErrorsCount(QuestsEb), seriesEb => SetStyle("Ошибок", seriesEb, SKColors.Red)),
-                new GaugeItem(Quest.GetLongCount(QuestsEb), seriesEb => SetStyle("Долгих ответов", seriesEb, SKColors.Yellow)),
-                new GaugeItem(Quest.GetCorrectCount(QuestsEb), seriesEb => SetStyle("Верных", seriesEb, SKColors.Green)),
-                new GaugeItem(Quest.GetLearnCount(QuestsEb), seriesEb => SetStyle("Пройдено", seriesEb, SKColors.Blue)),
-                new GaugeItem(QuestsEb.Length, seriesEb => SetStyle("Вопросов в теме", seriesEb, SKColors.Blue)),
-                new GaugeItem(GaugeItem.Background, seriesEb =>
-                {
-                    seriesEb.InnerRadius = 10;
-                })));
-
-        SeriesOt = new ObservableCollection<ISeries>(
-            GaugeGenerator.BuildSolidGauge(
-            new GaugeItem(Quest.GetErrorsCount(QuestsOt), seriesOt => SetStyle("Ошибок", seriesOt, SKColors.Red)),
-            new GaugeItem(Quest.GetLongCount(QuestsOt), seriesOt => SetStyle("Долгих ответов", seriesOt, SKColors.Yellow)),
-            new GaugeItem(Quest.GetCorrectCount(QuestsOt), seriesOt => SetStyle("Верных", seriesOt, SKColors.Green)),
-            new GaugeItem(Quest.GetLearnCount(QuestsOt), seriesOt => SetStyle("Пройдено", seriesOt, SKColors.Blue)),
-            new GaugeItem(QuestsOt.Length, seriesOt => SetStyle("Вопросов в теме", seriesOt, SKColors.Blue)),
-            new GaugeItem(GaugeItem.Background, seriesOt =>
-            {
-                seriesOt.InnerRadius = 10;
-            })));
-
-        SeriesVis = new ObservableCollection<ISeries>(
-            GaugeGenerator.BuildSolidGauge(
-            new GaugeItem(Quest.GetErrorsCount(QuestsVis), seriesVis => SetStyle("Ошибок", seriesVis, SKColors.Red)),
-            new GaugeItem(Quest.GetLongCount(QuestsVis), seriesVis => SetStyle("Долгих ответов", seriesVis, SKColors.Yellow)),
-            new GaugeItem(Quest.GetCorrectCount(QuestsVis), seriesVis => SetStyle("Верных", seriesVis, SKColors.Green)),
-            new GaugeItem(Quest.GetLearnCount(QuestsVis), seriesVis => SetStyle("Пройдено", seriesVis, SKColors.Blue)),
-            new GaugeItem(QuestsVis.Length, seriesVis => SetStyle("Вопросов в теме", seriesVis, SKColors.Blue)),
-            new GaugeItem(GaugeItem.Background, seriesVis =>
-            {
-                seriesVis.InnerRadius = 10;
-            })));
+        
 
     }
     public static void SetStyle(string name, PieSeries<ObservableValue> series, SKColor color)

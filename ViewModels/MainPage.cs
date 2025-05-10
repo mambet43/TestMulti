@@ -17,6 +17,7 @@ using System.Globalization;
 using TestMulti.Views;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using TestMulti.Constants;
 
 namespace TestMulti.ViewModels;
 
@@ -66,7 +67,7 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
     [ObservableProperty]
     private string longVisCount;
 
-    private Theme[] Themes { get; set }
+    List<Theme> Themes  { get; set; } = new List<Theme>();
 
     public Quest[] QuestsEb;
     public Quest[] QuestsOt;
@@ -151,7 +152,18 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
         await Shell.Current.GoToAsync("QuestionPage?theme=eb");
     }
 
-
+    private async void GetThemeList()
+    {       
+        foreach (KeyValuePair<string, string> kvp in AppConstants.THEMES)
+        {
+            Theme theme = new Theme();
+            theme.FileName = kvp.Key;
+            theme.Title = kvp.Value;
+            theme.Quests = await JsonManager.DeserializeToList(theme.FileName);
+            theme.Quests.ForEach(q => q.Theme += theme.Title);            
+            Themes.Add(theme);
+        }        
+    }
     public async void LoadQuest()
     {
         QuestsEb = await  JsonManager.DeserializeFromJson("eb.json");

@@ -1,12 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.ComponentModel;
+using TestMulti.Constants;
 
 namespace TestMulti.Models
 {
     
     public partial class Quest : ObservableObject
-    {
-        private const byte MAX_TIME_FOR_ANSWER = 15;
+    {      
         public string Theme { get; set; }
         public string number { get; set; }
         public string title { get; set; }
@@ -29,7 +29,7 @@ namespace TestMulti.Models
             int length = 0;
             foreach (var quest in quests)
             {
-                if ((quest.QuestColor == "Red" || quest.QuestColor == "Gray"  ) || quest.Ellapsed >= MAX_TIME_FOR_ANSWER) length++;                
+                if ((quest.QuestColor == "Red" || quest.QuestColor == "Gray"  ) || quest.Ellapsed >= AppConstants.MAX_TIME_FOR_ANSWER) length++;                
             }
             Quest[] questsRet = new Quest[length];
             for (int i = 0; i < questsRet.Length; i++)
@@ -98,7 +98,7 @@ namespace TestMulti.Models
             int longCount = 0;
             foreach (var quest in quests)
             {
-                if (quest.Ellapsed > 10)
+                if (quest.Ellapsed > AppConstants.MAX_TIME_FOR_ANSWER)
                 {
                     longCount++;
                 }

@@ -7,7 +7,8 @@ using TestMulti.Models;
 using Microsoft.Maui.Controls;
 using System;
 using TestMulti.Services;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Collections.Generic;
+using TestMulti.Constants;
 
 namespace TestMulti.Services
 {
@@ -51,6 +52,7 @@ namespace TestMulti.Services
             }
         }
 
+        
 
 
 
@@ -103,7 +105,45 @@ namespace TestMulti.Services
 
         }
 
-        
+        public static async Task  <List<Quest>> DeserializeToList(string filename)
+        {
+            //Проверяем, существует ли файл в Preferences
+            if (Preferences.Get(filename, null) == null)
+            {
+
+                var assembly = Assembly.GetExecutingAssembly();
+                var resourcePath = $"TestMulti.Resources.Raw.{filename}";
+                using Stream stream = assembly.GetManifestResourceStream(resourcePath);
+                if (stream == null)
+                {
+                    throw new FileNotFoundException($"Файл {filename} не найден в ресурсах.");
+                }
+                using StreamReader reader = new StreamReader(stream);
+                var jsonContent = reader.ReadToEnd();
+                List<Quest> quests = JsonSerializer.Deserialize<List<Quest>>(jsonContent) ?? new List<Quest>();  // считали из файла ресурсов
+                string jsonString = JsonSerializer.Serialize(quests);
+                Preferences.Set(filename, jsonString);
+                return quests;
+            }
+            else
+            {                
+                if (filename == "vaworites.json") return await VaworitesCreate(true);
+                return JsonSerializer.Deserialize<List<Quest>>(Preferences.Get(filename, null)) ?? new List<Quest>();
+            }
+        }
+
+        public static async Task<List<Quest>> VaworitesCreate(bool toList)
+        {
+            List<Quest> q = new List<Quest>();
+            foreach (var file in AppConstants.FILES)
+            {
+                q.AddRange(await DeserializeToList(file)); // Добавляем все элементы из списка
+            }
+            return q.Where(q => q.vaworites).ToList(); // Фильтруем и возвращаем список
+        }
+
+
+
 
 
 

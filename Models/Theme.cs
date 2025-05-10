@@ -28,10 +28,7 @@ namespace TestMulti.Models
 
         public Theme()
         {           
-            QuestsForReplay = Quests.Where(q => (q.QuestColor == "Red" || q.QuestColor == "Gray") || q.Ellapsed >= AppConstants.MAX_TIME_FOR_ANSWER).ToList();
-            QuestsErr = Quests.Where(q => (q.QuestColor == "Red")).ToList();
-            QuestsVaworite = Quests.Where(q => (q.vaworites)).ToList();
-            QuestsLong = Quests.Where(q => (q.Ellapsed >= AppConstants.MAX_TIME_FOR_ANSWER)).ToList();
+           
         }
     }
 

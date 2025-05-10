@@ -152,7 +152,7 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
         await Shell.Current.GoToAsync("QuestionPage?theme=eb");
     }
 
-    private async void GetThemeList()
+    private async Task <List<Theme>> GetThemeList()
     {       
         foreach (KeyValuePair<string, string> kvp in AppConstants.THEMES)
         {
@@ -160,12 +160,21 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
             theme.FileName = kvp.Key;
             theme.Title = kvp.Value;
             theme.Quests = await JsonManager.DeserializeToList(theme.FileName);
-            theme.Quests.ForEach(q => q.Theme += theme.Title);            
+            theme.Quests.ForEach(q => q.Theme += theme.Title);
+            theme.QuestsForReplay = theme.Quests.Where 
+                    (q => (q.QuestColor == "Red"   || 
+                           q.QuestColor == "Gray") ||
+                           q.Ellapsed >= AppConstants.MAX_TIME_FOR_ANSWER).ToList();
+            theme.QuestsErr = theme.Quests.Where(q => (q.QuestColor == "Red")).ToList();
+            theme.QuestsVaworite = theme.Quests.Where(q => (q.vaworites)).ToList();
+            theme.QuestsLong = theme.Quests.Where(q => (q.Ellapsed >= AppConstants.MAX_TIME_FOR_ANSWER)).ToList();
             Themes.Add(theme);
         }        
+        return Themes;
     }
     public async void LoadQuest()
     {
+        Themes = await GetThemeList();
         QuestsEb = await  JsonManager.DeserializeFromJson("eb.json");
         QuestsOt = await JsonManager.DeserializeFromJson("ot.json");
         QuestsVis = await JsonManager.DeserializeFromJson("vis.json");

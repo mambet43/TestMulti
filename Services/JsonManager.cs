@@ -135,9 +135,9 @@ namespace TestMulti.Services
         public static async Task<List<Quest>> VaworitesCreate(bool toList)
         {
             List<Quest> q = new List<Quest>();
-            foreach (var file in AppConstants.FILES)
+            foreach (string key in AppConstants.THEMES.Keys)
             {
-                q.AddRange(await DeserializeToList(file)); // Добавляем все элементы из списка
+                q.AddRange(await DeserializeToList(key)); // Добавляем все элементы из списка
             }
             return q.Where(q => q.vaworites).ToList(); // Фильтруем и возвращаем список
         }

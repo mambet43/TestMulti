@@ -9,103 +9,45 @@ using System;
 using TestMulti.Services;
 using System.Collections.Generic;
 using TestMulti.Constants;
+using System.Collections;
+using System.Buffers;
+using System.Xml;
+using System.Collections.ObjectModel;
 
 namespace TestMulti.Services
 {
     internal static class JsonManager
-    {
-        public static async Task<Quest[]> DeserializeFromJson(string filename)     
+    { 
+        public static void EditPreferences(Quest quest)
         {
-            //Проверяем, существует ли файл в Preferences
-            if (Preferences.Get(filename, null) == null)
+            string fileName;
+            var key = AppConstants.THEMES.FirstOrDefault(x => x.Value == quest.Theme).Key;
+            if (key != null)
             {
+                fileName = key;
+                List<Quest> quests = JsonSerializer.Deserialize<List<Quest>>(Preferences.Get(fileName, null)) ?? new List<Quest>();
+                quests[int.Parse(quest.number) - 1] = quest;
+                Preferences.Set(fileName, JsonSerializer.Serialize(quests));
+            }
+        }
 
-                var assembly = Assembly.GetExecutingAssembly();
-                var resourcePath = $"TestMulti.Resources.Raw.{filename}";
-                using Stream stream = assembly.GetManifestResourceStream(resourcePath);
-                if (stream == null)
-                {
-                    throw new FileNotFoundException($"Файл {filename} не найден в ресурсах.");
-                }
-                using StreamReader reader = new StreamReader(stream);
-                var jsonContent = reader.ReadToEnd();
-                Quest[] quests = JsonSerializer.Deserialize<Quest[]>(jsonContent) ?? Array.Empty<Quest>(); // считали из файла ресурсов
-                string theme = "";
-                switch (filename) // тему  опредлеяем
-                {
-                    case "eb.json": theme = "Электробезопасность"; break;
-                    case "ot.json": theme = "Охрана труда"; break;
-                    case "vis.json": theme = "Работы на высоте"; break;
-                }
-                foreach (var quest in quests)
-                {
-                    quest.Theme = theme;
-                }
-                string jsonString = JsonSerializer.Serialize(quests);
-                Preferences.Set(filename, jsonString);
-                return quests;
+
+        public static void EditPreferences(ObservableCollection<Quest> quests)
+        {
+            string fileName;
+            var key = AppConstants.THEMES.FirstOrDefault(x => x.Value == quests[0].Theme).Key;
+            if (key!=null) 
+            { 
+                fileName = key;
+                Preferences.Set(fileName, JsonSerializer.Serialize(quests));
             }
-            else
-            {
-                if (filename == "vaworites.json") return VaworitesCreate();
-                return JsonSerializer.Deserialize<Quest[]>(Preferences.Get(filename, null)) ?? Array.Empty<Quest>();
-            }
+
+            
         }
 
         
 
-
-
-        public static void EditPreferences(Quest quest)
-        {
-            string fileName = "";
-            switch (quest.Theme)
-            {
-                case "Электробезопасность":  fileName = "eb.json"; break; 
-                case "Охрана труда":  fileName = "ot.json"; break; 
-                case "Работы на высоте":  fileName = "vis.json"; break;               
-            }
-            Quest [] quests = JsonSerializer.Deserialize<Quest[]>(Preferences.Get(fileName, null)) ?? Array.Empty<Quest>();
-            quests[int.Parse(quest.number) - 1] = quest;
-            Preferences.Set(fileName, JsonSerializer.Serialize(quests));
-        }
-
-
-        public static void EditPreferences(Quest[] quests)
-        {
-            string fileName = "";
-            switch (quests[0].Theme)
-            {
-                case "Электробезопасность": fileName = "eb.json"; break;
-                case "Охрана труда": fileName = "ot.json"; break;
-                case "Работы на высоте": fileName = "vis.json"; break;
-            }
-            Preferences.Set(fileName, JsonSerializer.Serialize(quests));
-        }
-
-        public static Quest [] VaworitesCreate()
-        {
-            Quest[] questsEb = Array.Empty<Quest>();
-            Quest[] questsOt = Array.Empty<Quest>();
-            Quest[] questsVis = Array.Empty<Quest>();
-            if (Preferences.ContainsKey("eb.json")) { questsEb = JsonSerializer.Deserialize<Quest[]>(Preferences.Get("eb.json", null)) ?? Array.Empty<Quest>(); }
-            if (Preferences.ContainsKey("ot.json")) { questsOt = JsonSerializer.Deserialize<Quest[]>(Preferences.Get("ot.json", null)) ?? Array.Empty<Quest>(); }
-            if (Preferences.ContainsKey("vis.json")) { questsVis = JsonSerializer.Deserialize<Quest[]>(Preferences.Get("vis.json", null)) ?? Array.Empty<Quest>(); }
-            var questsConcat = questsEb.Concat(questsOt).Concat(questsVis) ?? Array.Empty<Quest>();
-            Quest[] vaworitesQ = new Quest[0];
-            foreach (Quest quest in questsConcat)
-            {
-                 if (quest != null && quest.Vaworites)
-                 {
-                     Array.Resize(ref vaworitesQ, vaworitesQ.Length + 1);
-                     vaworitesQ[vaworitesQ.Length - 1] = quest;
-                 }
-            }
-            return vaworitesQ;
-
-        }
-
-        public static async Task  <List<Quest>> DeserializeToList(string filename)
+        public static async Task  <ObservableCollection<Quest>> DeserializeToList(string filename)
         {
             //Проверяем, существует ли файл в Preferences
             if (Preferences.Get(filename, null) == null)
@@ -120,26 +62,32 @@ namespace TestMulti.Services
                 }
                 using StreamReader reader = new StreamReader(stream);
                 var jsonContent = reader.ReadToEnd();
-                List<Quest> quests = JsonSerializer.Deserialize<List<Quest>>(jsonContent) ?? new List<Quest>();  // считали из файла ресурсов
+                ObservableCollection<Quest> quests = JsonSerializer.Deserialize<ObservableCollection<Quest>>(jsonContent) ?? new ObservableCollection<Quest>();  // считали из файла ресурсов
                 string jsonString = JsonSerializer.Serialize(quests);
                 Preferences.Set(filename, jsonString);
                 return quests;
             }
             else
             {                
-                if (filename == "vaworites.json") return await VaworitesCreate(true);
-                return JsonSerializer.Deserialize<List<Quest>>(Preferences.Get(filename, null)) ?? new List<Quest>();
+                if (filename == "vaworites.json") return await VaworitesCreate();
+                return JsonSerializer.Deserialize<ObservableCollection<Quest>>(Preferences.Get(filename, null)) ?? new ObservableCollection<Quest>();
             }
         }
 
-        public static async Task<List<Quest>> VaworitesCreate(bool toList)
+        public static async Task<ObservableCollection<Quest>> VaworitesCreate()
         {
             List<Quest> q = new List<Quest>();
+            ObservableCollection<Quest> myObservableCollection = new ObservableCollection<Quest>();
             foreach (string key in AppConstants.THEMES.Keys)
             {
                 q.AddRange(await DeserializeToList(key)); // Добавляем все элементы из списка
+            }            
+            q = q.Where(q => q.vaworites).ToList(); // Фильтруем и возвращаем список
+            foreach (var quest in q)
+            {
+                myObservableCollection.Add(quest);
             }
-            return q.Where(q => q.vaworites).ToList(); // Фильтруем и возвращаем список
+            return myObservableCollection;
         }
 
 

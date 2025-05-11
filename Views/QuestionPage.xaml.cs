@@ -1,6 +1,5 @@
 namespace TestMulti.Views;
 
-[QueryProperty(nameof(PageTheme), "theme")]
 
 public partial class QuestionPage : ContentPage
 {
@@ -23,7 +22,7 @@ public partial class QuestionPage : ContentPage
 
     private void UpdatePageAppearance()
     {
-        BindingContext = new ViewModels.QuestViewModel(PageTheme);
+        BindingContext = new ViewModels.QuestViewModel();
     }
 
 

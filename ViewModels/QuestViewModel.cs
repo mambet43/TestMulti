@@ -12,13 +12,12 @@ public partial class QuestViewModel : QuestThemeViewModel
 {
     [ObservableProperty]
     private int currentPosition;
-    private MainPage mainPage;
 
-    public QuestViewModel(string theme):base(theme)
+    
+
+    public QuestViewModel()
     {
-        mainPage = MainPage.Instance;
-  
-
+       
     }
 
     [RelayCommand]
@@ -41,12 +40,12 @@ public partial class QuestViewModel : QuestThemeViewModel
 
 
 
-        [RelayCommand]
+    [RelayCommand]
     private void AnswerSelected(Answer selectedAnswer)
     {
         if (selectedAnswer == null) return;
 
-        var currentQuest = base.Quest[currentPosition];
+        var currentQuest = base.QuestCollection[currentPosition];
         bool isQuestUpdated = false;
 
         foreach (Answer answer in currentQuest.answers)
@@ -64,15 +63,12 @@ public partial class QuestViewModel : QuestThemeViewModel
         }
 
         if (isQuestUpdated)
-        {
-            //JsonManager.EditPreferences(currentQuest); // Обновляем только один раз
+        {           
             if (selectedAnswer.correct && CurrentPosition < QuestCollection.Count - 1)
             {
-                CurrentPosition++; // Переход к следующему вопросу
+                CurrentPosition++; 
             }
         }
-        //mainPage.LoadQuest();
-
 
     }
 

@@ -15,10 +15,13 @@ namespace TestMulti
 
 {
     public partial class MainPage : ContentPage
-    {    
+    {
+
+        public static MainPage Instance;
         public MainPage()
         {            
             InitializeComponent();
+            Instance = this;
             BindingContext = new ViewModels.MainPage(this);
         }
        

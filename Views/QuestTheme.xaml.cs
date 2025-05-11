@@ -3,20 +3,11 @@ using TestMulti.ViewModels;
 
 namespace TestMulti.Views;
 
-[QueryProperty(nameof(PageParam), "param")]
 
 
 public partial class QuestTheme : ContentPage
 {
-    private string _pageParam;
-    public string PageParam
-    {
-        get => _pageParam;
-        set
-        {
-            _pageParam = value;            
-        }
-    }
+    
 
     protected override void OnAppearing()
     {
@@ -27,7 +18,7 @@ public partial class QuestTheme : ContentPage
 
     private void UpdatePageAppearance()
     {
-        BindingContext = new QuestThemeViewModel(PageParam);
+        BindingContext = new QuestThemeViewModel();
     }
     public QuestTheme()
 	{

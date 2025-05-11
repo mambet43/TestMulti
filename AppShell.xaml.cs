@@ -1,6 +1,7 @@
 ﻿using TestMulti.Services;
 using TestMulti.Views;
 using TestMulti.ViewModels;
+using TestMulti.Models;
 
 namespace TestMulti
 {
@@ -41,9 +42,7 @@ namespace TestMulti
 
             if (args.Source == ShellNavigationSource.PopToRoot)
             {
-                if(QuestThemeViewModel.Instance.Theme != "Избранные вопросы")
-                    JsonManager.EditPreferences(QuestThemeViewModel.Instance.Quest);
-                ViewModels.MainPage.Instance.LoadQuest();
+                JsonManager.EditPreferences(Theme.CurrentQuests);
             }
         }
     }

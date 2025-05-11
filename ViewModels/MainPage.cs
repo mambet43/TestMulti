@@ -18,15 +18,16 @@ using TestMulti.Views;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using TestMulti.Constants;
+using TestMulti.Extentions;
 
 namespace TestMulti.ViewModels;
 
 public partial class MainPage : ObservableObject, INotifyPropertyChanged
 {
-    public ObservableCollection<Theme> ThemesCollection { get; } = new ObservableCollection<Theme>();
 
-    
-    public List<Theme> Themes { get; set; } = new List<Theme>();
+    [ObservableProperty]
+    private ObservableCollection<Theme> themes = new ObservableCollection<Theme>();
+
     public static MainPage Instance { get; private set; }
 
     private readonly ContentPage mainPage;
@@ -57,47 +58,10 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
         }
     }
 
-    [RelayCommand]
-    public async Task DelPreferences(string file)
-    {
-        bool result = await mainPage.DisplayAlert(
-                        "Подтверждение",
-                        "Вы точно хотите удалить все данные, чтобы начать заново?",
-                        "Да",
-                        "Отмена");
-        if (result)
-        {
-            Preferences.Remove(file);
-            LoadQuest();
-        }
-        
-    }
-
-    [RelayCommand]
-    private async void StartClickedEb()
-    {
-        await Shell.Current.GoToAsync("QuestionPage?theme=eb");
-    }
-    [RelayCommand]
-    private async void StartClickedOt()
-    {
-        await Shell.Current.GoToAsync("QuestionPage?theme=ot");
-    }
-    [RelayCommand]
-    private async void StartClickedVis()
-    {
-        await Shell.Current.GoToAsync("QuestionPage?theme=vis");
-    }
 
 
 
-    [RelayCommand]
-    private async void RetryClickedEb()
-    {
-        await Shell.Current.GoToAsync("QuestionPage?theme=eb");
-    }
-
-    private async Task <List<Theme>> LoadThemeList()
+    private async Task<ObservableCollection<Theme>> LoadThemeList()
     {       
         foreach (KeyValuePair<string, string> kvp in AppConstants.THEMES)
         {
@@ -109,12 +73,12 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
             theme.QuestsForReplay = theme.Quests.Where 
                     (q => (q.QuestColor == "Red"   || 
                            q.QuestColor == "Gray") ||
-                           q.Ellapsed >= AppConstants.MAX_TIME_FOR_ANSWER).ToList();
-            theme.QuestsErr = theme.Quests.Where(q => (q.QuestColor == "Red")).ToList();
-            theme.QuestsVaworite = theme.Quests.Where(q => (q.vaworites)).ToList();
-            theme.QuestsLong = theme.Quests.Where(q => (q.Ellapsed >= AppConstants.MAX_TIME_FOR_ANSWER)).ToList();
-            theme.QuestsCorrect = theme.Quests.Where(q => (q.QuestColor == "Green")).ToList();
-            theme.QuestsLearn = theme.Quests.Where(q => (q.QuestColor != "Gray")).ToList();
+                           q.Ellapsed >= AppConstants.MAX_TIME_FOR_ANSWER).ToObservableCollection();
+            theme.QuestsErr = theme.Quests.Where(q => (q.QuestColor == "Red")).ToObservableCollection();
+            theme.QuestsVaworite = theme.Quests.Where(q => (q.vaworites)).ToObservableCollection();
+            theme.QuestsLong = theme.Quests.Where(q => (q.Ellapsed >= AppConstants.MAX_TIME_FOR_ANSWER)).ToObservableCollection();
+            theme.QuestsCorrect = theme.Quests.Where(q => (q.QuestColor == "Green")).ToObservableCollection();
+            theme.QuestsLearn = theme.Quests.Where(q => (q.QuestColor != "Gray")).ToObservableCollection();
             theme.LengthQ = theme.Quests.Count;
             theme.Series = new ObservableCollection<ISeries>(
             GaugeGenerator.BuildSolidGauge(
@@ -127,16 +91,13 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
                 {
                     series.InnerRadius = 10;
                 })));
-            Themes.Add(theme);
-            ThemesCollection.Add(theme);
+            Themes.Add(theme);           
         }
         return Themes;
     }
     public async void LoadQuest()
     {
-        Themes = await LoadThemeList();        
-
-        
+        Themes = await LoadThemeList();              
 
     }
     public static void SetStyle(string name, PieSeries<ObservableValue> series, SKColor color)

@@ -12,38 +12,14 @@ namespace TestMulti.ViewModels;
 public partial class QuestThemeViewModel : ObservableObject
 {
     public ObservableCollection<Quest> QuestCollection { get; } = new ObservableCollection<Quest>();
-      
+     
 
-    [ObservableProperty]
-    public string Theme { get; set; }
-
-    public string FileName { get; set; }
-
-    private MainPage mainPage = MainPage.Instance;
-    public static QuestThemeViewModel Instance { get; private set; }
-    public Quest[] Quest { get; set; } 
-
-    private async void LoadQuest(string theme)
-    {
-
-    }
-
-    public QuestThemeViewModel(string theme)
+    public QuestThemeViewModel()
 	{
-        //switch (theme)  
-        //{
-        //    case "eb":          Theme = "Электробезопасность"; Quest = mainPage.QuestsEb;  break;
-        //    case "ot":          Theme = "Охрана труда"; Quest = mainPage.QuestsOt; break;
-        //    case "vis":         Theme = "Работы на высоте"; Quest = mainPage.QuestsVis; break;
-        //    case "vaworites":   Theme = "Избранные вопросы"; Quest = JsonManager.VaworitesCreate();  break;
-        //}
-        //Instance = this;
-        //FileName = theme + ".json";
-        //LoadQuest(FileName);
-        //foreach (var quest in Quest)
-        //{
-        //    QuestCollection.Add(quest);
-        //}
+        foreach (var quest in Theme.CurrentQuests)
+        {
+            QuestCollection.Add(quest);
+        }
     }
 
     [RelayCommand]
@@ -53,9 +29,8 @@ public partial class QuestThemeViewModel : ObservableObject
         {           
             quest.Vaworites = !quest.Vaworites;
         }
-        JsonManager.EditPreferences(quest);            
-        var mainPage = MainPage.Instance;
-        mainPage.LoadQuest();
+        JsonManager.EditPreferences(quest);          
+        
     }
 
  

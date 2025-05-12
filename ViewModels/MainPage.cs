@@ -19,6 +19,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using TestMulti.Constants;
 using TestMulti.Extentions;
+using System.Text.Json;
 
 namespace TestMulti.ViewModels;
 
@@ -38,6 +39,7 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
         LoadQuest();
         Instance = this;
         mainPage = page;
+        
         Routing.RegisterRoute("QuestionPage", typeof(QuestionPage));
     }
 
@@ -56,6 +58,23 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
         {
             Debug.WriteLine("Not enough points to get the second to last element.");
         }
+    }
+
+    public async void UpdateQuest(ObservableCollection<Quest> q)
+    {
+        foreach (KeyValuePair<string, string> kvp in AppConstants.THEMES)
+        {
+            string fileName = kvp.Key;
+            ObservableCollection<Quest> quests = await JsonManager.DeserializeToList(fileName);
+            foreach (Theme theme in Themes)
+            {
+                if (theme.Title == q[0].Theme)
+                {
+                    theme.Quests = q;
+                }
+            }
+        }
+
     }
 
 
@@ -97,8 +116,7 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
     }
     public async void LoadQuest()
     {
-        Themes = await LoadThemeList();              
-
+        Themes = await LoadThemeList();  
     }
     public static void SetStyle(string name, PieSeries<ObservableValue> series, SKColor color)
     {

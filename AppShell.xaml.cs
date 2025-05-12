@@ -36,13 +36,14 @@ namespace TestMulti
             await Shell.Current.GoToAsync("QuestTheme?param=vaworites", false);
             Shell.Current.FlyoutIsPresented = false;
         }
-        protected override void OnNavigating(ShellNavigatingEventArgs args)
+        protected override async void OnNavigating(ShellNavigatingEventArgs args)
         {
             base.OnNavigating(args);
 
             if (args.Source == ShellNavigationSource.PopToRoot)
             {
                 JsonManager.EditPreferences(Theme.CurrentQuests);
+                ViewModels.MainPage.Instance.UpdateQuest(Theme.CurrentQuests); 
             }
         }
     }

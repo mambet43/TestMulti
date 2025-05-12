@@ -35,8 +35,7 @@ namespace TestMulti.Models
         public ObservableCollection<Quest> QuestsLearn { get; set; }
 
         public static ObservableCollection<Quest> CurrentQuests { get; set; }
-
-        [ObservableProperty]
+               
         public int LengthQ { get; set; }
         public int LengthReplay => QuestsForReplay.Count;
         public int LengthErr => QuestsErr.Count;

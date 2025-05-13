@@ -25,7 +25,7 @@ namespace TestMulti.Services
             if (key != null)
             {
                 fileName = key;
-                List<Quest> quests = JsonSerializer.Deserialize<List<Quest>>(Preferences.Get(fileName, null)) ?? new List<Quest>();
+                ObservableCollection<Quest> quests = JsonSerializer.Deserialize<ObservableCollection<Quest>>(Preferences.Get(fileName, null)) ?? new ObservableCollection<Quest>();
                 quests[int.Parse(quest.number) - 1] = quest;
                 Preferences.Set(fileName, JsonSerializer.Serialize(quests));
             }

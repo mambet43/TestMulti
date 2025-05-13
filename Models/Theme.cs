@@ -18,6 +18,7 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using TestMulti.Views;
+using TestMulti.Extentions;
 
 namespace TestMulti.Models
 {
@@ -35,18 +36,24 @@ namespace TestMulti.Models
         public ObservableCollection<Quest> QuestsLearn { get; set; }
 
         public static ObservableCollection<Quest> CurrentQuests { get; set; }
-               
-        public int LengthQ { get; set; }
-        public int LengthReplay => QuestsForReplay.Count;
-        public int LengthErr => QuestsErr.Count;
-        public int LengthVaworite => QuestsVaworite.Count;
-        public int LengthLong => QuestsLong.Count;
-        public int LengthCorrect => QuestsCorrect.Count;
-        public int LengthLearn => QuestsLearn.Count;
+        [ObservableProperty]
+        private int lengthQ;
+        [ObservableProperty]
+        private int lengthReplay;
+        [ObservableProperty]
+        private int lengthErr;
+        [ObservableProperty]
+        private int lengthVaworite;
+        [ObservableProperty]
+        private int lengthLong;
+        [ObservableProperty]
+        private int lengthCorrect;
+        [ObservableProperty]
+        private int lengthLearn; 
 
         private MainPage mainPage = MainPage.Instance;
-
-        public ObservableCollection<ISeries> Series { get; set; }
+        [ObservableProperty]
+        private ObservableCollection<ISeries> series;
 
 
         [RelayCommand]
@@ -99,7 +106,7 @@ namespace TestMulti.Models
             }
         }
 
-
+        
 
         public Theme()
         { 

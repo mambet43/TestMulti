@@ -20,6 +20,7 @@ using System.ComponentModel;
 using TestMulti.Constants;
 using TestMulti.Extentions;
 using System.Text.Json;
+using Microsoft.Maui.Storage;
 
 namespace TestMulti.ViewModels;
 
@@ -64,15 +65,31 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
     {
         foreach (KeyValuePair<string, string> kvp in AppConstants.THEMES)
         {
-            string fileName = kvp.Key;
-            ObservableCollection<Quest> quests = await JsonManager.DeserializeToList(fileName);
-            foreach (Theme theme in Themes)
+            if (q[0].Theme == kvp.Value)
             {
-                if (theme.Title == q[0].Theme)
+                string fileName = kvp.Key;
+                ObservableCollection<Quest> quests = await JsonManager.DeserializeToList(fileName);
+                foreach (Theme theme in Themes)
                 {
-                    theme.Quests = q;
+                    if (theme.Title == q[0].Theme)
+                    {
+                        theme.Quests = q;
+                        theme.Quests.ForEach(q => q.Theme = theme.Title);
+                        theme.QuestsForReplay = theme.Quests.Where
+                                (q => (q.QuestColor == "Red" ||
+                                       q.QuestColor == "Gray") ||
+                                       q.Ellapsed >= AppConstants.MAX_TIME_FOR_ANSWER).ToObservableCollection();
+                        theme.QuestsErr = theme.Quests.Where(q => (q.QuestColor == "Red")).ToObservableCollection();
+                        theme.QuestsVaworite = theme.Quests.Where(q => (q.vaworites)).ToObservableCollection();
+                        theme.QuestsLong = theme.Quests.Where(q => (q.Ellapsed >= AppConstants.MAX_TIME_FOR_ANSWER)).ToObservableCollection();
+                        theme.QuestsCorrect = theme.Quests.Where(q => (q.QuestColor == "Green")).ToObservableCollection();
+                        theme.QuestsLearn = theme.Quests.Where(q => (q.QuestColor != "Gray")).ToObservableCollection();
+                        theme.LengthQ = theme.Quests.Count;
+                        break;
+                    }
                 }
             }
+            break;
         }
 
     }
@@ -88,9 +105,9 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
             theme.FileName = kvp.Key;
             theme.Title = kvp.Value;
             theme.Quests = await JsonManager.DeserializeToList(theme.FileName);
-            theme.Quests.ForEach(q => q.Theme += theme.Title);
-            theme.QuestsForReplay = theme.Quests.Where 
-                    (q => (q.QuestColor == "Red"   || 
+            theme.Quests.ForEach(q => q.Theme = theme.Title);
+            theme.QuestsForReplay = theme.Quests.Where
+                    (q => (q.QuestColor == "Red" ||
                            q.QuestColor == "Gray") ||
                            q.Ellapsed >= AppConstants.MAX_TIME_FOR_ANSWER).ToObservableCollection();
             theme.QuestsErr = theme.Quests.Where(q => (q.QuestColor == "Red")).ToObservableCollection();

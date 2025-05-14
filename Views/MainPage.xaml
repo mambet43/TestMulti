@@ -23,12 +23,12 @@
                         WidthRequest="350"
                         MinimumHeightRequest="400">
 
-                        <StackLayout Spacing="2">
+                        <StackLayout Spacing="0">
                             <Label 
                                 Text="{Binding Title}" 
                                 FontSize="20" 
                                 HorizontalOptions="Center" 
-                                Margin="0,0,0,10" />
+                                Margin="0,0,0,0" />
 
                             <lvc:PieChart 
                                 Series="{Binding Series}" 
@@ -37,8 +37,7 @@
                                 MaxAngle="270" 
                                 MinValue="0" 
                                 MaxValue="{Binding LengthQ}" 
-                                AnimationsSpeed="00:00:05.500" 
-                                PressedCommand="{Binding PressedCommand}" />
+                                AnimationsSpeed="00:00:05.500" />
 
                             <FlexLayout 
                                 Direction="Row" 

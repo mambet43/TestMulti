@@ -12,14 +12,17 @@ namespace TestMulti.ViewModels;
 public partial class QuestThemeViewModel : ObservableObject
 {
     public ObservableCollection<Quest> QuestCollection { get; } = new ObservableCollection<Quest>();
-     
+    [ObservableProperty]
+    private string titlePage;
 
     public QuestThemeViewModel()
-	{
+	{        
         foreach (var quest in Theme.CurrentQuests)
         {
             QuestCollection.Add(quest);
         }
+        titlePage = QuestCollection != null && QuestCollection.Count > 0 ? QuestCollection[0].Theme : "Нет вопросов";
+
     }
 
     [RelayCommand]

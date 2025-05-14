@@ -31,4 +31,5 @@ public partial class QuestionPage : ContentPage
 		InitializeComponent();
 
     }
+
 }

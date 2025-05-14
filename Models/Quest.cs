@@ -22,7 +22,7 @@ namespace TestMulti.Models
 
         public string QuestColor { get; set; } = "Gray"; // Серый цвет по умолчанию
         public string AnswerColor { get; set; } = "Gray";  // Серый цвет по умолчанию
-        public int Ellapsed { get; set; } = 0; // Время, прошедшее с момента начала вопроса
+        public double Ellapsed { get; set; } = 0; // Время, прошедшее с момента начала вопроса
 
         public static Quest [] GetForLearn(Quest[] quests)
         {

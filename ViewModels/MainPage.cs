@@ -1,26 +1,10 @@
-using LiveChartsCore.Defaults;
-using LiveChartsCore.Measure;
-using LiveChartsCore.SkiaSharpView.Extensions;
-using LiveChartsCore.SkiaSharpView;
-using LiveChartsCore;
-using SkiaSharp;
-using LiveChartsCore.SkiaSharpView.Painting;
-using CommunityToolkit.Mvvm.Input;
-using LiveChartsCore.Drawing;
-using LiveChartsCore.Kernel.Events;
-using System.Diagnostics;
-using LiveChartsCore.Kernel;
+
 using TestMulti.Models;
-using TestMulti.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System.Globalization;
 using TestMulti.Views;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using TestMulti.Constants;
-using TestMulti.Extentions;
-using System.Text.Json;
-using Microsoft.Maui.Storage;
 
 namespace TestMulti.ViewModels;
 
@@ -45,19 +29,17 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
 
     
 
+    
 
-
-    private async Task<ObservableCollection<Theme>> LoadThemeList()
+    public  void LoadQuest()
     {
-       
-        return Themes=Theme.Themes;
-    }
-
-
-    public async void LoadQuest()
-    {
-        new Theme();
-        Themes = await LoadThemeList();  
+        themes.Clear();
+        foreach (KeyValuePair<string, string> kvp in AppConstants.THEMES)
+        {            
+            Theme theme = new Theme(kvp.Key, kvp.Value);
+            themes.Add(theme);
+        }
+           
     }
     
 

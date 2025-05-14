@@ -9,9 +9,11 @@ namespace TestMulti.Constants
     public static class AppConstants
     {
         public readonly static Dictionary<string, string> THEMES = new Dictionary<string, string> {
-                        {"eb.json", "Электробезопасность"},
-                        {"ot.json", "Охрана труда"},
-                        {"vis.json", "Работы на высоте"} };
+                        {"eb4.json",     "Электробезопасность 4 гр."},
+                        {"eb5.json",     "Электробезопасность 5 гр."},
+                        {"ot.json",      "Охрана труда"},
+                        {"vis.json",     "Работы на высоте"},
+                        {"pb.json",      "Пожарная безопасность"}};
         public const int MAX_TIME_FOR_ANSWER = 15;
     }
 }

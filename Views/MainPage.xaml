@@ -85,7 +85,7 @@
                                     FontSize="18" 
                                     ImageSource="del.png" 
                                     Command="{Binding DelPreferencesCommand}" 
-                                    CommandParameter="eb.json" />
+                                    CommandParameter="{Binding FileName}" />
                             </FlexLayout>
                         </StackLayout>
                     </Frame>

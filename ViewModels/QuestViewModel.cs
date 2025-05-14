@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Maui.Storage;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows.Input;
 using TestMulti.Models;
 using TestMulti.Services;
@@ -12,12 +13,13 @@ public partial class QuestViewModel : QuestThemeViewModel
 {
     [ObservableProperty]
     private int currentPosition;
+    private Stopwatch stopwatch = new Stopwatch();
 
-    
+
 
     public QuestViewModel()
-    {
-       
+    {        
+        
     }
 
     [RelayCommand]
@@ -37,7 +39,12 @@ public partial class QuestViewModel : QuestThemeViewModel
             CurrentPosition--;
         }
     }
-
+    [RelayCommand]
+    private void CurrentItemChanged()
+    {
+        stopwatch.Reset();
+        stopwatch.Start();
+    }
 
 
     [RelayCommand]
@@ -54,6 +61,8 @@ public partial class QuestViewModel : QuestThemeViewModel
             {
                 answer.BackgroundColorHex = selectedAnswer.correct ? "#5F9EA0" : "#D69D82";
                 currentQuest.QuestColor = selectedAnswer.correct && currentQuest.QuestColor != "Red" ? "Green" : "Red";
+                stopwatch.Stop();
+                currentQuest.Ellapsed = Math.Max(currentQuest.Ellapsed, stopwatch.Elapsed.TotalSeconds);
                 isQuestUpdated = true;
             }
             else

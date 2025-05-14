@@ -43,7 +43,7 @@ namespace TestMulti
             if (args.Source == ShellNavigationSource.PopToRoot)
             {
                 JsonManager.EditPreferences(Theme.CurrentQuests);
-               
+                ViewModels.MainPage.Instance.LoadQuest();
             }
         }
     }

@@ -27,7 +27,6 @@ namespace TestMulti.Models
 {
     public partial class Theme : ObservableObject
     {
-        public static ObservableCollection<Theme> Themes { get; set; } = new ObservableCollection<Theme>();
         public string Title { get; set; }
         public string FileName { get; set; }
         public ObservableCollection<Quest> Quests { get; set; }
@@ -106,6 +105,7 @@ namespace TestMulti.Models
             if (result)
             {
                 Preferences.Remove(file);
+                ViewModels.MainPage.Instance.LoadQuest();
             }
         }
         public static void SetStyle(string name, PieSeries<ObservableValue> series, SKColor color)
@@ -120,47 +120,45 @@ namespace TestMulti.Models
             series.Fill = new SolidColorPaint(color);
         }
 
-        public void LoaderThemes()
+      
+
+
+        public Theme(string filename, string title)
         {
-            foreach (KeyValuePair<string, string> kvp in AppConstants.THEMES)
+            FileName = filename;
+            Title = title;
+            Task.Run(async () =>
             {
-                Theme theme = new Theme();
-                theme.FileName = kvp.Key;
-                theme.Title = kvp.Value;
-                Task.Run(async () =>
+                Quests = await JsonManager.DeserializeToList(FileName);
+            }).Wait();
+            lengthQ = Quests.Count;
+            Quests.ForEach(q => q.Theme = Title);
+            QuestsForReplay = Quests.Where
+            (q => (q.QuestColor == "Red" ||
+                           q.QuestColor == "Gray") ||
+                           q.Ellapsed >= AppConstants.MAX_TIME_FOR_ANSWER).ToObservableCollection();
+            lengthReplay = QuestsForReplay.Count;
+            QuestsErr = Quests.Where(q => (q.QuestColor == "Red")).ToObservableCollection();
+            lengthErr = QuestsErr.Count;            
+            QuestsVaworite = Quests.Where(q => (q.vaworites)).ToObservableCollection();
+            lengthVaworite = QuestsVaworite.Count;
+            QuestsLong = Quests.Where(q => (q.Ellapsed >= AppConstants.MAX_TIME_FOR_ANSWER)).ToObservableCollection();
+            lengthLong = QuestsLong.Count;
+            QuestsCorrect = Quests.Where(q => (q.QuestColor == "Green")).ToObservableCollection();
+            lengthCorrect = QuestsCorrect.Count;
+            QuestsLearn = Quests.Where(q => (q.QuestColor != "Gray")).ToObservableCollection();
+            lengthLearn = QuestsLearn.Count;
+            Series = new ObservableCollection<ISeries>(
+            GaugeGenerator.BuildSolidGauge(
+            new GaugeItem(LengthErr, series => SetStyle("Ошибок", series, SKColors.Red)),
+            new GaugeItem(LengthLong, series => SetStyle("Долгих ответов", series, SKColors.Yellow)),
+            new GaugeItem(LengthCorrect, series => SetStyle("Верных", series, SKColors.Green)),
+                new GaugeItem(LengthLearn, series => SetStyle("Пройдено", series, SKColors.Blue)),
+                new GaugeItem(LengthQ, series => SetStyle("Вопросов в теме", series, SKColors.Blue)),
+                new GaugeItem(GaugeItem.Background, series =>
                 {
-                    theme.Quests = await JsonManager.DeserializeToList(FileName);
-                }).Wait();
-                theme.Quests.ForEach(q => q.Theme = theme.Title);
-                theme.QuestsForReplay = theme.Quests.Where
-                        (q => (q.QuestColor == "Red" ||
-                               q.QuestColor == "Gray") ||
-                               q.Ellapsed >= AppConstants.MAX_TIME_FOR_ANSWER).ToObservableCollection();
-                theme.QuestsErr = theme.Quests.Where(q => (q.QuestColor == "Red")).ToObservableCollection();
-                theme.QuestsVaworite = theme.Quests.Where(q => (q.vaworites)).ToObservableCollection();
-                theme.QuestsLong = theme.Quests.Where(q => (q.Ellapsed >= AppConstants.MAX_TIME_FOR_ANSWER)).ToObservableCollection();
-                theme.QuestsCorrect = theme.Quests.Where(q => (q.QuestColor == "Green")).ToObservableCollection();
-                theme.QuestsLearn = theme.Quests.Where(q => (q.QuestColor != "Gray")).ToObservableCollection();
-                theme.LengthQ = theme.Quests.Count;
-                theme.Series = new ObservableCollection<ISeries>(
-                GaugeGenerator.BuildSolidGauge(
-                    new GaugeItem(theme.LengthErr, series => SetStyle("Ошибок", series, SKColors.Red)),
-                    new GaugeItem(theme.LengthLong, series => SetStyle("Долгих ответов", series, SKColors.Yellow)),
-                    new GaugeItem(theme.LengthCorrect, series => SetStyle("Верных", series, SKColors.Green)),
-                    new GaugeItem(theme.LengthLearn, series => SetStyle("Пройдено", series, SKColors.Blue)),
-                    new GaugeItem(theme.LengthQ, series => SetStyle("Вопросов в теме", series, SKColors.Blue)),
-                    new GaugeItem(GaugeItem.Background, series =>
-                    {
-                        series.InnerRadius = 10;
-                    })));
-                Themes.Add(this);
-            }
-        }
-
-
-        public Theme()
-        {
-            LoaderThemes();
+                    series.InnerRadius = 10;
+                })));
         }
     }
 

@@ -32,7 +32,7 @@ namespace TestMulti.Services
         }
 
 
-        public static void EditPreferences(ObservableCollection<Quest> quests)
+        public static async Task EditPreferences(ObservableCollection<Quest> quests)
         {
             //string[] uniqueFileNames = Array.Empty<string>();            
             //foreach (Quest q in quests)
@@ -83,7 +83,7 @@ namespace TestMulti.Services
             foreach (string fName in uniqueFileNames)
             {
                 string json = Preferences.Get(fName, null);
-                ObservableCollection<Quest> deserializedCollection = JsonSerializer.Deserialize<ObservableCollection<Quest>>(json);
+                ObservableCollection<Quest> deserializedCollection =  JsonSerializer.Deserialize<ObservableCollection<Quest>>(json);
 
                 QfromPreferences.Add(deserializedCollection ?? new ObservableCollection<Quest>());
             }
@@ -118,7 +118,6 @@ namespace TestMulti.Services
             //Проверяем, существует ли файл в Preferences
             if (Preferences.Get(filename, null) == null)
             {
-
                 var assembly = Assembly.GetExecutingAssembly();
                 var resourcePath = $"TestMulti.Resources.Raw.{filename}";
                 using Stream stream = assembly.GetManifestResourceStream(resourcePath);
@@ -129,8 +128,6 @@ namespace TestMulti.Services
                 using StreamReader reader = new StreamReader(stream);
                 var jsonContent = reader.ReadToEnd();
                 ObservableCollection<Quest> quests = JsonSerializer.Deserialize<ObservableCollection<Quest>>(jsonContent) ?? new ObservableCollection<Quest>();  // считали из файла ресурсов
-                string jsonString = JsonSerializer.Serialize(quests);
-                Preferences.Set(filename, jsonString);
                 return quests;
             }
             else

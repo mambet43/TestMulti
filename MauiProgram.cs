@@ -4,7 +4,7 @@ using SkiaSharp.Views.Maui.Controls.Hosting;
 using Microsoft.Extensions.Logging;
 using LiveChartsCore.SkiaSharpView.Maui;
 using Microsoft.Maui.LifecycleEvents;
-
+using CommunityToolkit.Maui;
 
 namespace TestMulti
 {
@@ -17,6 +17,7 @@ namespace TestMulti
                 .UseSkiaSharp()
                 .UseLiveCharts()
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit() 
                 .ConfigureLifecycleEvents(events =>
                 {
 #if WINDOWS

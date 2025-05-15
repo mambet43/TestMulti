@@ -1,8 +1,9 @@
-﻿using TestMulti.Services;
-using TestMulti.Views;
-using TestMulti.ViewModels;
-using TestMulti.Models;
+﻿using CommunityToolkit.Maui.Views;
 using TestMulti.Constants;
+using TestMulti.Models;
+using TestMulti.Services;
+using TestMulti.ViewModels;
+using TestMulti.Views;
 
 
 namespace TestMulti
@@ -53,7 +54,11 @@ namespace TestMulti
 
             if (args.Source == ShellNavigationSource.PopToRoot)
             {
-                JsonManager.EditPreferences(Theme.CurrentQuests);
+                var popup = new LoadingPopup();
+                this.ShowPopup(popup);
+                await Task.Delay(5000);
+                await JsonManager.EditPreferences(Theme.CurrentQuests);
+                popup.Close(); 
                 ViewModels.MainPage.Instance.LoadQuest();
             }
         }

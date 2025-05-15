@@ -11,7 +11,7 @@
                 <DataTemplate x:DataType="models:Quest">
                     
                         <StackLayout>
-                        <Border Stroke="DarkGray" StrokeShape="RoundRectangle 5" Margin="20" Padding="20" HeightRequest="460">
+                        <Border Stroke="DarkGray" StrokeShape="RoundRectangle 5" Margin="20" Padding="20" MinimumHeightRequest="460">
                             <ScrollView>
                             <StackLayout>
                                 <Grid Padding="10,0,10,0" Style="{StaticResource TitleQuestBackground}">

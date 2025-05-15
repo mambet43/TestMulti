@@ -7,7 +7,7 @@
     xmlns:local="clr-namespace:TestMulti"
     xmlns:view="clr-namespace:TestMulti.Views"
     Shell.FlyoutBehavior="Flyout"
-    Shell.FlyoutWidth="230"
+    Shell.FlyoutWidth="255"
     FlyoutBackgroundColor="{StaticResource BackColorC}"
     BackgroundColor="{StaticResource BackColorB}"   
     Title="TestMulti">
@@ -15,8 +15,8 @@
         Title="Главная"  
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage"/>
-    <MenuItem Text="Электробезопасность"  Clicked="OnMenuItemClickedEb"/>
+    <!--<MenuItem Text="Электробезопасность"  Clicked="OnMenuItemClickedEb"/>
     <MenuItem Text="Охрана труда" Clicked="OnMenuItemClickedOt"/>
-    <MenuItem Text="Работы на высоте" Clicked="OnMenuItemClickedVis"/>
+    <MenuItem Text="Работы на высоте" Clicked="OnMenuItemClickedVis"/>-->
     <MenuItem Text="Избранные вопросы" Clicked="OnMenuItemClickedVaworites"/>
 </Shell>

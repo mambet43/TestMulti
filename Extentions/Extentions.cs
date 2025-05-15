@@ -9,6 +9,7 @@ namespace TestMulti.Extentions
 {
     static class Extentions
     {
+    
         public static void ForEach<T>(this ObservableCollection<T> collection, Action<T> action)
         {
             foreach (var item in collection)
@@ -16,7 +17,6 @@ namespace TestMulti.Extentions
                 action(item);
             }
         }
-
         public static void AddRange<T>(this ObservableCollection<T> collection, IEnumerable<T> items)
         {
             foreach (var item in items)

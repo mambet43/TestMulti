@@ -22,6 +22,7 @@ using LiveChartsCore.Themes;
 using SkiaSharp;
 using TestMulti.Extentions;
 using Microsoft.Maui.Storage;
+using System.Text.Json;
 
 namespace TestMulti.Models
 {
@@ -132,7 +133,11 @@ namespace TestMulti.Models
                 Quests = await JsonManager.DeserializeToList(FileName);
             }).Wait();
             lengthQ = Quests.Count;
-            Quests.ForEach(q => q.Theme = Title);
+            Quests.ForEach(q =>
+                        {
+                            q.Theme = Title;
+                            q.FileName = filename;
+                        });
             QuestsForReplay = Quests.Where
             (q => (q.QuestColor == "Red" ||
                            q.QuestColor == "Gray") ||
@@ -159,6 +164,7 @@ namespace TestMulti.Models
                 {
                     series.InnerRadius = 10;
                 })));
+            Preferences.Set(filename, JsonSerializer.Serialize(Quests));
         }
     }
 

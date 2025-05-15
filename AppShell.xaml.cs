@@ -2,6 +2,8 @@
 using TestMulti.Views;
 using TestMulti.ViewModels;
 using TestMulti.Models;
+using TestMulti.Constants;
+
 
 namespace TestMulti
 {
@@ -10,6 +12,15 @@ namespace TestMulti
         public AppShell()
         {
             InitializeComponent();
+            foreach (KeyValuePair<string, string> kvp in AppConstants.THEMES)
+            {
+                string filename = kvp.Key;
+                MenuItem menuItem = new MenuItem();
+                menuItem.Text = kvp.Value;
+                Items.Add(menuItem);
+            }
+
+
             Routing.RegisterRoute("QuestTheme", typeof(QuestTheme));
         }
         private async void OnMenuItemClickedEb(object sender, EventArgs e)

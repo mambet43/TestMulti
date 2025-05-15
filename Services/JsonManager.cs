@@ -34,14 +34,80 @@ namespace TestMulti.Services
 
         public static void EditPreferences(ObservableCollection<Quest> quests)
         {
-            string fileName;
-            var key = AppConstants.THEMES.FirstOrDefault(x => x.Value == quests[0].Theme).Key;
-            if (key!=null) 
-            { 
-                fileName = key;
-                Preferences.Set(fileName, JsonSerializer.Serialize(quests));
+            //string[] uniqueFileNames = Array.Empty<string>();            
+            //foreach (Quest q in quests)
+            //{
+            //    uniqueFileNames = quests
+            //        .Select(q => q.FileName)
+            //        .Where(fn => !string.IsNullOrEmpty(fn))
+            //        .Distinct()
+            //        .ToArray();               
+            //}
+            //ObservableCollection<Quest>[] QfromPreferences = new ObservableCollection<Quest>[uniqueFileNames.Length];
+            //for (int i = 0; i < QfromPreferences.Length; i++)
+            //{
+            //    for (int j = 0; j < uniqueFileNames.Length; j++) {
+            //    QfromPreferences[i] = JsonSerializer.Deserialize<ObservableCollection<Quest>>(Preferences.Get(uniqueFileNames[j], null)) ?? new ObservableCollection<Quest>();
+
+            //}
+
+            // тоже самое в двух варах с лямбдами. ХЗ как это работает дала нейронка
+            //// Получаем уникальные имена файлов
+            //var uniqueFileNames = quests
+            //    .Select(q => q.FileName)
+            //    .Where(fn => !string.IsNullOrEmpty(fn))
+            //    .Distinct()
+            //    .ToArray();
+
+            //// Создаем массив ObservableCollection<Quest>
+            //var QfromPreferences = uniqueFileNames
+            //    .Select(fn => JsonSerializer.Deserialize<ObservableCollection<Quest>>(Preferences.Get(fn, null)) ?? new ObservableCollection<Quest>())
+            //    .ToArray();
+
+
+            // тоже самое без лябд
+            // Получаем уникальные имена файлов
+            List<string> uniqueFileNames = new List<string>();
+
+            foreach (Quest q in quests)
+            {
+                if (!string.IsNullOrEmpty(q.FileName) && !uniqueFileNames.Contains(q.FileName))
+                {
+                    uniqueFileNames.Add(q.FileName);
+                }
             }
 
+            // Создаем коллекцию из преференсов 
+            ObservableCollection<ObservableCollection<Quest>> QfromPreferences = new ObservableCollection<ObservableCollection<Quest>>();
+
+            foreach (string fName in uniqueFileNames)
+            {
+                string json = Preferences.Get(fName, null);
+                ObservableCollection<Quest> deserializedCollection = JsonSerializer.Deserialize<ObservableCollection<Quest>>(json);
+
+                QfromPreferences.Add(deserializedCollection ?? new ObservableCollection<Quest>());
+            }
+
+
+            // заменяем полученные в преференсной коллекции.
+            foreach (Quest qFromInput in quests)
+            {
+                foreach (ObservableCollection<Quest> qCollectionFromPreferences in QfromPreferences)
+                {
+                    for (int i = 0; i < qCollectionFromPreferences.Count; i++)                     
+                    {
+                        if (qFromInput.FileName == qCollectionFromPreferences[i].FileName && 
+                            qFromInput.number == qCollectionFromPreferences[i].number) 
+                            qCollectionFromPreferences[i] = qFromInput;                        
+                    }
+                }            
+            }
+
+            // сохраняем обратно измененную версию
+            foreach (ObservableCollection<Quest> qCollectionFromPreferencesСhanged in QfromPreferences)
+            {
+                Preferences.Set(qCollectionFromPreferencesСhanged[0].FileName, JsonSerializer.Serialize(qCollectionFromPreferencesСhanged)); 
+            }
             
         }
 

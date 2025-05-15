@@ -18,8 +18,12 @@ public partial class QuestViewModel : QuestThemeViewModel
 
 
     public QuestViewModel()
-    {        
-        
+    {
+        foreach (var quest in Theme.CurrentQuests)
+        {
+            QuestCollection.Add(quest);
+        }
+        base.TitlePage = QuestCollection != null && QuestCollection.Count > 0 ? QuestCollection[0].Theme : "Нет вопросов";
     }
 
     [RelayCommand]

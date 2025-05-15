@@ -17,11 +17,7 @@ public partial class QuestThemeViewModel : ObservableObject
 
     public QuestThemeViewModel()
 	{        
-        foreach (var quest in Theme.CurrentQuests)
-        {
-            QuestCollection.Add(quest);
-        }
-        titlePage = QuestCollection != null && QuestCollection.Count > 0 ? QuestCollection[0].Theme : "Нет вопросов";
+        
 
     }
 

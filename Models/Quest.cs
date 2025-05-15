@@ -8,6 +8,7 @@ namespace TestMulti.Models
     public partial class Quest : ObservableObject
     {      
         public string Theme { get; set; }
+        public string FileName { get; set; }
         public string number { get; set; }
         public string title { get; set; }
 

@@ -39,6 +39,7 @@ namespace TestMulti.Models
         public ObservableCollection<Quest> QuestsLearn { get; set; }
 
         public static ObservableCollection<Quest> CurrentQuests { get; set; }
+        public static ObservableCollection<Quest> QuestsVaworiteAll { get; set; }  = new ObservableCollection<Quest>();
         [ObservableProperty]
         private int lengthQ;
         [ObservableProperty]
@@ -146,6 +147,7 @@ namespace TestMulti.Models
             QuestsErr = Quests.Where(q => (q.QuestColor == "Red")).ToObservableCollection();
             lengthErr = QuestsErr.Count;            
             QuestsVaworite = Quests.Where(q => (q.vaworites)).ToObservableCollection();
+            QuestsVaworiteAll.AddRange(QuestsVaworite);
             lengthVaworite = QuestsVaworite.Count;
             QuestsLong = Quests.Where(q => (q.Ellapsed >= AppConstants.MAX_TIME_FOR_ANSWER)).ToObservableCollection();
             lengthLong = QuestsLong.Count;

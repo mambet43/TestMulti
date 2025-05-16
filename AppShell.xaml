@@ -15,8 +15,5 @@
         Title="Главная"  
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage"/>
-    <!--<MenuItem Text="Электробезопасность"  Clicked="OnMenuItemClickedEb"/>
-    <MenuItem Text="Охрана труда" Clicked="OnMenuItemClickedOt"/>
-    <MenuItem Text="Работы на высоте" Clicked="OnMenuItemClickedVis"/>-->
-    <MenuItem Text="Избранные вопросы" Clicked="OnMenuItemClickedVaworites"/>
+
 </Shell>

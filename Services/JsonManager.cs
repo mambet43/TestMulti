@@ -131,32 +131,11 @@ namespace TestMulti.Services
                 return quests;
             }
             else
-            {                
-                if (filename == "vaworites.json") return await VaworitesCreate();
+            { 
                 return JsonSerializer.Deserialize<ObservableCollection<Quest>>(Preferences.Get(filename, null)) ?? new ObservableCollection<Quest>();
             }
         }
 
-        public static async Task<ObservableCollection<Quest>> VaworitesCreate()
-        {
-            List<Quest> q = new List<Quest>();
-            ObservableCollection<Quest> myObservableCollection = new ObservableCollection<Quest>();
-            foreach (string key in AppConstants.THEMES.Keys)
-            {
-                q.AddRange(await DeserializeToList(key)); // Добавляем все элементы из списка
-            }            
-            q = q.Where(q => q.vaworites).ToList(); // Фильтруем и возвращаем список
-            foreach (var quest in q)
-            {
-                myObservableCollection.Add(quest);
-            }
-            return myObservableCollection;
-        }
-
-
-
-
-
-
+        
     }
 }

@@ -15,39 +15,35 @@ namespace TestMulti
             InitializeComponent();
             foreach (KeyValuePair<string, string> kvp in AppConstants.THEMES)
             {
-                string filename = kvp.Key;
-                MenuItem menuItem = new MenuItem();
-                menuItem.Text = kvp.Value;
+                var menuItem = new MenuItem
+                {
+                    Text = kvp.Value,
+                    Command = new Command<string>(param => MenuItemCommand(param)),
+                    CommandParameter = kvp.Key
+                };                
+                
                 Items.Add(menuItem);
             }
+            var menuItemVaworites = new MenuItem
+            {
+                Text = "Избранные вопросы",
+                Command = new Command<string>(param => MenuItemCommand(param)),
+                CommandParameter = "vaworites"
+            };
+
+            Items.Add(menuItemVaworites);
 
 
             Routing.RegisterRoute("QuestTheme", typeof(QuestTheme));
         }
-        private async void OnMenuItemClickedEb(object sender, EventArgs e)
+        private async void MenuItemCommand(string file)
         {
             // Передаем параметр "value1" при навигации
-            await Shell.Current.GoToAsync("QuestTheme?param=eb", false);
+            await Shell.Current.GoToAsync("QuestTheme?file="+file, false);
             Shell.Current.FlyoutIsPresented = false;
         }
-        private async void OnMenuItemClickedOt(object sender, EventArgs e)
-        {
-            // Передаем параметр "value1" при навигации
-            await Shell.Current.GoToAsync("QuestTheme?param=ot", false);
-            Shell.Current.FlyoutIsPresented = false;
-        }
-        private async void OnMenuItemClickedVis(object sender, EventArgs e)
-        {
-            // Передаем параметр "value1" при навигации
-            await Shell.Current.GoToAsync("QuestTheme?param=vis", false);
-            Shell.Current.FlyoutIsPresented = false;
-        }
-        private async void OnMenuItemClickedVaworites(object sender, EventArgs e)
-        {
-            // Передаем параметр "value1" при навигации
-            await Shell.Current.GoToAsync("QuestTheme?param=vaworites", false);
-            Shell.Current.FlyoutIsPresented = false;
-        }
+        
+
         protected override async void OnNavigating(ShellNavigatingEventArgs args)
         {
             base.OnNavigating(args);
@@ -55,12 +51,16 @@ namespace TestMulti
             if (args.Source == ShellNavigationSource.PopToRoot)
             {
                 var popup = new LoadingPopup();
-                this.ShowPopup(popup);
-                await Task.Delay(5000);
-                await JsonManager.EditPreferences(Theme.CurrentQuests);
-                popup.Close(); 
+                this.ShowPopup(popup); // Показываем Popup, но НЕ ждем его закрытия
+
+                await Task.Run(async () => await JsonManager.EditPreferences(Theme.CurrentQuests));
+                Theme.QuestsVaworiteAll.Clear();
+                popup.Close(); // Закрываем Popup после завершения задачи
+
                 ViewModels.MainPage.Instance.LoadQuest();
             }
         }
+
+
     }
 }

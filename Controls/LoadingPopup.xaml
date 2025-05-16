@@ -1,11 +1,12 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<toolkit:Popup x:Class="TestMulti.LoadingPopup"
-               xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
-    <VerticalStackLayout>
-        <ActivityIndicator IsRunning="True" />
-        <Label Text="Загрузка..." />
+﻿<toolkit:Popup 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Class="TestMulti.LoadingPopup"
+    Color="Transparent">
+
+    <VerticalStackLayout BackgroundColor="Transparent" >
+        <ActivityIndicator IsRunning="True" HorizontalOptions="Center"/>
+        <Label HorizontalOptions="Center"   Text="Сохранение результатов..." />
     </VerticalStackLayout>
 </toolkit:Popup>
-

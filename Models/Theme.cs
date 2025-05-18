@@ -138,6 +138,10 @@ namespace TestMulti.Models
                         {
                             q.Theme = Title;
                             q.FileName = filename;
+                            foreach (var a in q.answers)
+                            {
+                                a.BackgroundColorHex = "#00FFFFFF"; // Прозрачный
+                            }
                         });
             QuestsForReplay = Quests.Where
             (q => (q.QuestColor == "Red" ||

@@ -52,11 +52,9 @@ namespace TestMulti
             {
                 var popup = new LoadingPopup();
                 this.ShowPopup(popup); // Показываем Popup, но НЕ ждем его закрытия
-
                 await Task.Run(async () => await JsonManager.EditPreferences(Theme.CurrentQuests));
                 Theme.QuestsVaworiteAll.Clear();
                 popup.Close(); // Закрываем Popup после завершения задачи
-
                 ViewModels.MainPage.Instance.LoadQuest();
             }
         }

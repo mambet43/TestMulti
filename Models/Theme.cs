@@ -165,7 +165,7 @@ namespace TestMulti.Models
             new GaugeItem(LengthLong, series => SetStyle("Долгих ответов", series, SKColors.Yellow)),
             new GaugeItem(LengthCorrect, series => SetStyle("Верных", series, SKColors.Green)),
                 new GaugeItem(LengthLearn, series => SetStyle("Пройдено", series, SKColors.Blue)),
-                new GaugeItem(LengthQ, series => SetStyle("Вопросов в теме", series, SKColors.Blue)),
+                new GaugeItem(LengthQ, series => SetStyle("Вопросов", series, SKColors.Blue)),
                 new GaugeItem(GaugeItem.Background, series =>
                 {
                     series.InnerRadius = 10;

@@ -162,7 +162,7 @@ namespace TestMulti.Models
             Series = new ObservableCollection<ISeries>(
             GaugeGenerator.BuildSolidGauge(
             new GaugeItem(LengthErr, series => SetStyle("Ошибок", series, SKColors.Red)),
-            new GaugeItem(LengthLong, series => SetStyle("Долгих ответов", series, SKColors.Yellow)),
+            new GaugeItem(LengthLong, series => SetStyle("Долгих", series, SKColors.Yellow)),
             new GaugeItem(LengthCorrect, series => SetStyle("Верных", series, SKColors.Green)),
                 new GaugeItem(LengthLearn, series => SetStyle("Пройдено", series, SKColors.Blue)),
                 new GaugeItem(LengthQ, series => SetStyle("Вопросов", series, SKColors.Blue)),

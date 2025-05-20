@@ -13,23 +13,23 @@ public partial class QuestionPage : ContentPage
         }
     }
 
-    protected override void OnAppearing()
-    {
-        base.OnAppearing();
-        UpdatePageAppearance();
-    }
+    //protected override void OnAppearing()!
+    //{
+    //    base.OnAppearing();
+    //    UpdatePageAppearance();
+    //}
 
 
-    private void UpdatePageAppearance()
-    {
-        BindingContext = new ViewModels.QuestViewModel();
-    }
+    //private void UpdatePageAppearance()
+    //{
+    //   // BindingContext = new ViewModels.QuestViewModel();
+    //}
 
 
     public QuestionPage()
 	{
 		InitializeComponent();
-
+        BindingContext = new ViewModels.QuestViewModel();
     }
 
 }

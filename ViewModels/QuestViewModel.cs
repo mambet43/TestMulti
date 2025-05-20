@@ -52,7 +52,7 @@ public partial class QuestViewModel : QuestThemeViewModel
 
 
     [RelayCommand]
-    private void AnswerSelected(Answer selectedAnswer)
+    private async void AnswerSelected(Answer selectedAnswer)
     {
         Theme.IsChange = true;
         if (selectedAnswer == null) return;
@@ -80,6 +80,7 @@ public partial class QuestViewModel : QuestThemeViewModel
         {           
             if (selectedAnswer.correct && CurrentPosition < QuestCollection.Count - 1)
             {
+                await Task.Delay(500); // Дать время анимации
                 CurrentPosition++; 
             }
         }

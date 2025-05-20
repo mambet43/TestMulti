@@ -16,6 +16,6 @@ namespace TestMulti.Constants
                         {"vis.json",     "Работы на высоте"},
                         {"pb.json",      "Пожарная безопасность"}
                         };
-        public const int MAX_TIME_FOR_ANSWER = 15;
+        public const int MAX_TIME_FOR_ANSWER = 2;
     }
 }

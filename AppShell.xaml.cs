@@ -10,6 +10,11 @@ namespace TestMulti
 {
     public partial class AppShell : Shell
     {
+        private bool CurrentPageIsMain()
+        {
+            return Shell.Current.CurrentPage is MainPage;
+        }
+
         public AppShell()
         {
             InitializeComponent();
@@ -47,16 +52,23 @@ namespace TestMulti
         protected override async void OnNavigating(ShellNavigatingEventArgs args)
         {
             base.OnNavigating(args);
-
-            if (args.Source == ShellNavigationSource.PopToRoot)
+            if (args.Source == ShellNavigationSource.PopToRoot && Theme.IsChange)
             {
-                var popup = new LoadingPopup();
-                this.ShowPopup(popup); // Показываем Popup, но НЕ ждем его закрытия
-                await Task.Run(async () => await JsonManager.EditPreferences(Theme.CurrentQuests));
-                Theme.QuestsVaworiteAll.Clear();
-                popup.Close(); // Закрываем Popup после завершения задачи
-                ViewModels.MainPage.Instance.LoadQuest();
-            }
+                bool result = await MainPage.Instance.DisplayAlert(
+                           "Сохранение",
+                           "Сохранить результаты?",
+                           "Да",
+                           "Нет");
+                if (result)
+                {
+                    var popup = new LoadingPopup();
+                    this.ShowPopup(popup); // Показываем Popup, но НЕ ждем его закрытия
+                    await Task.Run(async () => await JsonManager.EditPreferences(Theme.CurrentQuests));
+                    Theme.QuestsVaworiteAll.Clear();
+                    popup.Close(); // Закрываем Popup после завершения задачи
+                    ViewModels.MainPage.Instance.LoadQuest();
+                }     
+            }            
         }
 
 

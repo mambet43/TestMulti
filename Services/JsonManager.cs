@@ -13,6 +13,7 @@ using System.Collections;
 using System.Buffers;
 using System.Xml;
 using System.Collections.ObjectModel;
+using System.Runtime.CompilerServices;
 
 namespace TestMulti.Services
 {
@@ -115,6 +116,7 @@ namespace TestMulti.Services
 
         public static async Task  <ObservableCollection<Quest>> DeserializeToList(string filename)
         {
+            
             //Проверяем, существует ли файл в Preferences
             if (Preferences.Get(filename, null) == null)
             {

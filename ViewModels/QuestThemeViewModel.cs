@@ -33,6 +33,8 @@ public partial class QuestThemeViewModel : ObservableObject
         QuestCollection = Theme.CurrentQuests;
 
     }
+
+
     public QuestThemeViewModel()
     {
 
@@ -45,6 +47,7 @@ public partial class QuestThemeViewModel : ObservableObject
         {           
             quest.Vaworites = !quest.Vaworites;
         }
+        Theme.IsChange = true;
         //JsonManager.EditPreferences(quest);          
         
     }

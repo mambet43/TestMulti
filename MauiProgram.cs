@@ -31,7 +31,7 @@ namespace TestMulti
 
                             if (appWindow != null)
                             {
-                                appWindow.Resize(new Windows.Graphics.SizeInt32(400, 800)); // Установка размеров окна
+                                appWindow.Resize(new Windows.Graphics.SizeInt32(900, 600)); // Установка размеров окна
                                 appWindow.Move(new Windows.Graphics.PointInt32(100, 100)); // Установка положения окна
                             }
                         });

@@ -18,8 +18,6 @@ namespace TestMulti.Models
         [ObservableProperty]
         public bool vaworites = false; // Избранный вопрос       
 
-        
-       
 
         public string QuestColor { get; set; } = "Gray"; // Серый цвет по умолчанию
         public string AnswerColor { get; set; } = "Gray";  // Серый цвет по умолчанию

@@ -54,6 +54,7 @@ public partial class QuestViewModel : QuestThemeViewModel
     [RelayCommand]
     private void AnswerSelected(Answer selectedAnswer)
     {
+        Theme.IsChange = true;
         if (selectedAnswer == null) return;
 
         var currentQuest = base.QuestCollection[currentPosition];
@@ -64,7 +65,7 @@ public partial class QuestViewModel : QuestThemeViewModel
             if (answer == selectedAnswer)
             {
                 answer.BackgroundColorHex = selectedAnswer.correct ? "#5F9EA0" : "#D69D82";
-                currentQuest.QuestColor = selectedAnswer.correct && currentQuest.QuestColor != "Red" ? "Green" : "Red";
+                currentQuest.QuestColor = selectedAnswer.correct && (currentQuest.QuestColor != "Red" || Theme.IsReplay) ? "Green" : "Red";
                 stopwatch.Stop();
                 currentQuest.Ellapsed = Math.Max(currentQuest.Ellapsed, stopwatch.Elapsed.TotalSeconds);
                 isQuestUpdated = true;

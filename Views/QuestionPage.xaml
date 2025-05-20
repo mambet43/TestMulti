@@ -5,59 +5,69 @@
              x:Class="TestMulti.Views.QuestionPage"
              Title="{Binding TitlePage}">
 
-    <VerticalStackLayout>
-        <CarouselView ItemsSource="{Binding QuestCollection}" Position="{Binding CurrentPosition}" CurrentItemChangedCommand="{Binding CurrentItemChangedCommand}"  >
-            <CarouselView.ItemTemplate>
-                <DataTemplate x:DataType="models:Quest">
-                    
-                        <StackLayout>
-                        <Border Stroke="DarkGray" StrokeShape="RoundRectangle 5" Margin="20" Padding="20" MinimumHeightRequest="460">
-                            <ScrollView>
-                            <StackLayout>
-                                <Grid Padding="10,0,10,0" Style="{StaticResource TitleQuestBackground}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="60"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Label LineBreakMode="WordWrap"  Padding="10" Text="{Binding DisplayTitle}" FontAttributes="Bold" Style="{StaticResource TitleQuest}"  Grid.Column="0"/>
-                                    <ImageButton Source="nonvaworites.png" HeightRequest="50" WidthRequest="50" Grid.Column="1" Style="{StaticResource FaworiteBackground}"
-                                         Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SetVaworitesCommand}"
-                                         CommandParameter="{Binding}">
-                                        <ImageButton.Triggers>
-                                            <DataTrigger TargetType="ImageButton" Binding="{Binding Vaworites}" Value="true">
-                                                <Setter Property="Source" Value="vaworites.png" />
-                                            </DataTrigger>
-                                        </ImageButton.Triggers>
-                                    </ImageButton>
-                                </Grid>
-                                    <StackLayout BindableLayout.ItemsSource="{Binding answers}">
-                                        <BindableLayout.ItemTemplate>
-                                            <DataTemplate x:DataType="models:Answer">
-                                                <StackLayout Padding="10"  BackgroundColor="{Binding BackgroundColor}">
-                                                    <StackLayout.GestureRecognizers>
-                                                        <TapGestureRecognizer
-                                                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.AnswerSelectedCommand}"
-                                                            CommandParameter="{Binding}" />         
-                                                    </StackLayout.GestureRecognizers>                                          
-                                                    <Label Text="{Binding title}"
-                                                           FontAttributes="Italic"
-                                                           Padding="10,0,0,0" />                
-                                                </StackLayout>
-                                            </DataTemplate>
-                                        </BindableLayout.ItemTemplate>
-                                    </StackLayout>
-                                </StackLayout>
-                    </ScrollView>
-                    </Border>
-                            
-                    </StackLayout>
-                </DataTemplate>
-            </CarouselView.ItemTemplate>
-        </CarouselView>
-  
+    <CarouselView ItemsSource="{Binding QuestCollection}" 
+                 Position="{Binding CurrentPosition}"
+                 CurrentItemChangedCommand="{Binding CurrentItemChangedCommand}"
+                 VerticalOptions="FillAndExpand">
 
-        <!--<IndicatorView x:Name="indicatorView" IndicatorsShape="Square" IndicatorSize="26" MaximumVisible="10" IndicatorColor="LightGray" SelectedIndicatorColor="Green"  HorizontalOptions="Center"/>-->
-       
+        <CarouselView.ItemTemplate>
+            <DataTemplate x:DataType="models:Quest">
+                <ScrollView>
+                    <!-- Основной ScrollView для каждого вопроса -->
+                    <VerticalStackLayout Spacing="10">
+                        <!-- Шапка вопроса -->
+                        <Grid Padding="10,0,10,0" 
+                             Style="{StaticResource TitleQuestBackground}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="60"/>
+                            </Grid.ColumnDefinitions>
+                            <Label LineBreakMode="WordWrap" 
+                                  Padding="10" 
+                                  Text="{Binding DisplayTitle}" 
+                                  FontAttributes="Bold" 
+                                  Style="{StaticResource TitleQuest}"  
+                                  Grid.Column="0"/>
+                            <ImageButton Source="nonvaworites.png" 
+                                        HeightRequest="50" 
+                                        WidthRequest="50" 
+                                        Grid.Column="1" 
+                                        Style="{StaticResource FaworiteBackground}"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SetVaworitesCommand}"
+                                        CommandParameter="{Binding}">
+                                <ImageButton.Triggers>
+                                    <DataTrigger TargetType="ImageButton" 
+                                                Binding="{Binding Vaworites}" 
+                                                Value="true">
+                                        <Setter Property="Source" Value="vaworites.png" />
+                                    </DataTrigger>
+                                </ImageButton.Triggers>
+                            </ImageButton>
+                        </Grid>
 
-    </VerticalStackLayout>
+                        <!-- Список ответов -->
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding answers}"
+                                            Spacing="8">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="models:Answer">
+                                    <Frame Padding="15"
+                                          CornerRadius="10"
+                                          BackgroundColor="{Binding BackgroundColor}"
+                                          HasShadow="True">
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.AnswerSelectedCommand}"
+                                                CommandParameter="{Binding}"/>
+                                        </Frame.GestureRecognizers>
+                                        <Label Text="{Binding title}"
+                                              FontAttributes="Italic"/>
+                                    </Frame>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </ScrollView>
+            </DataTemplate>
+        </CarouselView.ItemTemplate>
+    </CarouselView>
 </ContentPage>

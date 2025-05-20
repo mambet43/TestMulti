@@ -1,34 +1,37 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TestMulti.Constants;
-using TestMulti.Services;
-using LiveChartsCore.Defaults;
-using LiveChartsCore.Measure;
-using LiveChartsCore.SkiaSharpView.Extensions;
-using LiveChartsCore.SkiaSharpView;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using LiveChartsCore;
-using LiveChartsCore.SkiaSharpView.Painting;
+using LiveChartsCore.Defaults;
 using LiveChartsCore.Drawing;
 using LiveChartsCore.Kernel.Events;
-using System.Collections.ObjectModel;
-using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
-using TestMulti.Views;
+using LiveChartsCore.Measure;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Extensions;
+using LiveChartsCore.SkiaSharpView.Painting;
+using LiveChartsCore.SkiaSharpView.VisualElements;
 using LiveChartsCore.Themes;
-using SkiaSharp;
-using TestMulti.Extentions;
 using Microsoft.Maui.Storage;
+using SkiaSharp;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
+using TestMulti.Constants;
+using TestMulti.Extentions;
+using TestMulti.Services;
+using TestMulti.ViewModels;
+using TestMulti.Views;
 
 namespace TestMulti.Models
 {
     public partial class Theme : ObservableObject
     {
         public string Title { get; set; }
+        public LabelVisual PieTitle { get; set; }
         public string FileName { get; set; }
         public ObservableCollection<Quest> Quests { get; set; }
         public ObservableCollection<Quest> QuestsForReplay { get; set; }
@@ -39,6 +42,8 @@ namespace TestMulti.Models
         public ObservableCollection<Quest> QuestsLearn { get; set; }
 
         public static ObservableCollection<Quest> CurrentQuests { get; set; }
+        public static bool IsReplay {  get; set; }
+        public static bool IsChange { get; set; }
         public static ObservableCollection<Quest> QuestsVaworiteAll { get; set; }  = new ObservableCollection<Quest>();
         [ObservableProperty]
         private int lengthQ;
@@ -64,6 +69,8 @@ namespace TestMulti.Models
         private async void StartClicked()
         {
             CurrentQuests = Quests;
+            IsReplay = false;
+            IsChange = false;
             await Shell.Current.GoToAsync("QuestionPage");
         }
 
@@ -71,6 +78,8 @@ namespace TestMulti.Models
         private async void ReplayClicked()
         {
             CurrentQuests = QuestsForReplay;
+            IsReplay = true;
+            IsChange = false;
             await Shell.Current.GoToAsync("QuestionPage");
         }
 
@@ -79,13 +88,18 @@ namespace TestMulti.Models
         private async void MyErrorClicked()
         {
             CurrentQuests = QuestsErr;
-            await Shell.Current.GoToAsync("QuestionPage");
+            IsChange = false;
+            IsReplay = false;
+            await Shell.Current.GoToAsync("QuestTheme");
+           
         }
 
         [RelayCommand]
         private async void VaworiteClicked()
         {
             CurrentQuests = QuestsVaworite;
+            IsReplay = false;
+            IsChange = false;
             await Shell.Current.GoToAsync("QuestionPage");
         }
 
@@ -93,6 +107,8 @@ namespace TestMulti.Models
         private async void LongClicked()
         {
             CurrentQuests = QuestsLong;
+            IsReplay = false;
+            IsChange = false;
             await Shell.Current.GoToAsync("QuestionPage");
         }
 
@@ -159,6 +175,15 @@ namespace TestMulti.Models
             lengthCorrect = QuestsCorrect.Count;
             QuestsLearn = Quests.Where(q => (q.QuestColor != "Gray")).ToObservableCollection();
             lengthLearn = QuestsLearn.Count;
+            PieTitle = new LabelVisual
+            {
+                Text = Title,
+                TextSize = 20,                 // Размер текста
+                Padding = new Padding(10),      // Отступы
+                Paint = new SolidColorPaint(    // Стиль текста (обязательно!)
+                SKColors.White,            // Цвет
+                8)                         // Толщина
+            };
             Series = new ObservableCollection<ISeries>(
             GaugeGenerator.BuildSolidGauge(
             new GaugeItem(LengthErr, series => SetStyle("Ошибок", series, SKColors.Red)),

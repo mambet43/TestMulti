@@ -66,50 +66,39 @@ namespace TestMulti.Models
 
 
         [RelayCommand]
-        private async void StartClicked()
+        private async void ActionClicked(string action)
         {
-            CurrentQuests = Quests;
-            IsReplay = false;
-            IsChange = false;
-            await Shell.Current.GoToAsync("QuestionPage");
-        }
-
-        [RelayCommand]
-        private async void ReplayClicked()
-        {
-            CurrentQuests = QuestsForReplay;
-            IsReplay = true;
-            IsChange = false;
-            await Shell.Current.GoToAsync("QuestionPage");
-        }
-
-
-        [RelayCommand]
-        private async void MyErrorClicked()
-        {
-            CurrentQuests = QuestsErr;
             IsChange = false;
             IsReplay = false;
-            await Shell.Current.GoToAsync("QuestTheme");
-           
-        }
+            switch (action)
+            {
+                case "Start":   
+                    CurrentQuests = Quests;           
+                    await Shell.Current.GoToAsync("QuestionPage");
+                    break;
 
-        [RelayCommand]
-        private async void VaworiteClicked()
-        {
-            CurrentQuests = QuestsVaworite;
-            IsReplay = false;
-            IsChange = false;
-            await Shell.Current.GoToAsync("QuestionPage");
-        }
+                case "Replay":
+                    CurrentQuests = QuestsForReplay;
+                    IsReplay = true;                   
+                    await Shell.Current.GoToAsync("QuestionPage");
+                    break;
 
-        [RelayCommand]
-        private async void LongClicked()
-        {
-            CurrentQuests = QuestsLong;
-            IsReplay = false;
-            IsChange = false;
-            await Shell.Current.GoToAsync("QuestionPage");
+                case "Vaworite":
+                    CurrentQuests = QuestsVaworite;
+                    await Shell.Current.GoToAsync("QuestionPage");
+                    break;
+
+                case "Error":
+                    CurrentQuests = QuestsErr;       
+                    await Shell.Current.GoToAsync("QuestTheme");
+                    break;
+
+                case "Long":
+                    CurrentQuests = QuestsLong;
+                    await Shell.Current.GoToAsync("QuestTheme");
+                    break;
+
+            }
         }
 
         [RelayCommand]

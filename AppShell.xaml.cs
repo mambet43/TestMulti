@@ -1,4 +1,6 @@
 ﻿using CommunityToolkit.Maui.Views;
+using Microsoft.Maui.Storage;
+using System.Reflection;
 using TestMulti.Constants;
 using TestMulti.Models;
 using TestMulti.Services;
@@ -17,14 +19,15 @@ namespace TestMulti
 
         public AppShell()
         {
-            InitializeComponent();
+            InitializeComponent(); 
             foreach (KeyValuePair<string, string> kvp in AppConstants.THEMES)
             {
                 var menuItem = new MenuItem
                 {
                     Text = kvp.Value,
                     Command = new Command<string>(param => MenuItemCommand(param)),
-                    CommandParameter = kvp.Key
+                    CommandParameter = kvp.Key,
+                    IconImageSource = ImageSource.FromResource("TestMulti.Resources.Images.lib.png")
                 };                
                 
                 Items.Add(menuItem);
@@ -32,6 +35,7 @@ namespace TestMulti
             var menuItemVaworites = new MenuItem
             {
                 Text = "Избранные вопросы",
+                IconImageSource = ImageSource.FromResource("TestMulti.Resources.Images.star.png"),
                 Command = new Command<string>(param => MenuItemCommand(param)),
                 CommandParameter = "vaworites"
             };
@@ -42,8 +46,7 @@ namespace TestMulti
             Routing.RegisterRoute("QuestTheme", typeof(QuestTheme));
         }
         private async void MenuItemCommand(string file)
-        {
-            // Передаем параметр "value1" при навигации
+        {         
             await Shell.Current.GoToAsync("QuestTheme?file="+file, false);
             Shell.Current.FlyoutIsPresented = false;
         }

@@ -14,6 +14,7 @@ public partial class QuestThemeViewModel : ObservableObject
 {
 
     public ObservableCollection<Quest> QuestCollection { get; } = new ObservableCollection<Quest>();
+
     [ObservableProperty]
     private string titlePage;
 
@@ -21,15 +22,19 @@ public partial class QuestThemeViewModel : ObservableObject
 	{
 
         if (file == "vaworites")
+        {
             Theme.CurrentQuests = Theme.QuestsVaworiteAll;
+            TitlePage = "Избранные вопросы";
+        }    
+           
         else
         {
             foreach (var item in MainPage.Instance.Themes)
             {
                 if (item.FileName == file) Theme.CurrentQuests = item.Quests;
             }
-        }
-        
+            TitlePage = Theme.CurrentQuests != null && Theme.CurrentQuests.Count > 0 ? Theme.CurrentQuests[0].Theme : "Нет вопросов";
+        }        
         QuestCollection = Theme.CurrentQuests;
 
     }

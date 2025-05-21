@@ -13,6 +13,7 @@
     Title="TestMulti">
     <ShellContent
         Title="Главная"  
+        Icon="home.png"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage"/>
     

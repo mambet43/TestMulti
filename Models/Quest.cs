@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using TestMulti.Constants;
 
@@ -12,7 +13,7 @@ namespace TestMulti.Models
         public string number { get; set; }
         public string title { get; set; }
 
-        public Answer[] answers { get; set; }
+        public ObservableCollection<Answer> answers { get; set; }
         public string DisplayTitle => $"{number}. {title}";
 
         [ObservableProperty]

@@ -1,38 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace TestMulti.Models
 {
-    public class Answer : INotifyPropertyChanged
+    public partial class Answer : ObservableObject
     {
         public string title { get; set; }
         public bool correct { get; set; }
 
-
-
-        private string _backgroundColorHex;
-        public string BackgroundColorHex
-        {
-            get => _backgroundColorHex;
-            set
-            {
-                if (_backgroundColorHex != value)
-                {
-                    _backgroundColorHex = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BackgroundColorHex)));
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BackgroundColor)));
-                }
-            }
-        }
+        [ObservableProperty]
+        private string backgroundColorHex = "#00FFFFFF";
 
         // Вспомогательное свойство для привязки в XAML
         public Color BackgroundColor => Color.FromArgb(BackgroundColorHex);
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
+        partial void OnBackgroundColorHexChanged(string oldValue, string newValue)
+        {
+            OnPropertyChanged(nameof(BackgroundColor));
+        }
     }
 }

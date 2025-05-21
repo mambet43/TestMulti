@@ -26,23 +26,7 @@ public partial class QuestViewModel : QuestThemeViewModel
         base.TitlePage = QuestCollection != null && QuestCollection.Count > 0 ? QuestCollection[0].Theme : "Нет вопросов";
     }
 
-    [RelayCommand]
-    private void NextQuestion()
-    {
-        if (CurrentPosition < QuestCollection.Count - 1)
-        {
-            CurrentPosition++;
-        }
-    }
-
-    [RelayCommand]
-    private void PreviousQuestion()
-    {
-        if (CurrentPosition > 0)
-        {
-            CurrentPosition--;
-        }
-    }
+   
     [RelayCommand]
     private void CurrentItemChanged()
     {

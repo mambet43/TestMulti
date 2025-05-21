@@ -3,9 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:models="clr-namespace:TestMulti.Models"
     xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
-    x:Class="TestMulti.MainPage"
+    x:Class="TestMulti.MainPage"  
     BackgroundColor="{StaticResource BackColorB}">
-
     <ContentPage.Resources>
         
 
@@ -61,7 +60,7 @@
                                             <Image Source="all.png" HeightRequest="48" WidthRequest="48"/>
                                             <Label Grid.Column="1" Style="{StaticResource ActionLabel}">
                                                 <Label.GestureRecognizers>
-                                                    <TapGestureRecognizer Command="{Binding StartClickedCommand}"/>
+                                                <TapGestureRecognizer Command="{Binding ActionClickedCommand}" CommandParameter="Start"/>
                                                 </Label.GestureRecognizers>
                                                 <Label.Text>
                                                     <Binding Path="LengthQ" StringFormat="[{0}] Все вопросы"/>
@@ -73,7 +72,7 @@
                                             <Image Source="play.png" HeightRequest="48" WidthRequest="48"/>
                                             <Label Grid.Column="1" Style="{StaticResource ActionLabel}">
                                                 <Label.GestureRecognizers>
-                                                    <TapGestureRecognizer Command="{Binding ReplayClickedCommand}"/>
+                                                <TapGestureRecognizer Command="{Binding ActionClickedCommand}" CommandParameter="Replay"/>
                                                 </Label.GestureRecognizers>
                                                 <Label.Text>
                                                     <Binding Path="LengthReplay" StringFormat="[{0}] Продолжить"/>
@@ -85,7 +84,7 @@
                                             <Image Source="vaworites.png" HeightRequest="48" WidthRequest="48"/>
                                             <Label Grid.Column="1" Style="{StaticResource ActionLabel}">
                                                 <Label.GestureRecognizers>
-                                                    <TapGestureRecognizer Command="{Binding VaworiteClickedCommand}"/>
+                                                <TapGestureRecognizer Command="{Binding ActionClickedCommand}" CommandParameter="Vaworite"/>
                                                 </Label.GestureRecognizers>
                                                 <Label.Text>
                                                     <Binding Path="LengthVaworite" StringFormat="[{0}] Избранные вопросы"/>
@@ -97,7 +96,7 @@
                                             <Image Source="retryerr.png" HeightRequest="48" WidthRequest="48"/>
                                             <Label Grid.Column="1" Style="{StaticResource ActionLabel}">
                                                 <Label.GestureRecognizers>
-                                                    <TapGestureRecognizer Command="{Binding MyErrorClickedCommand}"/>
+                                                <TapGestureRecognizer Command="{Binding ActionClickedCommand}" CommandParameter="Error"/>
                                                 </Label.GestureRecognizers>
                                                 <Label.Text>
                                                     <Binding Path="LengthErr" StringFormat="[{0}] Мои ошибки"/>
@@ -109,7 +108,7 @@
                                             <Image Source="retrylong.png" HeightRequest="48" WidthRequest="48"/>
                                             <Label Grid.Column="1" Style="{StaticResource ActionLabel}">
                                                 <Label.GestureRecognizers>
-                                                    <TapGestureRecognizer Command="{Binding LongClickedCommand}"/>
+                                                <TapGestureRecognizer Command="{Binding ActionClickedCommand}" CommandParameter="Long"/>
                                                 </Label.GestureRecognizers>
                                                 <Label.Text>
                                                     <Binding Path="LengthLong" StringFormat="[{0}] Долгие ответы"/>

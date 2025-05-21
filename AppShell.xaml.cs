@@ -69,7 +69,7 @@ namespace TestMulti
                     await Task.Run(async () => await JsonManager.EditPreferences(Theme.CurrentQuests));
                     Theme.QuestsVaworiteAll.Clear();
                     popup.Close(); // Закрываем Popup после завершения задачи
-                    ViewModels.MainPage.Instance.LoadQuest();
+                    await ViewModels.MainPage.Instance.RefreshAsync();
                 }     
             }            
         }

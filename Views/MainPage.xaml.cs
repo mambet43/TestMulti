@@ -22,7 +22,7 @@ namespace TestMulti
         {            
             InitializeComponent();
             Instance = this;
-            BindingContext = new ViewModels.MainPage(this);
+            BindingContext = new ViewModels.MainPage(this);    
         }
        
     }

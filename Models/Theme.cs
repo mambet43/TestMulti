@@ -167,8 +167,8 @@ namespace TestMulti.Models
             PieTitle = new LabelVisual
             {
                 Text = Title,
-                TextSize = 20,                 // Размер текста
-                Padding = new Padding(10),      // Отступы
+                TextSize = 20,                 
+                Padding = new Padding(10),      
                 Paint = new SolidColorPaint(    // Стиль текста (обязательно!)
                 SKColors.White,            // Цвет
                 8)                         // Толщина

@@ -1,10 +1,12 @@
 
-using TestMulti.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
-using TestMulti.Views;
+using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using TestMulti.Constants;
+using TestMulti.Models;
+using TestMulti.Views;
 
 namespace TestMulti.ViewModels;
 
@@ -14,22 +16,45 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
     [ObservableProperty]
     private ObservableCollection<Theme> themes = new ObservableCollection<Theme>();
 
+
+    [ObservableProperty]
+    private int currentPosition;
     public static MainPage Instance { get; private set; }
 
     private readonly ContentPage mainPage;
-
+    
 
     public MainPage(ContentPage page)
     {       
-        LoadQuest();
+        LoadQuest();        
         Instance = this;
         mainPage = page;        
         Routing.RegisterRoute("QuestionPage", typeof(QuestionPage));
-    }    
+    }
 
-    
+    [ObservableProperty]
+    private bool isRefreshing;
 
-    
+    [RelayCommand]
+    public async Task RefreshAsync()
+    {
+        int position = CurrentPosition;
+        IsRefreshing = true;        
+        LoadQuest();
+        await Task.Delay(500);
+        CurrentPosition = position;       
+        IsRefreshing = false;
+    }
+
+
+    [RelayCommand]
+    private void CurrentItemChanged()
+    {  
+       
+
+    }
+
+
 
     public  void LoadQuest()
     {

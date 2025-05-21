@@ -16,12 +16,15 @@
         </Style>
 
        
-    </ContentPage.Resources>
-
-    <FlexLayout>
-        <Grid RowDefinitions="*,Auto">
-            <CarouselView 
-                ItemsSource="{Binding Themes}"
+    </ContentPage.Resources>   
+        <FlexLayout>
+        <RefreshView IsRefreshing="{Binding IsRefreshing}"
+          Command="{Binding RefreshCommand}">
+            <Grid RowDefinitions="*,Auto">
+                <CarouselView x:Name="CarouselMain" 
+                Position="{Binding CurrentPosition}"
+                 ItemsSource="{Binding Themes}"
+                CurrentItemChangedCommand="{Binding CurrentItemChangedCommand}"
                 IndicatorView="indicator"   
                 Loop="False"
                 Margin="20"                
@@ -29,17 +32,17 @@
                 VerticalOptions="Fill"
                 HorizontalOptions="Fill"
                 Grid.Row="0">
-                <CarouselView.ItemTemplate>
-                    <DataTemplate x:DataType="models:Theme">
-                        <Frame    
+                    <CarouselView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Theme">
+                            <Frame    
                             CornerRadius="28" 
                             BackgroundColor="{StaticResource BackColorA}"                            
                             BorderColor="White">
 
-                            <FlexLayout Direction="Row" Wrap="Wrap" AlignItems="Center" JustifyContent="Center">
+                                <FlexLayout Direction="Row" Wrap="Wrap" AlignItems="Center" JustifyContent="Center">
 
-                               
-                                
+
+
                                     <lvc:PieChart 
                                         Series="{Binding Series}" 
                                         Title="{Binding PieTitle}" 
@@ -50,9 +53,9 @@
                                         MinValue="0" 
                                         MaxValue="{Binding LengthQ}" 
                                         AnimationsSpeed="00:00:01.500"/>
-                               
 
-                         
+
+
                                     <StackLayout Spacing="5">
 
                                         <!-- Все строки с иконками и TapGestureRecognizer -->
@@ -60,7 +63,7 @@
                                             <Image Source="all.png" HeightRequest="48" WidthRequest="48"/>
                                             <Label Grid.Column="1" Style="{StaticResource ActionLabel}">
                                                 <Label.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding ActionClickedCommand}" CommandParameter="Start"/>
+                                                    <TapGestureRecognizer Command="{Binding ActionClickedCommand}" CommandParameter="Start"/>
                                                 </Label.GestureRecognizers>
                                                 <Label.Text>
                                                     <Binding Path="LengthQ" StringFormat="[{0}] Все вопросы"/>
@@ -72,7 +75,7 @@
                                             <Image Source="play.png" HeightRequest="48" WidthRequest="48"/>
                                             <Label Grid.Column="1" Style="{StaticResource ActionLabel}">
                                                 <Label.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding ActionClickedCommand}" CommandParameter="Replay"/>
+                                                    <TapGestureRecognizer Command="{Binding ActionClickedCommand}" CommandParameter="Replay"/>
                                                 </Label.GestureRecognizers>
                                                 <Label.Text>
                                                     <Binding Path="LengthReplay" StringFormat="[{0}] Продолжить"/>
@@ -84,7 +87,7 @@
                                             <Image Source="vaworites.png" HeightRequest="48" WidthRequest="48"/>
                                             <Label Grid.Column="1" Style="{StaticResource ActionLabel}">
                                                 <Label.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding ActionClickedCommand}" CommandParameter="Vaworite"/>
+                                                    <TapGestureRecognizer Command="{Binding ActionClickedCommand}" CommandParameter="Vaworite"/>
                                                 </Label.GestureRecognizers>
                                                 <Label.Text>
                                                     <Binding Path="LengthVaworite" StringFormat="[{0}] Избранные вопросы"/>
@@ -96,7 +99,7 @@
                                             <Image Source="retryerr.png" HeightRequest="48" WidthRequest="48"/>
                                             <Label Grid.Column="1" Style="{StaticResource ActionLabel}">
                                                 <Label.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding ActionClickedCommand}" CommandParameter="Error"/>
+                                                    <TapGestureRecognizer Command="{Binding ActionClickedCommand}" CommandParameter="Error"/>
                                                 </Label.GestureRecognizers>
                                                 <Label.Text>
                                                     <Binding Path="LengthErr" StringFormat="[{0}] Мои ошибки"/>
@@ -108,7 +111,7 @@
                                             <Image Source="retrylong.png" HeightRequest="48" WidthRequest="48"/>
                                             <Label Grid.Column="1" Style="{StaticResource ActionLabel}">
                                                 <Label.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding ActionClickedCommand}" CommandParameter="Long"/>
+                                                    <TapGestureRecognizer Command="{Binding ActionClickedCommand}" CommandParameter="Long"/>
                                                 </Label.GestureRecognizers>
                                                 <Label.Text>
                                                     <Binding Path="LengthLong" StringFormat="[{0}] Долгие ответы"/>
@@ -126,14 +129,14 @@
                                                 <Label.Text>Удалить результаты</Label.Text>
                                             </Label>
                                         </Grid>
-                                    </StackLayout>                     
-                            </FlexLayout>
-                        </Frame>
-                    </DataTemplate>
-                </CarouselView.ItemTemplate>
-            </CarouselView>
+                                    </StackLayout>
+                                </FlexLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CarouselView.ItemTemplate>
+                </CarouselView>
 
-            <IndicatorView
+                <IndicatorView
                 x:Name="indicator"
                 Margin="0"
                 Grid.Row="1"
@@ -142,6 +145,8 @@
                 IndicatorsShape="Square"
                 HorizontalOptions="Center"
                 IndicatorSize="10"/>
-        </Grid>
+            </Grid>
+        </RefreshView>
     </FlexLayout>
+  
 </ContentPage>

@@ -49,9 +49,10 @@ public partial class QuestViewModel : QuestThemeViewModel
             if (answer == selectedAnswer)
             {
                 answer.BackgroundColorHex = selectedAnswer.correct ? "#5F9EA0" : "#D69D82";
-                currentQuest.QuestColor = selectedAnswer.correct && (currentQuest.QuestColor != "Red" || Theme.IsReplay) ? "Green" : "Red";
+                currentQuest.QuestColor = selectedAnswer.correct && (currentQuest.QuestColor != "Red" || Theme.IsReplay) && currentQuest.firstAttempt ? "Green" : "Red";
                 stopwatch.Stop();
-                currentQuest.Ellapsed = Math.Max(currentQuest.Ellapsed, stopwatch.Elapsed.TotalSeconds);
+                currentQuest.firstAttempt = false;
+                currentQuest.Ellapsed = Theme.IsReplay ? stopwatch.Elapsed.TotalSeconds : Math.Max(currentQuest.Ellapsed, stopwatch.Elapsed.TotalSeconds);
                 isQuestUpdated = true;
             }
             else
@@ -64,7 +65,7 @@ public partial class QuestViewModel : QuestThemeViewModel
         {           
             if (selectedAnswer.correct && CurrentPosition < QuestCollection.Count - 1)
             {
-                await Task.Delay(500); // Дать время анимации
+                await Task.Delay(300); // Дать время анимации
                 CurrentPosition++; 
             }
         }

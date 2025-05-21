@@ -16,7 +16,7 @@
                     <!-- Основной ScrollView для каждого вопроса -->
                     <VerticalStackLayout Spacing="10">
                         <!-- Шапка вопроса -->
-                        <Grid Padding="10,0,10,0" 
+                        <Grid Padding="10,0,10,10"  
                              Style="{StaticResource TitleQuestBackground}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
@@ -47,12 +47,13 @@
 
                         <!-- Список ответов -->
                         <VerticalStackLayout BindableLayout.ItemsSource="{Binding answers}"
-                                            Spacing="8">
+                                            Spacing="8" Padding="10,0,10,10" >
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate x:DataType="models:Answer">
-                                    <Frame Padding="15"
+                                    <Frame                                         
                                           CornerRadius="10"
                                           BackgroundColor="{Binding BackgroundColor}"
+                                          BorderColor="Gray"
                                           HasShadow="True">
                                         <Frame.GestureRecognizers>
                                             <TapGestureRecognizer

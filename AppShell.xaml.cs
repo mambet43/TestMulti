@@ -20,7 +20,7 @@ namespace TestMulti
         public AppShell()
         {
             InitializeComponent(); 
-            foreach (KeyValuePair<string, string> kvp in AppConstants.THEMES)
+            foreach (KeyValuePair<string, string> kvp in AppConstants.ThemesDict)
             {
                 var menuItem = new MenuItem
                 {

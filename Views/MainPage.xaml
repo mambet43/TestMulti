@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:models="clr-namespace:TestMulti.Models"
     xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
-    x:Class="TestMulti.MainPage"  
+    x:Class="TestMulti.MainPage"
     BackgroundColor="{StaticResource BackColorB}">
     <ContentPage.Resources>
         
@@ -16,10 +16,18 @@
         </Style>
 
        
-    </ContentPage.Resources>   
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Добавить новую тему" Order="Secondary" Priority="0" Command="{Binding AddThemeCommand}"/>
+        <ToolbarItem Text="Удалить эту тему" Order="Secondary" Priority="1" Command="{Binding DelThemeCommand}"/>
+        <ToolbarItem Text="Поделиться темой" Order="Secondary" Priority="2" Command="{Binding ShareThemeCommand}"/>
+    </ContentPage.ToolbarItems>
+    
         <FlexLayout>
+        <Label Text="{Binding TextEmptyTheme}" Padding="20" FontSize="16" FontAttributes="Bold" />
         <RefreshView IsRefreshing="{Binding IsRefreshing}"
-          Command="{Binding RefreshCommand}">
+          Command="{Binding RefreshCommand}">        
             <Grid RowDefinitions="*,Auto">
                 <CarouselView x:Name="CarouselMain" 
                 Position="{Binding CurrentPosition}"

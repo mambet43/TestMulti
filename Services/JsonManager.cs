@@ -1,72 +1,31 @@
-﻿using Microsoft.Maui.Storage;
+﻿using Microsoft.Maui.Controls;
+using Microsoft.Maui.Storage;
+using System;
+using System.Buffers;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
 using System.Net.Http.Json;
 using System.Reflection;
-using System.Text.Json;
-using System.Linq;
-using TestMulti.Models;
-using Microsoft.Maui.Controls;
-using System;
-using TestMulti.Services;
-using System.Collections.Generic;
-using TestMulti.Constants;
-using System.Collections;
-using System.Buffers;
-using System.Xml;
-using System.Collections.ObjectModel;
+using System.Reflection.PortableExecutable;
 using System.Runtime.CompilerServices;
+using System.Text.Json;
+using System.Xml;
+using TestMulti.Constants;
+using TestMulti.Models;
+using TestMulti.Services;
 
 namespace TestMulti.Services
 {
     internal static class JsonManager
     { 
-        public static void EditPreferences(Quest quest)
-        {
-            string fileName;
-            var key = AppConstants.THEMES.FirstOrDefault(x => x.Value == quest.Theme).Key;
-            if (key != null)
-            {
-                fileName = key;
-                ObservableCollection<Quest> quests = JsonSerializer.Deserialize<ObservableCollection<Quest>>(Preferences.Get(fileName, null)) ?? new ObservableCollection<Quest>();
-                quests[int.Parse(quest.number) - 1] = quest;
-                Preferences.Set(fileName, JsonSerializer.Serialize(quests));
-            }
-        }
-
+       
 
         public static async Task EditPreferences(ObservableCollection<Quest> quests)
         {
-            //string[] uniqueFileNames = Array.Empty<string>();            
-            //foreach (Quest q in quests)
-            //{
-            //    uniqueFileNames = quests
-            //        .Select(q => q.FileName)
-            //        .Where(fn => !string.IsNullOrEmpty(fn))
-            //        .Distinct()
-            //        .ToArray();               
-            //}
-            //ObservableCollection<Quest>[] QfromPreferences = new ObservableCollection<Quest>[uniqueFileNames.Length];
-            //for (int i = 0; i < QfromPreferences.Length; i++)
-            //{
-            //    for (int j = 0; j < uniqueFileNames.Length; j++) {
-            //    QfromPreferences[i] = JsonSerializer.Deserialize<ObservableCollection<Quest>>(Preferences.Get(uniqueFileNames[j], null)) ?? new ObservableCollection<Quest>();
-
-            //}
-
-            // тоже самое в двух варах с лямбдами. ХЗ как это работает дала нейронка
-            //// Получаем уникальные имена файлов
-            //var uniqueFileNames = quests
-            //    .Select(q => q.FileName)
-            //    .Where(fn => !string.IsNullOrEmpty(fn))
-            //    .Distinct()
-            //    .ToArray();
-
-            //// Создаем массив ObservableCollection<Quest>
-            //var QfromPreferences = uniqueFileNames
-            //    .Select(fn => JsonSerializer.Deserialize<ObservableCollection<Quest>>(Preferences.Get(fn, null)) ?? new ObservableCollection<Quest>())
-            //    .ToArray();
-
-
-            // тоже самое без лябд
+            
             // Получаем уникальные имена файлов
             List<string> uniqueFileNames = new List<string>();
 
@@ -112,32 +71,36 @@ namespace TestMulti.Services
             
         }
 
-        
 
-        public static async Task  <ObservableCollection<Quest>> DeserializeToList(string filename)
+
+        public static async Task<ObservableCollection<Quest>> DeserializeToList(string filename)
         {
-            
+            Debug.WriteLine(FileSystem.Current.AppDataDirectory);
             //Проверяем, существует ли файл в Preferences
             if (Preferences.Get(filename, null) == null)
             {
-                var assembly = Assembly.GetExecutingAssembly();
-                var resourcePath = $"TestMulti.Resources.Raw.{filename}";
-                using Stream stream = assembly.GetManifestResourceStream(resourcePath);
-                if (stream == null)
+                // Получаем путь к файлу в AppDataDirectory
+                string filePath = Path.Combine(FileSystem.Current.AppDataDirectory, filename);
+
+                // Проверяем существует ли файл
+                if (!File.Exists(filePath))
                 {
-                    throw new FileNotFoundException($"Файл {filename} не найден в ресурсах.");
+                    throw new FileNotFoundException($"Файл {filename} не найден в AppDataDirectory.");
                 }
-                using StreamReader reader = new StreamReader(stream);
-                var jsonContent = reader.ReadToEnd();
-                ObservableCollection<Quest> quests = JsonSerializer.Deserialize<ObservableCollection<Quest>>(jsonContent) ?? new ObservableCollection<Quest>();  // считали из файла ресурсов
+
+                // Читаем содержимое файла
+                string jsonContent = File.ReadAllText(filePath);
+
+                // Десериализуем JSON
+                ObservableCollection<Quest> quests = JsonSerializer.Deserialize<ObservableCollection<Quest>>(jsonContent) ?? new ObservableCollection<Quest>();
                 return quests;
             }
             else
-            { 
+            {
                 return JsonSerializer.Deserialize<ObservableCollection<Quest>>(Preferences.Get(filename, null)) ?? new ObservableCollection<Quest>();
             }
         }
 
-        
+
     }
 }

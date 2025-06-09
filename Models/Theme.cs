@@ -12,7 +12,7 @@ using LiveChartsCore.SkiaSharpView.VisualElements;
 using LiveChartsCore.Themes;
 using Microsoft.Maui.Storage;
 using SkiaSharp;
-using System;
+using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -41,7 +41,7 @@ namespace TestMulti.Models
         public ObservableCollection<Quest> QuestsCorrect { get; set; }
         public ObservableCollection<Quest> QuestsLearn { get; set; }
 
-        public static ObservableCollection<Quest> CurrentQuests { get; set; }
+        public static ObservableCollection<Quest> CurrentQuests { get; set; } = new ObservableCollection<Quest>();
         public static bool IsReplay {  get; set; }
         public static bool IsChange { get; set; }
         public static ObservableCollection<Quest> QuestsVaworiteAll { get; set; }  = new ObservableCollection<Quest>();
@@ -66,7 +66,7 @@ namespace TestMulti.Models
 
 
         [RelayCommand]
-        private async void ActionClicked(string action)
+        private async Task ActionClicked(string action)
         {
             IsChange = false;
             IsReplay = false;
@@ -127,64 +127,66 @@ namespace TestMulti.Models
             series.Fill = new SolidColorPaint(color);
         }
 
-      
+
+
 
 
         public Theme(string filename, string title)
         {
             FileName = filename;
             Title = title;
-            Task.Run(async () =>
+        }
+
+        public static async Task<Theme> CreateAsync(string filename, string title)
+        {
+            var theme = new Theme(filename, title);
+            theme.Quests = await JsonManager.DeserializeToList(filename);
+            theme.lengthQ = theme.Quests.Count;
+            theme.Quests.ForEach(q =>
             {
-                Quests = await JsonManager.DeserializeToList(FileName);
-            }).Wait();
-            lengthQ = Quests.Count;
-            Quests.ForEach(q =>
-                        {
-                            q.Theme = Title;
-                            q.FileName = filename;
-                            foreach (var a in q.answers)
-                            {
-                                a.BackgroundColorHex = "#00FFFFFF"; // Прозрачный
-                            }
-                        });
-            QuestsForReplay = Quests.Where
-            (q => (q.QuestColor == "Red" ||
-                           q.QuestColor == "Gray") ||
-                           q.Ellapsed >= AppConstants.MAX_TIME_FOR_ANSWER).ToObservableCollection();
-            lengthReplay = QuestsForReplay.Count;
-            QuestsErr = Quests.Where(q => (q.QuestColor == "Red")).ToObservableCollection();
-            lengthErr = QuestsErr.Count;            
-            QuestsVaworite = Quests.Where(q => (q.vaworites)).ToObservableCollection();
-            QuestsVaworiteAll.AddRange(QuestsVaworite);
-            lengthVaworite = QuestsVaworite.Count;
-            QuestsLong = Quests.Where(q => (q.Ellapsed >= AppConstants.MAX_TIME_FOR_ANSWER)).ToObservableCollection();
-            lengthLong = QuestsLong.Count;
-            QuestsCorrect = Quests.Where(q => (q.QuestColor == "Green")).ToObservableCollection();
-            lengthCorrect = QuestsCorrect.Count;
-            QuestsLearn = Quests.Where(q => (q.QuestColor != "Gray")).ToObservableCollection();
-            lengthLearn = QuestsLearn.Count;
-            PieTitle = new LabelVisual
-            {
-                Text = Title,
-                TextSize = 20,                 
-                Padding = new Padding(10),      
-                Paint = new SolidColorPaint(    // Стиль текста (обязательно!)
-                SKColors.White,            // Цвет
-                8)                         // Толщина
-            };
-            Series = new ObservableCollection<ISeries>(
-            GaugeGenerator.BuildSolidGauge(
-            new GaugeItem(LengthErr, series => SetStyle("Ошибок", series, SKColors.Red)),
-            new GaugeItem(LengthLong, series => SetStyle("Долгих", series, SKColors.Yellow)),
-            new GaugeItem(LengthCorrect, series => SetStyle("Верных", series, SKColors.Green)),
-                new GaugeItem(LengthLearn, series => SetStyle("Пройдено", series, SKColors.Blue)),
-                new GaugeItem(LengthQ, series => SetStyle("Вопросов", series, SKColors.Blue)),
-                new GaugeItem(GaugeItem.Background, series =>
+                q.Theme = title;
+                q.FileName = filename;
+                foreach (var a in q.answers)
                 {
-                    series.InnerRadius = 10;
-                })));
-            Preferences.Set(filename, JsonSerializer.Serialize(Quests));
+                    a.BackgroundColorHex = "#00FFFFFF";
+                }
+            });
+            theme.QuestsForReplay = theme.Quests.Where(q => (q.QuestColor == "Red" || q.QuestColor == "Gray")
+                || q.Ellapsed >= AppConstants.MAX_TIME_FOR_ANSWER).ToObservableCollection();
+            theme.lengthReplay = theme.QuestsForReplay.Count;
+            theme.QuestsErr = theme.Quests.Where(q => q.QuestColor == "Red").ToObservableCollection();
+            theme.lengthErr = theme.QuestsErr.Count;
+            theme.QuestsVaworite = theme.Quests.Where(q => q.vaworites).ToObservableCollection();
+            QuestsVaworiteAll.AddRange(theme.QuestsVaworite);
+            theme.lengthVaworite = theme.QuestsVaworite.Count;
+            theme.QuestsLong = theme.Quests.Where(q => q.Ellapsed >= AppConstants.MAX_TIME_FOR_ANSWER).ToObservableCollection();
+            theme.lengthLong = theme.QuestsLong.Count;
+            theme.QuestsCorrect = theme.Quests.Where(q => q.QuestColor == "Green").ToObservableCollection();
+            theme.lengthCorrect = theme.QuestsCorrect.Count;
+            theme.QuestsLearn = theme.Quests.Where(q => q.QuestColor != "Gray").ToObservableCollection();
+            theme.lengthLearn = theme.QuestsLearn.Count;
+            theme.PieTitle = new LabelVisual
+            {
+                Text = title,
+                TextSize = 20,
+                Padding = new Padding(10),
+                Paint = new SolidColorPaint(SKColors.White, 8)
+            };
+            theme.Series = new ObservableCollection<ISeries>(
+                GaugeGenerator.BuildSolidGauge(
+                    new GaugeItem(theme.lengthErr, series => SetStyle("Ошибок", series, SKColors.Red)),
+                    new GaugeItem(theme.lengthLong, series => SetStyle("Долгих", series, SKColors.Yellow)),
+                    new GaugeItem(theme.lengthCorrect, series => SetStyle("Верных", series, SKColors.Green)),
+                    new GaugeItem(theme.lengthLearn, series => SetStyle("Пройдено", series, SKColors.Blue)),
+                    new GaugeItem(theme.lengthQ, series => SetStyle("Вопросов", series, SKColors.Blue)),
+                    new GaugeItem(GaugeItem.Background, series =>
+                    {
+                        series.InnerRadius = 10;
+                    })
+                )
+            );
+            Preferences.Set(filename, JsonSerializer.Serialize(theme.Quests));
+            return theme;
         }
     }
 

@@ -28,20 +28,9 @@ namespace TestMulti.Models
 
         public static Quest [] GetForLearn(Quest[] quests)
         {
-            int length = 0;
-            foreach (var quest in quests)
-            {
-                if ((quest.QuestColor == "Red" || quest.QuestColor == "Gray"  ) || quest.Ellapsed >= AppConstants.MAX_TIME_FOR_ANSWER) length++;                
-            }
-            Quest[] questsRet = new Quest[length];
-            for (int i = 0; i < questsRet.Length; i++)
-            {
-                for (int j = 0; j < quests.Length; j++)
-                {
-                    questsRet[i] = quests[j];
-                }
-            }
-            return questsRet;
+            return quests
+                .Where(q => q.QuestColor == "Red" || q.QuestColor == "Gray" || q.Ellapsed >= AppConstants.MAX_TIME_FOR_ANSWER)
+                .ToArray();
         }
 
         public static int GetLearnCount(Quest[] quests)

@@ -95,12 +95,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Update="Controls\AddTheme.xaml.cs">
+		  <DependentUpon>AddTheme.xaml</DependentUpon>
+		</Compile>
 		<Compile Update="Views\QuestionPage.xaml.cs">
 			<DependentUpon>QuestionPage.xaml</DependentUpon>
 		</Compile>
 	</ItemGroup>
 
 	<ItemGroup>
+		<MauiXaml Update="Controls\AddTheme.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Controls\LoadingPopup.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>

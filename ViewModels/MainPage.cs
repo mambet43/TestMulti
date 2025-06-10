@@ -133,19 +133,49 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
     }
 
     [RelayCommand]
-    private void DelTheme()
+    private async void DelTheme()
+    {
+        bool result = await Shell.Current.DisplayAlert(
+                            "Подтверждение",
+                            "Вы точно хотите удалить тему, отменить это действие нельзя?",
+                            "Да",
+                            "Отмена");
+        if (result)
+        {
+            string filePath = themes[CurrentPosition].FileName;
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+                AppConstants.ThemesDict.Remove(filePath);
+            }
+            Preferences.Remove(filePath);
+            AppConstants.ThemesDict.Remove(filePath);
+            Preferences.Set("ThemesDict", JsonSerializer.Serialize(AppConstants.ThemesDict));
+            await LoadQuest();
+        }    
+           
+    }
+
+    [RelayCommand]
+    private async void ShareTheme()
     {
         string filePath = themes[CurrentPosition].FileName;
         if (File.Exists(filePath))
         {
-            File.Delete(filePath);
-            AppConstants.ThemesDict.Remove(filePath);
+            await Share.RequestAsync(new ShareFileRequest
+            {
+                Title = "Поделиться файлом темы",
+                File = new ShareFile(filePath)
+            });
         }
-        Preferences.Remove(filePath);
-        AppConstants.ThemesDict.Remove(filePath);        
-        Preferences.Set("ThemesDict", JsonSerializer.Serialize(AppConstants.ThemesDict));
-        LoadQuest();
+        else
+        {
+            await Shell.Current.DisplayAlert("Ошибка", "Файл не найден", "ОК");
+        }
     }
+
+    
+
 
     public async Task LoadQuest()
     {

@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Views;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LiveChartsCore;
 using LiveChartsCore.Defaults;
@@ -12,10 +13,10 @@ using LiveChartsCore.SkiaSharpView.VisualElements;
 using LiveChartsCore.Themes;
 using Microsoft.Maui.Storage;
 using SkiaSharp;
-using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -112,8 +113,34 @@ namespace TestMulti.Models
             if (result)
             {
                 Preferences.Remove(file);
-                ViewModels.MainPage.Instance.LoadQuest();
+                using Stream stream = File.OpenRead(file);
+                if (stream != null)
+                {
+                    ObservableCollection<Quest> quests;
+                    try
+                    {
+                        quests = JsonSerializer.Deserialize<ObservableCollection<Quest>>(stream) ?? new ObservableCollection<Quest>();
+                        // Проверяем, что коллекция не пустая (лучше чем проверка на null)
+                        if (quests.Count > 0)
+                        {
+                            Preferences.Set(file, JsonSerializer.Serialize(quests));
+                        }
+                        else
+                        {
+                            await Shell.Current.DisplayAlert("Ошибка", "Произошла ошибка, попробуйте удалить файл темы и добавить заново.", "OK");
+                        }
+                    }
+                    catch (JsonException jsonEx)
+                    {
+                        await Shell.Current.DisplayAlert("Ошибка JSON", $"Неверный формат файла: {jsonEx.Message}", "OK");
+                    }
+                    catch (Exception ex)
+                    {
+                        await Shell.Current.DisplayAlert("Ошибка", $"Ошибка при обработке файла: {ex.Message}", "OK");
+                    }
+                }
             }
+            await ViewModels.MainPage.Instance.LoadQuest();
         }
         public static void SetStyle(string name, PieSeries<ObservableValue> series, SKColor color)
         {

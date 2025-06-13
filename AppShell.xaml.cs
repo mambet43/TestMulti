@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui.Views;
 using Microsoft.Maui.Storage;
 using System.Reflection;
+using System.Text.Json;
 using TestMulti.Constants;
 using TestMulti.Models;
 using TestMulti.Services;
@@ -19,7 +20,11 @@ namespace TestMulti
 
         public AppShell()
         {
-            InitializeComponent(); 
+            InitializeComponent();
+            if (Preferences.Get("ThemesDict", null) == null)
+                Preferences.Set("ThemesDict", JsonSerializer.Serialize(new Dictionary<string, string>()));
+
+            AppConstants.ThemesDict = JsonSerializer.Deserialize<Dictionary<string, string>>(Preferences.Get("ThemesDict", null));
             foreach (KeyValuePair<string, string> kvp in AppConstants.ThemesDict)
             {
                 var menuItem = new MenuItem
@@ -46,8 +51,10 @@ namespace TestMulti
             Routing.RegisterRoute("QuestTheme", typeof(QuestTheme));
         }
         private async void MenuItemCommand(string file)
-        {         
-            await Shell.Current.GoToAsync("QuestTheme?file="+file, false);
+        {
+            string encodedFile = Uri.EscapeDataString(file);
+
+            await Shell.Current.GoToAsync("QuestTheme?file="+ encodedFile, false);
             Shell.Current.FlyoutIsPresented = false;
         }
         
@@ -70,6 +77,7 @@ namespace TestMulti
                     Theme.QuestsVaworiteAll.Clear();
                     popup.Close(); // Закрываем Popup после завершения задачи
                     await ViewModels.MainPage.Instance.RefreshAsync();
+                    Theme.IsChange = false;
                 }     
             }            
         }

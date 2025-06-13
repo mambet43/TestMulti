@@ -178,13 +178,7 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
 
 
     public async Task LoadQuest()
-    {
-        //Preferences.Clear(); 
-        if (Preferences.Get("ThemesDict", null) == null)
-            Preferences.Set("ThemesDict", JsonSerializer.Serialize(new Dictionary<string, string>()));
-
-        AppConstants.ThemesDict = JsonSerializer.Deserialize<Dictionary<string, string>>(Preferences.Get("ThemesDict", null));
-
+    {       
         if (AppConstants.ThemesDict.Count > 0)
         {
             TextEmptyTheme = string.Empty;

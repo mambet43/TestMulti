@@ -184,7 +184,6 @@ namespace TestMulti.Models
             theme.QuestsErr = theme.Quests.Where(q => q.QuestColor == "Red").ToObservableCollection();
             theme.lengthErr = theme.QuestsErr.Count;
             theme.QuestsVaworite = theme.Quests.Where(q => q.vaworites).ToObservableCollection();
-            QuestsVaworiteAll.AddRange(theme.QuestsVaworite);
             theme.lengthVaworite = theme.QuestsVaworite.Count;
             theme.QuestsLong = theme.Quests.Where(q => q.Ellapsed >= AppConstants.MAX_TIME_FOR_ANSWER).ToObservableCollection();
             theme.lengthLong = theme.QuestsLong.Count;

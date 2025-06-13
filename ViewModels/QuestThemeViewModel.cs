@@ -20,9 +20,23 @@ public partial class QuestThemeViewModel : ObservableObject
 
     public QuestThemeViewModel(string file)
 	{
+        string decodedFile = Uri.UnescapeDataString(file);
 
-        if (file == "vaworites")
+        if (decodedFile == "vaworites")
         {
+            foreach (var theme in MainPage.Instance.Themes)
+            {
+                if (theme.QuestsVaworite != null && theme.QuestsVaworite.Count > 0)
+                {
+                    Theme.QuestsVaworiteAll.AddRange(theme.QuestsVaworite);
+                }
+            }
+            Theme.QuestsVaworiteAll = new ObservableCollection<Quest>(
+                Theme.QuestsVaworiteAll
+                    .GroupBy(q => q.title)
+                    .Select(g => g.First())
+                    .ToList()
+            );
             Theme.CurrentQuests = Theme.QuestsVaworiteAll;
             TitlePage = "Избранные вопросы";
         }    
@@ -31,7 +45,7 @@ public partial class QuestThemeViewModel : ObservableObject
         {
             foreach (var item in MainPage.Instance.Themes)
             {
-                if (item.FileName == file) Theme.CurrentQuests = item.Quests;
+                if (item.FileName == decodedFile) Theme.CurrentQuests = item.Quests;
             }
             TitlePage = Theme.CurrentQuests != null && Theme.CurrentQuests.Count > 0 ? Theme.CurrentQuests[0].Theme : "Нет вопросов";
         }        

@@ -1,31 +1,19 @@
-﻿using CommunityToolkit.Maui.Views;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LiveChartsCore;
 using LiveChartsCore.Defaults;
 using LiveChartsCore.Drawing;
-using LiveChartsCore.Kernel.Events;
 using LiveChartsCore.Measure;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Extensions;
 using LiveChartsCore.SkiaSharpView.Painting;
 using LiveChartsCore.SkiaSharpView.VisualElements;
-using LiveChartsCore.Themes;
-using Microsoft.Maui.Storage;
 using SkiaSharp;
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using TestMulti.Constants;
 using TestMulti.Extentions;
 using TestMulti.Services;
-using TestMulti.ViewModels;
-using TestMulti.Views;
 
 namespace TestMulti.Models
 {
@@ -120,7 +108,6 @@ namespace TestMulti.Models
                     try
                     {
                         quests = JsonSerializer.Deserialize<ObservableCollection<Quest>>(stream) ?? new ObservableCollection<Quest>();
-                        // Проверяем, что коллекция не пустая (лучше чем проверка на null)
                         if (quests.Count > 0)
                         {
                             Preferences.Set(file, JsonSerializer.Serialize(quests));

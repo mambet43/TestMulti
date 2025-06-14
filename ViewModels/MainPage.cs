@@ -1,12 +1,8 @@
-
-using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Net.Http.Json;
 using System.Text.Json;
 using TestMulti.Constants;
 using TestMulti.Controls;
@@ -27,8 +23,6 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
     public static MainPage Instance { get; private set; }
 
     private readonly ContentPage mainPage;
-    
-
     public MainPage(ContentPage page)
     {                    
         Instance = this;
@@ -49,7 +43,7 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
     {
         int position = CurrentPosition;
         IsRefreshing = true;        
-        LoadQuest();
+        await LoadQuest();
         await Task.Delay(500);
         CurrentPosition = position;       
         IsRefreshing = false;
@@ -71,21 +65,16 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
             })
             };
 
-            // Выбор файла пользователем (эта строка отсутствовала в оригинале)
             var result = await FilePicker.Default.PickAsync(options);
-
             if (result != null)
             {
                 string destPath = Path.Combine(FileSystem.Current.AppDataDirectory, result.FileName);
                 ObservableCollection<Quest> quests;
-
                 using (var sourceStream = await result.OpenReadAsync())
                 {
                     try
                     {
                         quests = JsonSerializer.Deserialize<ObservableCollection<Quest>>(sourceStream) ?? new ObservableCollection<Quest>();
-
-                        // Проверяем, что коллекция не пустая (лучше чем проверка на null)
                         if (quests.Count > 0)
                         {
                             var popup = new AddThemePopup("Введите название темы");
@@ -95,7 +84,6 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
                             {
                                 // Возвращаем позицию потока в начало перед копированием
                                 sourceStream.Seek(0, SeekOrigin.Begin);
-
                                 using (var destStream = File.Create(destPath))
                                 {
                                     await sourceStream.CopyToAsync(destStream);
@@ -103,8 +91,7 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
 
                                 AppConstants.ThemesDict.Add(destPath, text);
                                 Preferences.Set(destPath, JsonSerializer.Serialize(quests));
-                                Preferences.Set("ThemesDict", JsonSerializer.Serialize(AppConstants.ThemesDict));
-                               
+                                Preferences.Set("ThemesDict", JsonSerializer.Serialize(AppConstants.ThemesDict));                               
                                 var menuItem = new MenuItem
                                 {
                                     Text = text,
@@ -113,8 +100,6 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
                                     IconImageSource = ImageSource.FromResource("TestMulti.Resources.Images.lib.png")
                                 };
                                 AppShell.Instance.Items.Add(menuItem);
-
-
                                 await Shell.Current.DisplayAlert("Успех", $"Файл {result.FileName} успешно добавлен.", "OK");
                             }
                         }
@@ -138,19 +123,23 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
         {
             await Shell.Current.DisplayAlert("Ошибка", $"Общая ошибка: {ex.Message}", "OK");
         }
-
         await LoadQuest();
     }
 
     [RelayCommand]
     private async void DelTheme()
     {
+        if (themes.Count == 0 || CurrentPosition < 0 || CurrentPosition >= themes.Count)
+        {
+            await Shell.Current.DisplayAlert("Ошибка", "Нет доступных тем для удаления.", "ОК");
+            return;
+        }
         bool result = await Shell.Current.DisplayAlert(
                             "Подтверждение",
                             "Вы точно хотите удалить тему, отменить это действие нельзя?",
                             "Да",
                             "Отмена");
-        if (result)
+        if (result )
         {
             string filePath = themes[CurrentPosition].FileName;
             if (File.Exists(filePath))
@@ -177,6 +166,11 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
     [RelayCommand]
     private async void ShareTheme()
     {
+        if (themes.Count == 0 || CurrentPosition < 0 || CurrentPosition >= themes.Count)
+        {
+            await Shell.Current.DisplayAlert("Ошибка", "Нет доступных тем для отправки", "ОК");
+            return;
+        }
         string filePath = themes[CurrentPosition].FileName;
         if (File.Exists(filePath))
         {
@@ -200,13 +194,11 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
         if (AppConstants.ThemesDict.Count > 0)
         {
             TextEmptyTheme = string.Empty;
-
             var newThemes = new List<Theme>();
             foreach (var kvp in AppConstants.ThemesDict)
             {
                 newThemes.Add(await Theme.CreateAsync(kvp.Key, kvp.Value));
             }
-
             await MainThread.InvokeOnMainThreadAsync(() =>
             {
                 Themes = new ObservableCollection<Theme>(newThemes);
@@ -215,7 +207,6 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
         else
         {
             TextEmptyTheme = "Нет тем для тестирования. Добавьте тему для тестов!";
-
             await MainThread.InvokeOnMainThreadAsync(() =>
             {
                 Themes = new ObservableCollection<Theme>();

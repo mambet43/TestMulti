@@ -68,6 +68,12 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\Images\retryall.png" />
+	  <None Remove="Resources\Raw\eb4.json" />
+	  <None Remove="Resources\Raw\eb5.json" />
+	  <None Remove="Resources\Raw\ot.json" />
+	  <None Remove="Resources\Raw\pb.json" />
+	  <None Remove="Resources\Raw\vaworites.json" />
+	  <None Remove="Resources\Raw\vis.json" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -76,8 +82,6 @@
 		<EmbeddedResource Include="Resources\Raw\eb4.json" />
 		<EmbeddedResource Include="Resources\Raw\eb5.json" />
 		<EmbeddedResource Include="Resources\Raw\ot.json" />
-		<EmbeddedResource Include="Resources\Raw\pb.json" />
-		<EmbeddedResource Include="Resources\Raw\vaworites.json" />
 		<EmbeddedResource Include="Resources\Raw\vis.json" />
 	</ItemGroup>
 

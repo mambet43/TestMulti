@@ -32,7 +32,6 @@
                 <CarouselView x:Name="CarouselMain" 
                 Position="{Binding CurrentPosition}"
                  ItemsSource="{Binding Themes}"
-                CurrentItemChangedCommand="{Binding CurrentItemChangedCommand}"
                 IndicatorView="indicator"   
                 Loop="False"
                 Margin="10"                

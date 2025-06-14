@@ -7,7 +7,7 @@
     xmlns:local="clr-namespace:TestMulti"
     xmlns:view="clr-namespace:TestMulti.Views"
     Shell.FlyoutBehavior="Flyout"
-    Shell.FlyoutWidth="255"
+    Shell.FlyoutWidth="270"
     FlyoutBackgroundColor="{StaticResource BackColorC}"
     BackgroundColor="{StaticResource BackColorB}"   
     Title="TestMulti">

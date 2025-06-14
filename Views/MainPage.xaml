@@ -37,24 +37,25 @@
                 Loop="False"
                 Margin="10"                
                 HorizontalScrollBarVisibility="Never"
-                VerticalOptions="Start"
-                HorizontalOptions="Start"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
                 Grid.Row="0">
                     <CarouselView.ItemTemplate>
                         <DataTemplate x:DataType="models:Theme">
                             <Frame    
                                 HorizontalOptions="Center"
+                                VerticalOptions="Center"
                                 CornerRadius="28" 
                                 BackgroundColor="{StaticResource BackColorA}"                            
                                 BorderColor="White">
 
 
-                                <FlexLayout Direction="Row" Wrap="Wrap" AlignItems="Center" JustifyContent="Center">
+                                <FlexLayout Direction="{OnPlatform Default=Row, Android=Column}" HorizontalOptions="Center" VerticalOptions="Center">
                                     <lvc:PieChart 
                                         Series="{Binding Series}" 
                                         Title="{Binding PieTitle}" 
-                                        HeightRequest="400"
-                                        WidthRequest="400"
+                                        HeightRequest="350"
+                                        WidthRequest="350"
                                         InitialRotation="90" 
                                         MaxAngle="270 " 
                                         MinValue="0" 

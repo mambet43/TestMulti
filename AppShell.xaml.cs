@@ -13,17 +13,31 @@ namespace TestMulti
 {
     public partial class AppShell : Shell
     {
+        public static AppShell Instance;
+
         private bool CurrentPageIsMain()
         {
             return Shell.Current.CurrentPage is MainPage;
         }
 
+
+        
+
+
         public AppShell()
         {
             InitializeComponent();
+            Instance = this;
+            var menuItemVaworites = new MenuItem
+            {
+                Text = "Избранные вопросы",
+                IconImageSource = ImageSource.FromResource("TestMulti.Resources.Images.star.png"),
+                Command = new Command<string>(param => MenuItemCommand(param)),
+                CommandParameter = "vaworites"
+            };
+            Items.Add(menuItemVaworites);
             if (Preferences.Get("ThemesDict", null) == null)
                 Preferences.Set("ThemesDict", JsonSerializer.Serialize(new Dictionary<string, string>()));
-
             AppConstants.ThemesDict = JsonSerializer.Deserialize<Dictionary<string, string>>(Preferences.Get("ThemesDict", null));
             foreach (KeyValuePair<string, string> kvp in AppConstants.ThemesDict)
             {
@@ -33,24 +47,16 @@ namespace TestMulti
                     Command = new Command<string>(param => MenuItemCommand(param)),
                     CommandParameter = kvp.Key,
                     IconImageSource = ImageSource.FromResource("TestMulti.Resources.Images.lib.png")
-                };                
-                
+                };
                 Items.Add(menuItem);
             }
-            var menuItemVaworites = new MenuItem
-            {
-                Text = "Избранные вопросы",
-                IconImageSource = ImageSource.FromResource("TestMulti.Resources.Images.star.png"),
-                Command = new Command<string>(param => MenuItemCommand(param)),
-                CommandParameter = "vaworites"
-            };
-
-            Items.Add(menuItemVaworites);
-
-
+            
             Routing.RegisterRoute("QuestTheme", typeof(QuestTheme));
+
+
+
         }
-        private async void MenuItemCommand(string file)
+        public async void MenuItemCommand(string file)
         {
             string encodedFile = Uri.EscapeDataString(file);
 

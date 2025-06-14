@@ -24,8 +24,8 @@
         <ToolbarItem Text="Поделиться темой" Order="Secondary" Priority="2" Command="{Binding ShareThemeCommand}"/>
     </ContentPage.ToolbarItems>
     
-        <FlexLayout>
-        <Label Text="{Binding TextEmptyTheme}" Padding="20" FontSize="16" FontAttributes="Bold" />
+        <FlexLayout Padding="10">
+        <Label Text="{Binding TextEmptyTheme}" HorizontalOptions="Center"  FontSize="16" FontAttributes="Bold" />
         <RefreshView IsRefreshing="{Binding IsRefreshing}"
           Command="{Binding RefreshCommand}">        
             <Grid RowDefinitions="*,Auto">
@@ -35,37 +35,33 @@
                 CurrentItemChangedCommand="{Binding CurrentItemChangedCommand}"
                 IndicatorView="indicator"   
                 Loop="False"
-                Margin="20"                
+                Margin="10"                
                 HorizontalScrollBarVisibility="Never"
-                VerticalOptions="Fill"
-                HorizontalOptions="Fill"
+                VerticalOptions="Start"
+                HorizontalOptions="Start"
                 Grid.Row="0">
                     <CarouselView.ItemTemplate>
                         <DataTemplate x:DataType="models:Theme">
                             <Frame    
-                            CornerRadius="28" 
-                            BackgroundColor="{StaticResource BackColorA}"                            
-                            BorderColor="White">
+                                HorizontalOptions="Center"
+                                CornerRadius="28" 
+                                BackgroundColor="{StaticResource BackColorA}"                            
+                                BorderColor="White">
+
 
                                 <FlexLayout Direction="Row" Wrap="Wrap" AlignItems="Center" JustifyContent="Center">
-
-
-
                                     <lvc:PieChart 
                                         Series="{Binding Series}" 
                                         Title="{Binding PieTitle}" 
-                                        HeightRequest="380"
-                                        WidthRequest="380"
+                                        HeightRequest="400"
+                                        WidthRequest="400"
                                         InitialRotation="90" 
-                                        MaxAngle="270" 
+                                        MaxAngle="270 " 
                                         MinValue="0" 
                                         MaxValue="{Binding LengthQ}" 
                                         AnimationsSpeed="00:00:01.500"/>
 
-
-
                                     <StackLayout Spacing="5">
-
                                         <!-- Все строки с иконками и TapGestureRecognizer -->
                                         <Grid ColumnDefinitions="48,*" VerticalOptions="Center">
                                             <Image Source="all.png" HeightRequest="48" WidthRequest="48"/>

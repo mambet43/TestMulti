@@ -1,4 +1,5 @@
 
+using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -8,10 +9,9 @@ using System.Diagnostics;
 using System.Net.Http.Json;
 using System.Text.Json;
 using TestMulti.Constants;
+using TestMulti.Controls;
 using TestMulti.Models;
 using TestMulti.Views;
-using TestMulti.Controls;
-using CommunityToolkit.Maui.Core.Extensions;
 
 namespace TestMulti.ViewModels;
 
@@ -104,6 +104,16 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
                                 AppConstants.ThemesDict.Add(destPath, text);
                                 Preferences.Set(destPath, JsonSerializer.Serialize(quests));
                                 Preferences.Set("ThemesDict", JsonSerializer.Serialize(AppConstants.ThemesDict));
+                               
+                                var menuItem = new MenuItem
+                                {
+                                    Text = text,
+                                    Command = new Command<string>(param => AppShell.Instance.MenuItemCommand(param)),
+                                    CommandParameter = destPath,
+                                    IconImageSource = ImageSource.FromResource("TestMulti.Resources.Images.lib.png")
+                                };
+                                AppShell.Instance.Items.Add(menuItem);
+
 
                                 await Shell.Current.DisplayAlert("Успех", $"Файл {result.FileName} успешно добавлен.", "OK");
                             }
@@ -151,6 +161,14 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
             Preferences.Remove(filePath);
             AppConstants.ThemesDict.Remove(filePath);
             Preferences.Set("ThemesDict", JsonSerializer.Serialize(AppConstants.ThemesDict));
+            foreach (var item in AppShell.Instance.Items)
+            {
+                if (item.Title == themes[CurrentPosition].Title)
+                {
+                    AppShell.Instance.Items.Remove(item);
+                    break;
+                }
+            }
             await LoadQuest();
         }    
            
@@ -198,7 +216,6 @@ public partial class MainPage : ObservableObject, INotifyPropertyChanged
         {
             TextEmptyTheme = "Нет тем для тестирования. Добавьте тему для тестов!";
 
-            // Чтобы корректно отобразилось сообщение, сбрасываем коллекцию:
             await MainThread.InvokeOnMainThreadAsync(() =>
             {
                 Themes = new ObservableCollection<Theme>();

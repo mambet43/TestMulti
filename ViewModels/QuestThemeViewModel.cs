@@ -21,7 +21,7 @@ public partial class QuestThemeViewModel : ObservableObject
     public QuestThemeViewModel(string file)
 	{
         string decodedFile = file; 
-        decodedFile = decodedFile==null? Theme.CurrentQuests[0].FileName: Uri.UnescapeDataString(file); 
+        if (decodedFile != null) decodedFile = Uri.UnescapeDataString(file); 
         if (decodedFile == "vaworites")
         {
             foreach (var theme in MainPage.Instance.Themes)
